@@ -1,0 +1,274 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { services } from '../data/services.js';
+---
+
+<Layout
+  title="InspireB | Praticienne Bien-être & Naturopathe à Sartilly-Baie-Bocage, entre Avranches et Granville"
+  description="Betty vous accueille à Sartilly pour des soins bien-être et naturopathiques 100% personnalisés. Une approche holistique unique qui prend soin de vous de l'intérieur comme de l'extérieur."
+>
+
+  <!-- HERO -->
+  <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+    <!-- Image de fond pleine largeur -->
+    <div class="absolute inset-0 bg-[url('/images/hero-betty.webp')] bg-cover bg-center bg-no-repeat"></div>
+
+    <!-- Dégradé gauche→droite : opaque à gauche pour lire, transparent à droite pour voir la photo -->
+    <div class="absolute inset-0"
+         style="background: linear-gradient(to right, rgba(246,246,233,0.97) 0%, rgba(246,246,233,0.90) 50%, rgba(246,246,233,0.55) 65%, rgba(246,246,233,0.0) 100%);"></div>
+
+    <!-- Contenu aligné à gauche -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-8 md:px-16 py-24">
+      <div class="max-w-xl">
+        <p class="text-[#a8cbb7] text-sm tracking-[0.15em] uppercase mb-5 font-jakarta">
+          Beauté, Bien-être, Réflexologie & Naturopathie <br />  Sartilly-Baie-Bocage • entre Avranches et Granville
+        </p>
+        <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">
+          La beauté qui<br /><em>vient de l'intérieur</em>
+        </h1>
+        <p class="text-base md:text-lg text-[#4A4A4A]/85 mb-10 leading-relaxed">
+          Ici, on prend soin de vous en profondeur, en douceur, à votre rythme.<br />
+          Corps, peau et équilibre intérieur — ensemble.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="https://inspireb.setmore.com/#services"
+             class="js-setmore bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm font-semibold tracking-wide text-center">
+            Prendre rendez-vous
+          </a>
+          <a href="/concept"
+             class="border-2 border-[#a8cbb7] text-[#a8cbb7] px-8 py-3.5 rounded-full hover:bg-[#a8cbb7] hover:text-white transition-colors text-sm tracking-wide text-center font-medium">
+            Découvrir le concept
+          </a>
+        </div>
+        <p class="text-xs text-[#4A4A4A] mt-3 flex items-center gap-1.5">
+          <Icon name="ph:baby" size={16} />
+          <span>Bébés bienvenus pendant les soins</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR QUI -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Est-ce pour vous ?</p>
+        <h2 class="font-jakarta font-medium text-3xl md:text-4xl text-[#3D3D3D]">Cet espace est pour vous si…</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          "Vous ressentez le besoin de vous reconnecter à votre corps et à vos sensations.",
+          "Vous vous oubliez souvent pour les autres et aimeriez, enfin, prendre soin de vous.",
+          "Vous cherchez un vrai moment de pause pour souffler et lâcher prise.",
+          "Vous traversez une période de transition et avez besoin de vous retrouver.",
+          "Vous voulez prendre soin de votre peau et de votre équilibre, en profondeur.",
+          "Vous avez envie d'être accueillie sans jugement, à votre rythme.",
+        ].map(item => (
+          <div class="flex items-start gap-3 bg-white rounded-2xl p-5">
+            <span class="text-[#a8cbb7] text-xl flex-shrink-0 leading-none">✦</span>
+            <p class="text-[#4A4A4A]/80 leading-relaxed">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPT RÉSUMÉ -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Une approche unique</p>
+      <h2 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D] mb-6">
+        Bien plus qu'un soin classique
+      </h2>
+      <p class="text-[#4A4A4A]/80 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
+        Praticienne Bien-être et Naturopathe, je vous propose une approche globale — votre peau, votre équilibre intérieur, votre bien-être. Parce que la vraie beauté ne s'arrête pas à l'épiderme.
+      </p>
+      <!-- 3 piliers -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <div class="p-6 bg-[#f6f6e9] rounded-2xl h-full">
+          <div class="mb-4 flex justify-center">
+            <img src="/images/Soin-naturel-icon.svg" alt="" class="w-16 h-16" />
+          </div>
+          <h3 class="font-jakarta font-medium text-xl text-[#a8cbb7] mb-2 text-center">Des produits<br>de qualité</h3>
+          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed text-center">Une sélection rigoureuse, pensée pour prendre soin de votre peau comme de vous-même.</p>
+        </div>
+        <div class="p-6 bg-[#eaf1ec] rounded-2xl h-full">
+          <div class="mb-4 flex justify-center">
+            <img src="/images/Naturopathe-icon.svg" alt="" class="w-16 h-16" />
+          </div>
+          <h3 class="font-jakarta font-medium text-xl text-[#a8cbb7] mb-2 text-center">Une approche<br>globale</h3>
+          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed text-center">Corps, énergie, équilibre intérieur : tout est lié. Je prends soin de vous dans votre ensemble.</p>
+        </div>
+        <div class="p-6 bg-[#f6f6e9] rounded-2xl h-full">
+          <div class="mb-4 flex justify-center">
+            <img src="/images/Sur-mesure-icon.svg" alt="" class="w-16 h-16" />
+          </div>
+          <h3 class="font-jakarta font-medium text-xl text-[#a8cbb7] mb-2 text-center">Un accompagnement<br>sur-mesure</h3>
+          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed text-center">Chaque soin est construit pour vous, et vous seule. Aucun protocole standard chez InspireB.</p>
+        </div>
+      </div>
+      <a href="/concept" class="inline-block mt-10 text-[#a8cbb7] text-sm underline underline-offset-4 hover:text-[#5a9480]">
+        En savoir plus sur le concept →
+      </a>
+    </div>
+  </section>
+
+  <!-- APERÇU SOINS -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Mes prestations</p>
+        <h2 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D]">Soins & Accompagnements</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map(soin => (
+          <a href={`/soins#${soin.id}`}
+            class="bg-white rounded-2xl p-6 hover:shadow-md transition-shadow group flex flex-col justify-between h-full">
+            <div>
+              <h3 class="font-jakarta font-medium text-xl text-[#3D3D3D] mb-1 group-hover:text-[#a8cbb7] transition-colors">{soin.categorie}</h3>
+              <p class="text-sm text-[#4A4A4A]/60 mb-3">{soin.descCourt}</p>
+            </div>
+            <span class="text-[#a8cbb7] text-sm font-medium">{soin.apercu}</span>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-10">
+        <a href="/soins"
+           class="bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide">
+          Voir tous les soins & tarifs
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MES RECOMMANDATIONS PRODUITS -->
+  <section class="py-14 px-6 bg-white">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-2">Mes recommandations</p>
+      <h2 class="font-jakarta font-medium text-2xl md:text-3xl text-[#3D3D3D] mb-3">Les produits que j'utilise et recommande</h2>
+      <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-6 max-w-xl mx-auto">
+      <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-2 max-w-xl mx-auto">
+        En complément de mes soins, voici une sélection de produits que je recommande personnellement pour prendre soin de votre peau entre deux séances.
+      </p>
+      <p class="text-xs text-[#4A4A4A]/50 italic mb-6">
+        Liens partenaires : ces marques me reversent une commission si vous passez commande via ces liens, sans surcoût pour vous.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="https://nskn.co/VUHmJ7" target="_blank" rel="noopener sponsored"
+           class="relative bg-[#f6f6e9] rounded-2xl px-6 py-4 hover:shadow-md transition-shadow flex-1 max-w-xs mx-auto">
+          <span class="absolute top-2 right-2 text-[9px] uppercase tracking-wide bg-[#eaf1ec] text-[#5a9480] px-2 py-0.5 rounded-full">
+            Lien commercial
+          </span>
+          <p class="font-jakarta font-semibold text-[#5a9480] text-lg mb-1">Nu Skin</p>
+          <p class="text-xs text-[#4A4A4A]/60">Soins anti-âge & technologie ageLOC →</p>
+        </a>
+        <a href="https://www.jolimoi.com/fr/inscription-client?styliste=BettyNOELWOURMS&utm_source=product&utm_medium=invitation_client&utm_campaign=lien_client_app" target="_blank" rel="noopener sponsored"
+           class="relative bg-[#f6f6e9] rounded-2xl px-6 py-4 hover:shadow-md transition-shadow flex-1 max-w-xs mx-auto">
+          <span class="absolute top-2 right-2 text-[9px] uppercase tracking-wide bg-[#eaf1ec] text-[#5a9480] px-2 py-0.5 rounded-full">
+            Lien commercial
+          </span>
+          <p class="font-jakarta font-semibold text-[#5a9480] text-lg mb-1">Jolimoi</p>
+          <p class="text-xs text-[#4A4A4A]/60">Beauté & bien-être au quotidien →</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TÉMOIGNAGES -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.30em] uppercase mb-3">Avis clientes</p>
+      <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D] mb-12">Ce qu'en disent les clientes</h2>
+      <div class="flex justify-center gap-1 mb-2 text-xl">⭐⭐⭐⭐⭐</div>
+      <p class="text-sm text-[#4A4A4A]/50 mb-10">5/5 sur Google · Sartilly-Baie-Bocage</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <blockquote class="bg-white rounded-2xl p-5 text-left flex flex-col justify-between h-full">
+          <p class="text-[#4A4A4A]/80 leading-relaxed mb-4 italic">"Un espace cocoonning et enveloppant, un soin du visage doux et relaxant et une belle découverte de la réflexologie, je ressors de ce moment hors du temps toute légère. Merci beaucoup Betty!"</p>
+          <cite class="text-sm text-[#a8cbb7] font-medium not-italic">— Stéphanie D., ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+        <blockquote class="bg-white rounded-2xl p-5 text-left flex flex-col justify-between h-full">
+          <p class="text-[#4A4A4A]/80 leading-relaxed mb-4 italic">"Un moment de total détente et de reconnection à mon corps. Betty est douce, attentionnée et bienveillante. A refaire sans soucis. Je vous recommande."</p>
+          <cite class="text-sm text-[#a8cbb7] font-medium not-italic">— Emilie T., ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+        <blockquote class="bg-white rounded-2xl p-5 text-left flex flex-col justify-between h-full">
+          <p class="text-[#4A4A4A]/80 leading-relaxed mb-4 italic">"Je recommande Betty les yeux fermés!! Son approche est à la fois bienveillante, attentive et personnalisé à 100%. Chaque rdv est unique, un véritable moment de détente et de ressourcement. Merci pour ces précieux moments de bien-être Betty."</p>
+          <cite class="text-sm text-[#a8cbb7] font-medium not-italic">— Fleur B., ⭐⭐⭐⭐⭐</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- OÙ JE VOUS REÇOIS -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <!-- Accroche -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Où je vous reçois</p>
+        <h2 class="font-jakarta font-medium text-3xl md:text-4xl text-[#3D3D3D] mb-4">À mi-chemin entre Avranches et Granville</h2>
+        <p class="text-[#4A4A4A]/70 leading-relaxed">
+          Mon espace bien-être est situé à Sartilly-Baie-Bocage, à environ 15 minutes de Granville comme d'Avranches,
+          au cœur de la baie du Mont-Saint-Michel. J'accueille avec plaisir les habitantes de Sartilly, Granville,
+          Avranches, Saint-Pair-sur-Mer, Jullouville, La Haye-Pesnel et des communes alentour — comme les personnes
+          de passage ou en vacances dans la région, en quête d'une parenthèse de détente le temps d'un séjour.
+        </p>
+      </div>
+
+      <!-- Infos + Carte -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <!-- Encart coordonnées -->
+        <div class="bg-[#f6f6e9] rounded-2xl p-7 flex flex-col justify-center gap-6 text-center md:text-left">
+          <div>
+            <p class="font-medium text-[#3D3D3D] mb-1 flex items-center justify-center md:justify-start gap-2">
+              <Icon name="ph:map-pin-area" size={22} class="text-[#a8cbb7]" />
+              <span>Adresse</span>
+            </p>
+            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">2 Rue des Iris<br />50530 Sartilly-Baie-Bocage<br />Normandie</p>
+          </div>
+          <div>
+            <p class="font-medium text-[#3D3D3D] mb-1 flex items-center justify-center md:justify-start gap-2">
+              <Icon name="ph:phone" size={22} class="text-[#a8cbb7]" />
+              <span>Téléphone</span>
+            </p>
+            <a href="tel:+33646712096" class="text-sm text-[#4A4A4A]/70 hover:text-[#a8cbb7] transition-colors">06 46 71 20 96</a>
+          </div>
+          <div>
+            <p class="font-medium text-[#3D3D3D] mb-1 flex items-center justify-center md:justify-start gap-2">
+              <Icon name="ph:clock" size={22} class="text-[#a8cbb7]" />
+              <span>Horaires</span>
+            </p>
+            <p class="text-sm text-[#4A4A4A]/70">Lun – Sam, sur rendez-vous</p>
+          </div>
+        </div>
+
+        <!-- Carte -->
+        <div data-cookie-embed class="relative w-full md:col-span-2 h-[320px] md:h-[460px] rounded-2xl overflow-hidden">
+          <iframe
+            data-cookie-src="https://www.google.com/maps?q=2+Rue+des+Iris,+50530+Sartilly-Baie-Bocage,+France&output=embed&z=15"
+            src="about:blank"
+            width="100%" height="100%" style="border:0;"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Localisation InspireB"
+            class="hidden w-full h-full"></iframe>
+          <div data-cookie-placeholder class="absolute inset-0 bg-[#eaf1ec] flex flex-col items-center justify-center text-center p-6 gap-3">
+            <p class="text-sm text-[#4A4A4A]/70">La carte est désactivée tant que les cookies ne sont pas acceptés.</p>
+            <button class="js-cookie-settings bg-[#a8cbb7] text-white px-5 py-2 rounded-full text-sm">Afficher la carte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="py-20 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="font-jakarta font-medium text-4xl md:text-5xl mb-4">Prête à prendre soin de vous autrement ?</h2>
+      <p class="text-white/70 mb-8 text-lg">Réservez votre soin en ligne, en quelques clics, quand vous voulez.</p>
+      <a href="/contact"
+         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+        Réserver mon soin →
+      </a>
+    </div>
+  </section>
+
+</Layout>

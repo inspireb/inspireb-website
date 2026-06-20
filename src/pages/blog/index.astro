@@ -1,0 +1,244 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+
+// Récupération de tous les articles du blog, triés du plus récent au plus ancien
+type ArticleFrontmatter = {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  emoji?: string;
+  coverImage?: string;
+};
+
+let allArticles: { frontmatter: ArticleFrontmatter; url: string | undefined }[] = [];
+try {
+  allArticles = await Astro.glob<ArticleFrontmatter>('../../content/blog/*.md');
+} catch {
+  allArticles = [];
+}
+
+const articles = allArticles
+  .map(article => ({
+    ...article.frontmatter,
+    url: article.url,
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<Layout
+  title="Blog Bien-être & Naturopathie | InspireB — Sartilly-Baie-Bocage"
+  description="Conseils bien-être, naturopathie, beauté naturelle et routines saisonnières par InspireB, praticienne bien-être naturopathe à Sartilly-Baie-Bocage."
+>
+
+  <!-- HERO PAGE -->
+  <section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Image de fond du hero  -->
+    <div class="absolute inset-0 bg-[url('/images/hero-blog.webp')] bg-cover bg-center">
+      <!-- Couche 1 : voile crème léger et uniforme -->
+      <div class="absolute inset-0 bg-[#eaf1ec]/40"></div>
+      <!-- Couche 2 : radial INVERSÉ — centre opaque, bords transparents -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_35%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Conseils & inspirations</p>
+      <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">
+        Le Blog by <span class="font-dancing">InspireB</span>
+      </h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed max-w-xl mx-auto">
+        Chaque mois, je partage mes conseils en beauté naturelle, naturopathie et bien-être. Des articles concrets pour prendre soin de vous au quotidien.
+      </p>
+    </div>
+  </section>
+
+  <!-- LISTE DES ARTICLES -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-5xl mx-auto">
+
+      {articles.length === 0 ? (
+        <!-- État vide : aucun article encore -->
+        <div class="text-center py-20">
+          <div class="flex justify-center mb-6">
+            <Icon name="ph:pencil-line-fill" size={48} class="text-[#a8cbb7]" />
+          </div>
+          <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D] mb-4">Les articles arrivent bientôt…</h2>
+          <p class="text-[#4A4A4A]/70 max-w-md mx-auto mb-8">
+            Je prépare mes premiers conseils bien-être & naturopathie. Abonnez-vous pour être prévenue dès leur publication !
+          </p>
+          <a href="#newsletter" class="inline-block bg-[#a8cbb7] text-white px-8 py-3 rounded-full text-sm hover:bg-[#5a9480] transition-colors">
+            M'abonner à la newsletter →
+          </a>
+        </div>
+      ) : (
+        <!-- Grille d'articles -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map(article => {
+            const dateFormatted = new Date(article.date).toLocaleDateString('fr-FR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            });
+            return (
+              <a href={article.url} class="group bg-[#f6f6e9] rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
+                {article.coverImage ? (
+                  <img
+                    src={article.coverImage}
+                    alt={article.title}
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div class="w-full h-48 bg-[#eaf1ec] flex items-center justify-center">
+                    <Icon name="ph:plant-fill" size={40} class="text-[#a8cbb7]" />
+                  </div>
+                )}
+                <div class="p-6">
+                  <p class="text-[#a8cbb7] text-xs tracking-[0.2em] uppercase mb-2">{article.category}</p>
+                  <h2 class="font-jakarta font-medium text-xl text-[#3D3D3D] leading-snug mb-3 group-hover:text-[#a8cbb7] transition-colors">
+                    {article.title}
+                  </h2>
+                  <p class="text-sm text-[#4A4A4A]/60 leading-relaxed mb-4 line-clamp-3">
+                    {article.description}
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs text-[#4A4A4A]/40">{dateFormatted}</span>
+                    <span class="text-[#a8cbb7] text-xs font-medium group-hover:underline">Lire →</span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
+
+    </div>
+  </section>
+
+  <!-- THÈMES ABORDÉS -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Sur le blog</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D]">Les thèmes abordés</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {[
+          { icon: "ph:plant-fill", theme: "Naturopathie", desc: "Comprendre son terrain, les grands principes, les outils naturels." },
+          { icon: "ph:sparkle-fill", theme: "Beauté naturelle", desc: "Routines beauté, soins maison, ingrédients à privilégier." },
+          { icon: "ph:leaf-fill", theme: "Soins saisonniers", desc: "Adapter sa routine selon les saisons pour une peau équilibrée." },
+          { icon: "ph:bowl-food-fill", theme: "Alimentation & peau", desc: "Le lien entre ce que l'on mange et l'état de notre peau." },
+          { icon: "ph:person-simple-tai-chi-fill", theme: "Bien-être global", desc: "Sommeil, stress, équilibre — tout ce qui impacte votre beauté." },
+          { icon: "ph:lightbulb-fill", theme: "Conseils pratiques", desc: "Des astuces concrètes à intégrer facilement au quotidien." },
+        ].map(item => (
+          <div class="bg-white rounded-2xl p-6">
+            <div class="mb-3">
+              <Icon name={item.icon} size={34} class="text-[#4A4A4A]/70" />
+            </div>
+            <h3 class="font-jakarta font-medium text-xl text-[#5a9480] mb-2">{item.theme}</h3>
+            <p class="text-sm text-[#4A4A4A]/70">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER — formulaire MailerLite intégré (pas de popup, évite les blocages) -->
+  <section id="newsletter" class="py-20 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-md mx-auto">
+      <div class="flex justify-center mb-4">
+        <Icon name="ph:envelope-fill" size={40} class="text-white" />
+      </div>
+      <h2 class="font-jakarta font-medium text-4xl mb-4">Recevez mes conseils</h2>
+      <p class="text-white/70 mb-8 text-lg">
+        Une newsletter mensuelle avec des conseils bien-être, des routines beauté et mes actualités. Sans spam, juste l'essentiel.
+      </p>
+
+      <!--
+        Formulaire MailerLite intégré (POST direct, sans popup ni script tiers).
+        ID de compte : 2414334 — formulaire : 190375562451092655
+      -->
+      <form
+        id="newsletter-form"
+        class="flex flex-col gap-3"
+        action="https://assets.mailerlite.com/jsonp/2414334/forms/190375562451092655/subscribe"
+        method="post"
+      >
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            name="fields[email]"
+            placeholder="Votre adresse email"
+            required
+            autocomplete="email"
+            class="flex-1 rounded-full px-5 py-3 text-sm text-[#3D3D3D] placeholder-[#4A4A4A]/40 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <button
+            type="submit"
+            class="bg-white text-[#5a9480] px-8 py-3 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium whitespace-nowrap"
+          >
+            S'abonner →
+          </button>
+        </div>
+
+        <input type="hidden" name="ml-submit" value="1" />
+        <input type="hidden" name="anticsrf" value="true" />
+
+        <!-- Pot de miel anti-spam : invisible et hors tabulation pour les humains,
+             souvent rempli automatiquement par les robots. Aucun cookie, aucun service tiers. -->
+        <div class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+          <label>Ne remplissez pas ce champ
+            <input type="text" name="url_site" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+      </form>
+
+      <p id="newsletter-message" class="text-sm mt-4 hidden"></p>
+
+      <script>
+        const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+        const message = document.getElementById('newsletter-message');
+
+        form?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          // Anti-spam sans cookie : si le pot de miel est rempli, c'est un robot → on ignore.
+          const honeypot = form.querySelector('input[name="url_site"]') as HTMLInputElement | null;
+          if (honeypot && honeypot.value.trim() !== '') return;
+
+          const formData = new FormData(form);
+          formData.delete('url_site'); // on n'envoie pas le champ piège à MailerLite
+
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: { 'Accept': 'application/json' },
+            });
+            const data = await response.json();
+
+            if (message) {
+              message.classList.remove('hidden');
+              if (data.success) {
+                message.textContent = "Merci ! Vérifiez votre boîte mail pour confirmer votre inscription.";
+                message.classList.add('text-white');
+                form.reset();
+              } else {
+                message.textContent = "Une erreur est survenue. Merci de réessayer.";
+                message.classList.add('text-red-200');
+              }
+            }
+          } catch {
+            if (message) {
+              message.classList.remove('hidden');
+              message.textContent = "Une erreur est survenue. Merci de réessayer.";
+              message.classList.add('text-red-200');
+            }
+          }
+        });
+      </script>
+
+      <p class="text-white/30 text-xs mt-4">Gratuit · Désinscription en 1 clic</p>
+    </div>
+  </section>
+
+</Layout>

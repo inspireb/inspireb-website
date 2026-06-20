@@ -1,0 +1,416 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const { title, description, canonical, ogImage } = Astro.props;
+const siteUrl = "https://www.inspireb.fr";
+const currentUrl = canonical || siteUrl + Astro.url.pathname;
+const ogImageUrl = ogImage ? siteUrl + ogImage : siteUrl + "/images/og-image.jpg";
+import { services } from '../data/services.js';
+
+const offers = services
+  .filter(s => typeof s.schemaPrice === 'number')
+  .map(s => ({
+    "@type": "Offer",
+    "itemOffered": { "@type": "Service", "name": s.categorie },
+    "priceCurrency": "EUR",
+    "price": String(s.schemaPrice),
+    ...(s.schemaPrice === 0 ? { description: "Prix libre" } : {}),
+  }));
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  "@id": siteUrl + "/#business",
+  "name": "InspireB — Betty NOEL WOURMS",
+  "description": "Praticienne bien-être et naturopathe à Sartilly-Baie-Bocage, entre Avranches et Granville. Massages, réflexologie plantaire, soins visage et naturopathie, dans une approche holistique et personnalisée.",
+  "url": siteUrl,
+  "telephone": "+33646712096",
+  "priceRange": "€€",
+  "image": ogImageUrl,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "2 Rue des Iris",
+    "addressLocality": "Sartilly-Baie-Bocage",
+    "postalCode": "50530",
+    "addressRegion": "Normandie",
+    "addressCountry": "FR",
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": "8.754920360832486", "longitude": "-1.4511759853949815" },
+  "areaServed": [
+    { "@type": "City", "name": "Sartilly-Baie-Bocage" },
+    { "@type": "City", "name": "Granville" },
+    { "@type": "City", "name": "Avranches" },
+    { "@type": "City", "name": "Saint-Pair-sur-Mer" },
+    { "@type": "City", "name": "Jullouville" },
+    { "@type": "City", "name": "La Haye-Pesnel" },
+  ],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "09:30", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:30", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:30", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:30", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "13:00" },
+  ],
+  "sameAs": [
+    "https://www.instagram.com/betty_inspireb",
+    "https://www.facebook.com/p/InspireB-Betty-NW-61574083089520/",
+    "https://www.linkedin.com/in/betty-noel-wourms-43a2b9416",
+    "https://www.resalib.fr/praticien/126051-inspireb-institut-de-beaute-sartilly-baie-bocage",
+  ],
+  "makesOffer": offers,
+  // Note : pas d'aggregateRating ici. Google n'affiche pas d'étoiles pour les avis
+  // qu'une entreprise publie sur son propre site (« self-serving »), et un tel balisage
+  // peut entraîner une pénalité. Les avis et étoiles vivent sur la fiche Google Business.
+};
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={currentUrl} />
+
+    <!-- Favicon (logo dans l'onglet du navigateur) -->
+    <link rel="icon" type="image/svg+xml" href="/images/Logo_InspireB.svg" />
+    <link rel="apple-touch-icon" href="/images/Logo_InspireB.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+    <title>{title}</title>
+
+    <!-- Fonts : Dancing Script (logo) + Plus Jakarta Sans (textes, proche de Clear Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  </head>
+
+  <body class="bg-[#f6f6e9] text-[#4A4A4A] font-jakarta">
+
+    <!-- NAVIGATION -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#f6f6e9]/95 backdrop-blur-sm border-b border-[#dde7e0]">
+      <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3">
+          <img src="/images/Logo_InspireB.svg" alt="InspireB logo" class="h-14 w-auto" />
+          <span class="flex flex-col leading-tight">
+            <span class="font-dancing text-2xl text-black">InspireB</span>
+            <span class="text-[0.6rem] tracking-[0.12em] uppercase text-[#4A4A4A]/60">Praticienne Bien-être & Naturopathe</span>
+          </span>
+        </a>
+
+        <!-- Menu desktop -->
+        <ul class="hidden md:flex items-center gap-8 text-sm tracking-wide">
+          <li><a href="/" class="hover:text-[#a8cbb7] transition-colors">Accueil</a></li>
+          <li><a href="/concept" class="hover:text-[#a8cbb7] transition-colors">Le concept</a></li>
+          <li><a href="/soins" class="hover:text-[#a8cbb7] transition-colors">Soins & Tarifs</a></li>
+          <li><a href="/a-propos" class="hover:text-[#a8cbb7] transition-colors">À propos</a></li>
+          <li><a href="/blog" class="hover:text-[#a8cbb7] transition-colors">Blog</a></li>
+          <li><a href="/contact" class="hover:text-[#a8cbb7] transition-colors">Contact</a></li>
+        </ul>
+
+        <!-- Menu burger mobile -->
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
+          <span class="w-6 h-0.5 bg-[#4A4A4A] transition-all" id="bar1"></span>
+          <span class="w-6 h-0.5 bg-[#4A4A4A] transition-all" id="bar2"></span>
+          <span class="w-6 h-0.5 bg-[#4A4A4A] transition-all" id="bar3"></span>
+        </button>
+      </nav>
+
+      <!-- Menu mobile déroulant -->
+      <div id="mobile-menu" class="hidden md:hidden bg-[#f6f6e9] border-t border-[#dde7e0] px-6 py-4">
+        <ul class="flex flex-col gap-4 text-sm">
+          <li><a href="/" class="block hover:text-[#a8cbb7]">Accueil</a></li>
+          <li><a href="/concept" class="block hover:text-[#a8cbb7]">Le concept</a></li>
+          <li><a href="/soins" class="block hover:text-[#a8cbb7]">Soins & Tarifs</a></li>
+          <li><a href="/a-propos" class="block hover:text-[#a8cbb7]">À propos</a></li>
+          <li><a href="/blog" class="block hover:text-[#a8cbb7]">Blog</a></li>
+          <li><a href="/contact" class="block hover:text-[#a8cbb7]">Contact</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="pt-20">
+      <slot />
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#5a9480] text-white mt-20">
+      <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="font-dancing text-3xl mb-3">InspireB</h3>
+          <p class="text-sm text-white/70 leading-relaxed">
+            Praticienne Bien-être & Naturopathe<br />
+            à Sartilly-Baie-Bocage.<br />
+            Prendre soin de vous, de l'intérieur comme de l'extérieur.
+          </p>
+          <!-- Réseaux sociaux (icônes) → remplacez les URLs par les vôtres -->
+          <div class="flex gap-3 mt-4">
+            <a href="https://www.instagram.com/betty_inspireb" target="_blank" rel="noopener" aria-label="Instagram"
+               class="bg-white/15 hover:bg-white/30 transition-colors rounded-full p-2.5 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2c-2.717 0-3.056.012-4.122.06-1.065.05-1.79.217-2.428.465a4.88 4.88 0 0 0-1.772 1.153A4.897 4.897 0 0 0 2.525 5.45c-.247.637-.415 1.363-.465 2.428C2.012 8.944 2 9.283 2 12s.012 3.056.06 4.122c.05 1.066.218 1.792.465 2.428a4.883 4.883 0 0 0 1.153 1.772 4.897 4.897 0 0 0 1.772 1.153c.637.247 1.363.415 2.428.465C8.944 21.988 9.283 22 12 22s3.056-.012 4.122-.06c1.066-.05 1.792-.218 2.428-.465a4.89 4.89 0 0 0 1.772-1.153 4.904 4.904 0 0 0 1.153-1.772c.247-.637.415-1.363.465-2.428C21.988 15.056 22 14.717 22 12s-.012-3.056-.06-4.122c-.05-1.066-.218-1.792-.465-2.428a4.89 4.89 0 0 0-1.153-1.772A4.897 4.897 0 0 0 18.55 2.525c-.637-.247-1.363-.415-2.428-.465C15.056 2.012 14.717 2 12 2zm0 1.802c2.67 0 2.987.01 4.04.058.974.045 1.504.207 1.857.344.467.182.8.399 1.15.748.35.35.566.683.748 1.15.137.353.3.883.344 1.857.048 1.053.058 1.37.058 4.04s-.01 2.987-.058 4.04c-.045.974-.207 1.504-.344 1.857-.182.467-.399.8-.748 1.15-.35.35-.683.566-1.15.748-.353.137-.883.3-1.857.344-1.053.048-1.37.058-4.04.058s-2.987-.01-4.04-.058c-.974-.045-1.504-.207-1.857-.344-.467-.182-.8-.399-1.15-.748-.35-.35-.566-.683-.748-1.15-.137-.353-.3-.883-.344-1.857-.048-1.053-.058-1.37-.058-4.04s.01-2.987.058-4.04c.045-.974.207-1.504.344-1.857.182-.467.399-.8.748-1.15.35-.35.683-.566 1.15-.748.353-.137.883-.3 1.857-.344 1.053-.048 1.37-.058 4.04-.058zM12 6.865a5.135 5.135 0 1 0 0 10.27 5.135 5.135 0 0 0 0-10.27zm0 8.468a3.333 3.333 0 1 1 0-6.666 3.333 3.333 0 0 1 0 6.666zm6.538-8.671a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/p/InspireB-Betty-NW-61574083089520/" target="_blank" rel="noopener" aria-label="Facebook"
+               class="bg-white/15 hover:bg-white/30 transition-colors rounded-full p-2.5 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/betty-noel-wourms-43a2b9416" target="_blank" rel="noopener" aria-label="LinkedIn"
+               class="bg-white/15 hover:bg-white/30 transition-colors rounded-full p-2.5 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.554V9h3.565v11.452z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold tracking-widest uppercase mb-4 text-white/50">Navigation</h4>
+          <ul class="flex flex-col gap-2 text-sm text-white/70">
+            <li><a href="/concept" class="hover:text-white transition-colors">Le concept</a></li>
+            <li><a href="/soins" class="hover:text-white transition-colors">Soins & Tarifs</a></li>
+            <li><a href="/a-propos" class="hover:text-white transition-colors">À propos</a></li>
+            <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="/contact" class="hover:text-white transition-colors">Contact & Réservation</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold tracking-widest uppercase mb-4 text-white/50">Liens utiles</h4>
+          <ul class="flex flex-col gap-2 text-sm">
+            <li>
+              <a href="https://inspireb.setmore.com/#services"
+                 class="js-setmore text-[#e6be8a] hover:text-white transition-colors font-medium">→ Réserver sur Setmore</a>
+            </li>
+            <li>
+              <a href="https://inspireb.setmore.com/app?source=settings-app-popup" target="_blank" rel="noopener"
+                class="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
+                <Icon name="ph:qr-code" size={16} />
+                <span>Mon app de réservation</span>
+              </a>
+            </li>
+            <li>
+              <!-- Resalib = lien profil uniquement (backlink), pas de réservation -->
+              <a href="https://www.resalib.fr/praticien/126051-inspireb-institut-de-beaute-sartilly-baie-bocage" target="_blank" rel="noopener"
+                 class="text-white/70 hover:text-white transition-colors">Mon profil Resalib</a>
+            </li>
+            <li>
+              <!-- Nu Skin = lien page uniquement (backlink) -->
+              <a href="https://nskn.co/VUHmJ7" target="_blank" rel="noopener"
+                 class="text-white/70 hover:text-white transition-colors">Nu Skin</a>
+            </li>
+             <li>
+              <!-- Jolimoi = lien page uniquement (backlink) -->
+              <a href="https://www.jolimoi.com/fr/inscription-client?styliste=BettyNOELWOURMS&utm_source=product&utm_medium=invitation_client&utm_campaign=lien_client_app" target="_blank" rel="noopener"
+                 class="text-white/70 hover:text-white transition-colors">Jolimoi</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold tracking-widest uppercase mb-4 text-white/50">Contact</h4>
+          <address class="not-italic text-sm text-white/70 flex flex-col gap-2">
+            <span class="flex items-center gap-2">
+              <Icon name="ph:map-pin-area" size={20}  />
+              <span>2 Rue des Iris, 50530 Sartilly-Baie-Bocage</span>
+            </span>
+            <a href="tel:+33646712096" class="flex items-center gap-2 hover:text-white transition-colors">
+              <Icon name="ph:phone" size={20} />
+              <span>06 46 71 20 96</span>
+            </a>
+            <a href="https://wa.me/33646712096" class="flex items-center gap-2 hover:text-white transition-colors">
+              <Icon name="ph:whatsapp-logo" size={20} />
+              <span>WhatsApp</span>
+            </a>
+          </address>
+        </div>
+      </div>
+      <div class="border-t border-white/10 text-center py-4 text-xs text-white/40">
+        © {new Date().getFullYear()} InspireB — Betty NOEL WOURMS ·
+        <a href="/mentions-legales" class="hover:text-white transition-colors underline underline-offset-2">Mentions légales</a> ·
+        <a href="/politique-confidentialite" class="hover:text-white transition-colors underline underline-offset-2">Confidentialité</a>
+        <a href="/cgv" class="hover:text-white transition-colors underline underline-offset-2">CGV</a>
+        <a href="#" class="js-cookie-settings hover:text-white transition-colors underline underline-offset-2">Gérer les cookies</a>
+      </div>
+    </footer>
+
+    <!-- BOUTON FLOTTANT "PRENDRE RENDEZ-VOUS" (toujours visible, bas centre)
+         La classe "js-setmore" ouvre la réservation dans une fenêtre par-dessus
+         le site (popup) — on ne quitte jamais inspireb.fr.
+         ⚠️ Remplacez l'URL par votre lien de réservation Setmore :
+         Setmore → Apps & Integrations → Booking page → copier le lien -->
+    <a id="floating-cta" href="https://inspireb.setmore.com/#services"
+       class="js-setmore fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide shadow-lg shadow-[#a8cbb7]/40 hover:bg-[#5a9480] hover:-translate-y-0.5 transition-all whitespace-nowrap">
+      ✦ Prendre rendez-vous
+    </a>
+
+    <!-- POPUP DE RÉSERVATION (fenêtre par-dessus le site) -->
+    <div id="setmore-modal" class="hidden fixed inset-0 z-[200] items-center justify-center p-4 md:p-8">
+      <!-- Fond sombre cliquable pour fermer -->
+      <div id="setmore-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      <!-- Fenêtre -->
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl h-[85vh] overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between px-5 py-3 border-b border-[#dde7e0]">
+          <span class="font-dancing text-xl text-black">InspireB · Réservation</span>
+          <button id="setmore-close" aria-label="Fermer"
+                  class="text-[#4A4A4A]/60 hover:text-[#4A4A4A] text-2xl leading-none px-2 transition-colors">×</button>
+        </div>
+        <iframe id="setmore-iframe" src="about:blank" class="flex-1 w-full" frameborder="0" title="Réservation en ligne InspireB"></iframe>
+      </div>
+    </div>
+
+    <script>
+      // Popup Setmore : s'applique à TOUS les liens portant la classe js-setmore
+      const modal = document.getElementById('setmore-modal');
+      const iframe = document.getElementById('setmore-iframe') as HTMLIFrameElement | null;
+      const closeBtn = document.getElementById('setmore-close');
+      const overlay = document.getElementById('setmore-overlay');
+
+      function openSetmore(url: string) {
+        if (iframe) iframe.src = url;
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSetmore() {
+        modal?.classList.add('hidden');
+        modal?.classList.remove('flex');
+        if (iframe) iframe.src = 'about:blank';
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.js-setmore').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = btn.getAttribute('href');
+          if (url) openSetmore(url);
+        });
+      });
+      closeBtn?.addEventListener('click', closeSetmore);
+      overlay?.addEventListener('click', closeSetmore);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSetmore(); });
+    </script>
+
+    <!-- Script menu mobile -->
+    <script>
+      const toggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      toggle?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+    </script>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="cookie-banner" class="hidden fixed bottom-0 left-0 right-0 z-[300] p-4 md:p-6">
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl border border-[#dde7e0] p-6 md:flex md:items-center md:gap-6">
+        <div class="flex-1 mb-4 md:mb-0">
+          <p class="font-jakarta font-medium text-[#3D3D3D] mb-1">Votre confort de navigation</p>
+          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">
+            Ce site utilise des services externes (carte, vidéo) qui peuvent déposer des cookies.
+            <a href="/politique-confidentialite" class="text-[#5a9480] underline underline-offset-2">En savoir plus</a>.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+          <button id="cookie-refuse" class="border-2 border-[#a8cbb7] text-[#5a9480] px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#eaf1ec] transition-colors">Refuser</button>
+          <button id="cookie-accept" class="bg-[#a8cbb7] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-[#5a9480] transition-colors">Accepter</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function getConsent(): string | null {
+        const m = document.cookie.match(/(?:^|;\s*)inspireb_consent=([^;]+)/);
+        return m ? m[1] : null;
+      }
+      function setConsent(v: string) {
+        // mémorisé 6 mois (la CNIL recommande de redemander périodiquement)
+        document.cookie = `inspireb_consent=${v}; max-age=15768000; path=/; SameSite=Lax`;
+      }
+      function activerServicesTiers() {
+        // Active tous les iframes mis en attente
+        document.querySelectorAll('[data-cookie-src]').forEach(el => {
+          const src = el.getAttribute('data-cookie-src');
+          if (src) el.setAttribute('src', src);
+          el.classList.remove('hidden');
+          const embed = el.closest('[data-cookie-embed]');
+          const ph = embed && embed.querySelector('[data-cookie-placeholder]');
+          if (ph) ph.classList.add('hidden');
+        });
+        // Active les scripts mis en attente 
+        document.querySelectorAll('script[type="text/plain"][data-cookie-script]').forEach(s => {
+          const src = s.getAttribute('data-cookie-script');
+          if (!src) return;
+          const n = document.createElement('script');
+          n.src = src;
+          n.async = true; n.defer = true;
+          document.head.appendChild(n);
+        });
+      }
+
+      const banner = document.getElementById('cookie-banner');
+      const consent = getConsent();
+      if (consent === 'accepted') activerServicesTiers();
+      else if (consent !== 'refused') banner?.classList.remove('hidden');
+
+      document.getElementById('cookie-accept')?.addEventListener('click', () => {
+        setConsent('accepted'); banner?.classList.add('hidden'); activerServicesTiers();
+      });
+      document.getElementById('cookie-refuse')?.addEventListener('click', () => {
+        setConsent('refused'); banner?.classList.add('hidden');
+      });
+      // Rouvrir le choix depuis le footer
+      document.querySelectorAll('.js-cookie-settings').forEach(b => {
+        b.addEventListener('click', (e) => { e.preventDefault(); banner?.classList.remove('hidden'); });
+      });
+    </script>
+
+    <script>
+      const floatingCta = document.getElementById('floating-cta');
+      // Cible automatiquement toutes les sections CTA au fond vert foncé (#5a9480)
+      const ctaSections = document.querySelectorAll('section[class*="5a9480"]');
+
+      if (floatingCta && ctaSections.length) {
+        const visibles = new Set<Element>();
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) visibles.add(e.target);
+            else visibles.delete(e.target);
+          });
+          if (visibles.size > 0) {
+            // une section CTA est à l'écran → on masque le bouton flottant
+            floatingCta.style.opacity = '0';
+            floatingCta.style.pointerEvents = 'none';
+            floatingCta.style.transform = 'translate(-50%, 24px)';
+          } else {
+            floatingCta.style.opacity = '1';
+            floatingCta.style.pointerEvents = 'auto';
+            floatingCta.style.transform = 'translate(-50%, 0)';
+          }
+        }, { threshold: 0.1 });
+
+        ctaSections.forEach((s) => observer.observe(s));
+      }
+    </script>
+
+  </body>
+</html>

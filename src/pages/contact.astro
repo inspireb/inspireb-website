@@ -1,0 +1,295 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout
+  title="Contact & Réservation | InspireB — Sartilly-Baie-Bocage"
+  description="Réservez votre soin en ligne chez InspireB à Sartilly-Baie-Bocage. Praticienne Bien-être & Naturopathe Betty NOEL WOURMS. Prise de rendez-vous 24h/24."
+>
+
+  <!-- HERO PAGE -->
+  <section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Image de fond du hero  -->
+    <div class="absolute inset-0 bg-[url('/images/hero-contact.webp')] bg-cover bg-center">
+      <!-- Couche 1 : voile crème léger et uniforme -->
+      <div class="absolute inset-0 bg-[#eaf1ec]/40"></div>
+      <!-- Couche 2 : radial INVERSÉ — centre opaque, bords transparents -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_35%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Prendre soin de vous</p>
+      <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">
+        Réservez votre soin
+      </h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed">
+        En ligne, en quelques clics, quand vous voulez. Je vous accueille sur rendez-vous à Sartilly-Baie-Bocage.
+      </p>
+    </div>
+  </section>
+
+  <!-- WIDGET SETMORE + INFOS -->
+  <section class="py-16 px-6 bg-white">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+      <!-- Réservation en ligne (liens directs, plus fiables que l'iframe) -->
+      <div class="lg:col-span-2">
+        <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D] mb-6">Réservation en ligne</h2>
+        <div class="bg-[#eaf1ec] rounded-2xl p-10 text-center">
+          <p class="text-[#4A4A4A]/80 leading-relaxed max-w-md mx-auto mb-8">
+            Choisissez votre soin, votre créneau, et confirmez en quelques clics. La réservation se fait directement sur Setmore — simple, sécurisé, disponible 24h/24.
+          </p>
+          <div class="flex justify-center">
+            <!-- ⚠️ Remplacez VOTRE-ID-SETMORE par votre lien de réservation
+                 (Setmore → Apps & Integrations → Booking page → copier le lien) -->
+            <a href="https://inspireb.setmore.com/#services"
+               class="js-setmore bg-[#a8cbb7] text-white px-10 py-4 rounded-full text-sm font-semibold hover:bg-[#5a9480] transition-colors">
+              Réserver sur Setmore →
+            </a>
+          </div>
+        </div>
+        <p class="text-xs text-[#4A4A4A]/40 mt-3 text-center">
+          Réservation sécurisée 24h/24 · 7j/7
+        </p>
+        <!-- INSTALLER L'APP DE RÉSERVATION -->
+        <div class="bg-[#eaf1ec] rounded-2xl p-6 md:p-8 mt-6 flex flex-col md:flex-row items-center gap-6">
+
+          <!-- Image mockup téléphone -->
+          <div class="flex-shrink-0 w-full md:w-2/5">
+            <img src="/images/InspireB-app.png" alt="Application InspireB sur écran d'accueil" class="w-full rounded-xl" />
+          </div>
+
+          <!-- Texte + QR code -->
+          <div class="flex-1 text-center md:text-left">
+            <h3 class="font-jakarta font-medium text-xl text-[#3D3D3D] mb-2">
+              Réservez encore plus vite
+            </h3>
+            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-4">
+              Ajoutez InspireB à l'écran d'accueil de votre téléphone pour réserver vos soins en un instant, comme une vraie application.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+              <img src="/images/qr-setmore-app.png" alt="QR code pour installer l'app InspireB" class="w-28 h-28 rounded-lg" />
+              <div class="text-left">
+                <p class="text-xs text-[#4A4A4A]/60 mb-2">Scannez avec votre téléphone</p>
+                <a href="https://inspireb.setmore.com/app?source=settings-app-popup" target="_blank" rel="noopener"
+                  class="text-sm text-[#5a9480] hover:text-[#a8cbb7] underline underline-offset-4 transition-colors">
+                  ou cliquez ici →
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Infos pratiques -->
+      <div class="space-y-8">
+        <div>
+          <h3 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">Me trouver</h3>
+          <address class="not-italic space-y-3 text-sm text-[#4A4A4A]/80">
+            <p class="flex items-start gap-2">
+              <Icon name="ph:map-pin-area-fill" class="w-4 h-4 mt-0.5 text-[#a8cbb7] flex-shrink-0" />
+              <span>2 Rue des Iris<br />50530 Sartilly-Baie-Bocage<br />Normandie, France</span>
+            </p>
+            <a href="tel:+33646712096" class="flex items-center gap-2 hover:text-[#a8cbb7] transition-colors">
+              <Icon name="ph:phone-fill" class="w-4 h-4 text-[#a8cbb7]" /> 06 46 71 20 96
+            </a>
+            <a href="https://wa.me/33646712096" target="_blank" class="flex items-center gap-2 hover:text-[#a8cbb7] transition-colors">
+              <Icon name="ph:whatsapp-logo-fill" class="w-4 h-4 text-[#a8cbb7]" /> Contacter par WhatsApp
+            </a>
+          </address>
+        </div>
+
+        <div>
+          <h3 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">Horaires</h3>
+          <div class="space-y-2 text-sm text-[#4A4A4A]/80">
+            <!-- À adapter avec les vrais horaires -->
+            <div class="flex justify-between">
+              <span>Lundi</span>
+              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Mardi</span>
+              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Mercredi</span>
+              <span class="text-[#a8cbb7]">09h30 – 17h00</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Jeudi</span>
+              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Vendredi</span>
+              <span class="text-[#a8cbb7]">09h00 – 15h45</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Samedi</span>
+              <span class="text-[#a8cbb7]">10h00 – 13h00</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Dimanche</span>
+              <span class="text-[#4A4A4A]/40">Fermé</span>
+            </div>
+          </div>
+          <p class="text-sm text-[#4A4A4A]/70">Horaires sur rendez-vous uniquement</p>
+          <p class="text-xs text-[#4A4A4A]/50 mt-1 italic">En dehors de ces horaires, n'hésitez pas à me contacter : je m'adapte autant que possible aux situations particulières.</p>
+        </div>
+
+        <div>
+          <h3 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">Me suivre</h3>
+          <div class="flex gap-3">
+            <!-- ⚠️ Remplacez par vos vraies URLs de réseaux sociaux -->
+            <a href="https://www.instagram.com/betty_inspireb" target="_blank" rel="noopener" aria-label="Instagram"
+               class="bg-[#eaf1ec] hover:bg-[#a8cbb7] transition-colors rounded-full p-3 flex items-center justify-center group">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5a9480" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition-colors">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/p/InspireB-Betty-NW-61574083089520/" target="_blank" rel="noopener" aria-label="Facebook"
+               class="bg-[#eaf1ec] hover:bg-[#a8cbb7] transition-colors rounded-full p-3 flex items-center justify-center group">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#5a9480" class="group-hover:fill-white transition-colors">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/betty-noel-wourms-43a2b9416" target="_blank" rel="noopener" aria-label="LinkedIn"
+               class="bg-[#eaf1ec] hover:bg-[#a8cbb7] transition-colors rounded-full p-3 flex items-center justify-center group">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#5a9480" class="group-hover:fill-white transition-colors">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V8h4v1.5A6 6 0 0 1 16 8z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+          </div>
+          <!-- Lien profil Resalib (visibilité / backlink) -->
+          <a href="https://www.resalib.fr/praticien/126051-inspireb-institut-de-beaute-sartilly-baie-bocage" target="_blank" rel="noopener"
+             class="inline-block mt-4 text-sm text-[#5a9480] hover:text-[#a8cbb7] underline underline-offset-4 transition-colors">
+            Retrouvez-moi aussi sur Resalib →
+          </a>
+        </div>
+
+        <!-- Google Maps -->
+        <div>
+          <h3 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">Accès</h3>
+          <!--
+            ════════════════════════════════════════════
+            POUR METTRE VOTRE PROPRE CARTE :
+            1. Allez sur maps.google.com
+            2. Cherchez "2 Rue des Iris 50530 Sartilly-Baie-Bocage"
+            3. Cliquez "Partager" → "Intégrer une carte"
+            4. Copiez l'URL du src="..." et remplacez celle ci-dessous
+            ════════════════════════════════════════════
+          -->
+          <div data-cookie-embed class="relative w-full h-full">
+            <iframe
+              data-cookie-src="https://www.google.com/maps?q=2+Rue+des+Iris,+50530+Sartilly-Baie-Bocage,+France&output=embed"
+              src="about:blank"
+              width="100%" height="100%" style="border:0;"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              title="Localisation InspireB"
+              class="hidden w-full h-full"></iframe>
+            <div data-cookie-placeholder class="absolute inset-0 bg-[#eaf1ec] flex flex-col items-center justify-center text-center p-6 gap-3">
+              <p class="text-sm text-[#4A4A4A]/70">La carte est désactivée tant que les cookies ne sont pas acceptés.</p>
+              <button class="js-cookie-settings bg-[#a8cbb7] text-white px-5 py-2 rounded-full text-sm">Afficher la carte</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ RAPIDE -->
+  <section class="py-16 px-6 bg-[#eaf1ec]">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Questions fréquentes</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D]">Avant votre venue</h2>
+      </div>
+      <div class="space-y-4">
+        {[
+          {
+            q: "Comment se passe le premier rendez-vous ?",
+            r: "Votre premier rendez-vous commence toujours par un bilan — quelques minutes pour échanger sur votre peau, votre mode de vie et vos attentes. C'est ce qui me permet de vous proposer un soin vraiment sur-mesure."
+          },
+          {
+            q: "Faut-il avoir des connaissances en naturopathie ?",
+            r: "Aucunement. Je vous explique tout simplement, à votre rythme. La naturopathie s'adapte à chaque personne, quel que soit son niveau de connaissance."
+          },
+          {
+            q: "Les soins conviennent-ils aux peaux sensibles ?",
+            r: "Oui. Je sélectionne des produits de qualité, pour leur efficacité et leur action précise et ciblée. C'est tout l'intérêt du questionnaire en début de séance : il me permet de cerner votre type de peau et ses besoins du moment, afin de choisir le produit réellement adapté — plutôt qu'un soin standardisé. Ainsi, même une peau sensible reçoit exactement ce qui lui convient."
+          },
+          {
+            q: "Proposez-vous des cartes cadeaux ?",
+            r: "Oui ! Les cartes cadeaux sont disponibles pour tous les soins. Contactez-moi directement pour en faire la demande."
+          },
+          {
+            q: "Où se déroulent les soins ?",
+            r: "Les soins ont lieu dans mon espace bien-être à Sartilly-Baie-Bocage, à environ 15 minutes de Granville comme d'Avranches, au cœur de la baie du Mont-Saint-Michel. J'accueille aussi bien la clientèle locale que les personnes de passage dans la région."
+          },
+        ].map(faq => (
+          <details class="bg-white rounded-2xl px-6 py-4 group cursor-pointer">
+            <summary class="font-medium text-[#3D3D3D] list-none flex justify-between items-center">
+              {faq.q}
+              <span class="text-[#a8cbb7] group-open:rotate-45 transition-transform text-xl">+</span>
+            </summary>
+            <p class="text-sm text-[#4A4A4A]/70 mt-3 leading-relaxed">{faq.r}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment se passe le premier rendez-vous ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Votre premier rendez-vous commence toujours par un bilan — quelques minutes pour échanger sur votre peau, votre mode de vie et vos attentes. C'est ce qui me permet de vous proposer un soin vraiment sur-mesure."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Faut-il avoir des connaissances en naturopathie ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Aucunement. Je vous explique tout simplement, à votre rythme. La naturopathie s'adapte à chaque personne, quel que soit son niveau de connaissance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les soins conviennent-ils aux peaux sensibles ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui. Je sélectionne des produits de qualité, pour leur efficacité et leur action précise et ciblée. C'est tout l'intérêt du questionnaire en début de séance : il me permet de cerner votre type de peau et ses besoins du moment, afin de choisir le produit réellement adapté — plutôt qu'un soin standardisé. Ainsi, même une peau sensible reçoit exactement ce qui lui convient."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Proposez-vous des cartes cadeaux ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui ! Les cartes cadeaux sont disponibles pour tous les soins. Contactez-moi directement pour en faire la demande."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Où se déroulent les soins ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les soins ont lieu dans mon espace bien-être à Sartilly-Baie-Bocage, à environ 15 minutes de Granville comme d'Avranches, au cœur de la baie du Mont-Saint-Michel. J'accueille aussi bien la clientèle locale que les personnes de passage dans la région."
+        }
+      }
+    ]
+  }
+  </script>
+
+</Layout>

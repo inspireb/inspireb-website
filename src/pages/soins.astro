@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { services as soins } from '../data/services.js';
+---
+
+<Layout
+  title="Soins & Tarifs | InspireB — Praticienne Bien-être Naturopathe Sartilly-Baie-Bocage"
+  description="Découvrez tous les soins d'InspireB : massages bien-être, soin visage, réflexologie plantaire, naturopathie, conseil beauté, accompagnements, soins duo, ateliers et cartes cadeaux à Sartilly-Baie-Bocage."
+>
+
+  <!-- HERO PAGE -->
+  <section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Image de fond du hero -->
+    <div class="absolute inset-0 bg-[url('/images/hero-soins.webp')] bg-cover bg-center">
+            <!-- Couche 1 : voile crème léger et uniforme -->
+      <div class="absolute inset-0 bg-[#eaf1ec]/40"></div>
+      <!-- Couche 2 : radial INVERSÉ — centre opaque, bords transparents -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_35%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Mes prestations</p>
+      <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">Soins & Tarifs</h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed max-w-xl mx-auto">
+        Chaque soin associe geste bien-être professionnel et approche naturopathique pour un résultat durable, de l'intérieur comme de l'extérieur. Tous les soins sont sur rendez-vous.
+      </p>
+    </div>
+  </section>
+
+  <!-- NOTE DURÉE -->
+  <section class="py-6 px-6 bg-white border-b border-[#dde7e0]">
+    <p class="max-w-5xl mx-auto text-center text-sm text-[#4A4A4A]/50 italic flex items-center justify-center gap-2">
+      <Icon name="ph:info-fill" size={16} class="flex-shrink-0" />
+      <span>La durée indiquée est le temps de soin. Le temps à prévoir sur place inclut l'accueil, le bilan et les conseils personnalisés.</span>
+    </p>
+  </section>
+
+  <!-- LISTE DES SOINS — alternance image / contenu -->
+  <section class="py-16 px-6 bg-white">
+    <div class="max-w-5xl mx-auto space-y-20">
+      {soins.map((categorie, i) => (
+        <div id={categorie.id} class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+
+          <!-- Image -->
+          <div class={i % 2 === 0 ? "md:order-1" : "md:order-2"}>
+            <img
+              src={categorie.image}
+              alt={categorie.categorie}
+              class="w-full h-72 md:h-96 object-cover rounded-3xl bg-[#eaf1ec]"
+            />
+          </div>
+
+          <!-- Contenu -->
+          <div class={i % 2 === 0 ? "md:order-2" : "md:order-1"}>
+            <div class="flex items-center gap-3 mb-4">
+              <Icon name={categorie.icon} size={32} class="text-[#a8cbb7] flex-shrink-0" />
+              <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D]">{categorie.categorie}</h2>
+            </div>
+            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-6">{categorie.intro}</p>
+            <div class="border border-[#dde7e0] rounded-2xl overflow-hidden">
+              {categorie.items.map((item, j) => (
+                <div class={`flex items-center justify-between gap-4 px-6 py-4 ${j < categorie.items.length - 1 ? 'border-b border-[#dde7e0]' : ''} hover:bg-[#eaf1ec] transition-colors`}>
+                  <div>
+                    <p class="font-medium text-[#3D3D3D]">{item.nom}</p>
+                    <p class="text-xs text-[#4A4A4A]/50 mt-0.5 flex items-center gap-1">
+                      <Icon name="ph:clock-fill" size={12} class="flex-shrink-0" />
+                      <span>{item.duree}</span>
+                    </p>
+                  </div>
+                  {typeof item.prix === "number" ? (
+                    <span class="font-jakarta font-medium text-xl md:text-2xl text-[#a8cbb7] whitespace-nowrap">
+                      {item.prix} €
+                    </span>
+                  ) : (
+                    <span class="text-base font-medium text-[#a8cbb7] text-right max-w-[140px] uppercase tracking-wide">
+                      {item.prix}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- INFO PRATIQUES -->
+  <section class="py-16 px-6 bg-[#eaf1ec]">
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+      {[
+        { icon: "ph:calendar-check-fill", titre: "Sur rendez-vous", texte: "Réservation en ligne 24h/24, 7j/7 via Setmore." },
+        { icon: "ph:baby-fill", titre: "Mamans bienvenues", texte: "Vous pouvez venir avec votre bébé pendant votre soin — aucune contrainte de garde." },
+        { icon: "ph:credit-card-fill", titre: "Paiement", texte: "Espèces, carte bancaire, chèque, virement bancaire et carte cadeaux acceptés." },
+        { icon: "ph:map-pin-fill", titre: "Où me trouver", texte: "2 Rue des Iris, 50530 Sartilly-Baie-Bocage, Normandie." },
+      ].map(info => (
+        <div class="bg-white rounded-2xl p-6">
+          <div class="text-[#a8cbb7] mb-3 flex justify-center">
+            <Icon name={info.icon} size={34} class="text-[#4A4A4A]/70"/>
+          </div>
+          <h3 class="font-jakarta font-medium text-xl text-[#5a9480] mb-2">{info.titre}</h3>
+          <p class="text-sm text-[#4A4A4A]/70">{info.texte}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-xl mx-auto">
+      <h2 class="font-jakarta font-medium text-4xl mb-4">Prête à vous offrir un soin ?</h2>
+      <p class="text-white/70 mb-8">Réservez en ligne en quelques clics, quand vous voulez.</p>
+      <a href="/contact"
+         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+        Réserver mon soin →
+      </a>
+    </div>
+  </section>
+
+</Layout>

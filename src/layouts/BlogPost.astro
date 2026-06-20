@@ -1,0 +1,183 @@
+---
+import Layout from './Layout.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  coverImage?: string;
+  slug: string;
+}
+
+const { title, description, date, category, coverImage, slug } = Astro.props;
+
+// Format de la date en français
+const dateFormatted = new Date(date).toLocaleDateString('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const siteUrl = "https://www.inspireb.fr";
+const articleUrl = `${siteUrl}/blog/${slug}`;
+const ogImage = coverImage || "/images/og-image.jpg";
+---
+
+<Layout
+  title={`${title} | Blog InspireB`}
+  description={description}
+  canonical={articleUrl}
+  ogImage={ogImage}
+>
+  <!-- Schema.org Article -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": title,
+    "description": description,
+    "datePublished": date,
+    "author": {
+      "@type": "Person",
+      "name": "Betty NOEL WOURMS",
+      "url": siteUrl + "/a-propos"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "InspireB",
+      "url": siteUrl
+    },
+    "url": articleUrl,
+    "image": siteUrl + ogImage
+  })} />
+
+  <!-- HERO ARTICLE -->
+  <section class="py-16 px-6 bg-[#eaf1ec]">
+    <div class="max-w-3xl mx-auto text-center">
+      <a href="/blog" class="inline-flex items-center gap-2 text-[#a8cbb7] text-sm mb-6 hover:text-[#5a9480] transition-colors">
+        ← Retour au blog
+      </a>
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">{category}</p>
+      <h1 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D] leading-tight mb-4">{title}</h1>
+      <p class="text-sm text-[#4A4A4A]/50">Par Betty · {dateFormatted}</p>
+    </div>
+  </section>
+
+  <!-- IMAGE DE COUVERTURE (optionnelle) -->
+  {coverImage && (
+    <div class="max-w-3xl mx-auto px-6 -mt-4 mb-8">
+      <img
+        src={coverImage}
+        alt={title}
+        class="w-full h-64 md:h-80 object-cover rounded-2xl shadow-sm"
+      />
+    </div>
+  )}
+
+  <!-- CONTENU DE L'ARTICLE -->
+  <article class="max-w-3xl mx-auto px-6 py-10 prose prose-lg prose-stone
+    prose-headings:font-jakarta font-medium prose-headings:text-[#3D3D3D]
+    prose-h2:text-3xl prose-h3:text-2xl
+    prose-a:text-[#a8cbb7] prose-a:no-underline hover:prose-a:underline
+    prose-strong:text-[#5a9480]
+    prose-blockquote:border-[#a8cbb7] prose-blockquote:text-[#5a9480] prose-blockquote:italic
+    prose-li:marker:text-[#a8cbb7]
+    ">
+    <slot />
+  </article>
+
+  <!-- BIO AUTEURE -->
+  <section class="max-w-3xl mx-auto px-6 pb-16">
+    <div class="bg-[#eaf1ec] rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6">
+      <img
+        src="/images/betty-portrait.webp"
+        alt="Betty NOEL WOURMS"
+        class="w-20 h-20 rounded-full object-cover flex-shrink-0"
+      />
+      <div>
+        <p class="font-jakarta font-medium text-xl text-[#5a9480] mb-1">Betty NOEL WOURMS</p>
+        <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">
+          Praticienne Bien-être & Naturopathe à Sartilly-Baie-Bocage. Je vous accompagne pour prendre soin de vous en profondeur, de l'intérieur comme de l'extérieur.
+        </p>
+        <a href="/a-propos" class="inline-block mt-3 text-xs text-[#a8cbb7] hover:text-[#5a9480] underline underline-offset-4">
+          En savoir plus sur Betty →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA PRISE DE RDV -->
+  <section class="py-16 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-xl mx-auto">
+      <h2 class="font-jakarta font-medium text-3xl md:text-4xl mb-4">Envie de vous faire accompagner ?</h2>
+      <p class="text-white/70 mb-8">Réservez un soin personnalisé avec Betty à Sartilly-Baie-Bocage.</p>
+      <a href="/contact"
+         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+        Prendre rendez-vous →
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<!-- Styles Tailwind Typography (prose) chargés via le plugin si installé, sinon fallback -->
+<style is:global>
+  /* Fallback styles pour la typographie de l'article */
+  article.prose p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+  }
+  article.prose h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: #3D3D3D;
+    font-size: 1.875rem;
+  }
+  article.prose h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: #3D3D3D;
+    font-size: 1.5rem;
+  }
+  article.prose ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  article.prose ul li {
+    margin-bottom: 0.5rem;
+  }
+  article.prose ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  article.prose blockquote {
+    border-left: 3px solid #a8cbb7;
+    padding-left: 1.25rem;
+    font-style: italic;
+    color: #5a9480;
+    margin: 1.5rem 0;
+  }
+  article.prose strong {
+    color: #5a9480;
+    font-weight: 700;
+  }
+  article.prose a {
+    color: #a8cbb7;
+    text-decoration: none;
+  }
+  article.prose a:hover {
+    text-decoration: underline;
+  }
+  article.prose img {
+    border-radius: 1rem;
+    margin: 2rem auto;
+  }
+  article.prose hr {
+    border-color: #dde7e0;
+    margin: 2.5rem 0;
+  }
+</style>

@@ -1,0 +1,186 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+
+const diplomes = [
+  { annee: "2014", titre: "Diplômée d'un BTS Esthétique-Cosmétique", etablissement: "Ecole Catherine Lorène, Rouen (76)" },
+  { annee: "2017", titre: "Formation Réflexologie plantaire", etablissement: "Institut Hildegardien, Rennes (35)" },
+  { annee: "2018", titre: "Diplômée en Naturopathie - spécialité Hildegarde de Bingen", etablissement: "Institut Hildegardien, Rennes (35)" },
+  { annee: "2025", titre: "Conseillère des produits Nu Skin", etablissement: "Nu Skin België, Bruxelles" },
+  { annee: "2026", titre: "Conseillère des produits de la boutique Jolimoi", etablissement: "A distance" },
+  // Ajouter les vraies formations de Betty
+];
+---
+
+<Layout
+  title="À propos de Betty | InspireB — Praticienne Bien-être Naturopathe Sartilly"
+  description="Découvrez Betty NOEL WOURMS, Praticienne Bien-être et Naturopathe à Sartilly-Baie-Bocage. Son parcours, ses valeurs, ses diplômes et sa vision d'un soin holistique personnalisé."
+>
+
+  <!-- HERO PAGE -->
+  <section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Image de fond du hero -->
+    <div class="absolute inset-0 bg-[url('/images/hero-apropos.webp')] bg-cover bg-center">
+      <!-- Couche 1 : voile crème léger et uniforme -->
+      <div class="absolute inset-0 bg-[#eaf1ec]/40"></div>
+      <!-- Couche 2 : radial INVERSÉ — centre opaque, bords transparents -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_35%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Qui suis-je ?</p>
+      <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">À propos de Betty</h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed">
+        Praticienne Bien-être & Naturopathe. Une passion, une conviction, un engagement : prendre soin de vous vraiment.
+      </p>
+    </div>
+  </section>
+
+  <!-- PORTRAIT + INTRO -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div class="rounded-3xl overflow-hidden aspect-[4/5] bg-[#eaf1ec]">
+        <img
+          src="/images/betty-portrait.webp"
+          alt="Betty NOEL WOURMS, praticienne bien-être naturopathe Sartilly-Baie-Bocage"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Mon histoire</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D] mb-6">
+          Betty NOEL WOURMS
+        </h2>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          <!-- À personnaliser par Betty -->
+          Je suis Betty, femme, épouse, maman, et profondément passionnée par tout ce qui touche au bien-être et à l'équilibre de vie.
+          Comme beaucoup de femmes, j'ai connu les périodes où l'on s'oublie un peu, où l'on fait passer les besoins des autres avant les siens, où l'on cherche des réponses à certaines problématiques sans toujours savoir vers qui se tourner.
+        </p>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          C'est cette envie de comprendre le fonctionnement du corps, de la peau, de nos émotions et de notre énergie qui m'a amenée à me former au fil des années en esthétique, en bien-être et en naturopathie.
+        </p>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          Aujourd'hui, à travers InspireB, j'accompagne principalement les femmes qui souhaitent prendre soin d'elles de façon plus globale. Des femmes qui ressentent le besoin de ralentir, de retrouver un équilibre, de mieux comprendre leur corps ou simplement de s'accorder un moment pour elles dans un quotidien souvent bien rempli.
+        </p>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          Mon rôle n'est pas de vous dire ce que vous devez faire, mais de vous apporter des soins, des conseils et des pistes adaptées pour vous aider à avancer vers un mieux-être durable, à votre rythme.
+          Parce que je crois qu'en prenant soin de soi, on peut ensuite prendre soin des autres avec encore plus de sérénité.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDÉO DE PRÉSENTATION -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">En vidéo</p>
+      <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D] mb-8">Faites connaissance avec Betty</h2>
+
+      <!-- Cadre qui donne sa taille à la vidéo (format vertical 9/16) -->
+      <div class="relative aspect-[9/16] max-w-[260px] mx-auto rounded-2xl overflow-hidden shadow-lg">
+        <div data-cookie-embed class="absolute inset-0">
+          <iframe
+            data-cookie-src="https://www.youtube-nocookie.com/embed/W1Nh9KkJMak"
+            src="about:blank"
+            title="Présentation Betty - InspireB"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="hidden absolute inset-0 w-full h-full"></iframe>
+          <div data-cookie-placeholder class="absolute inset-0 bg-[#eaf1ec] flex flex-col items-center justify-center text-center p-4 gap-3">
+            <p class="text-sm text-[#4A4A4A]/70">Vidéo désactivée tant que les cookies ne sont pas acceptés.</p>
+            <button class="js-cookie-settings bg-[#a8cbb7] text-white px-5 py-2 rounded-full text-sm">Lire la vidéo</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MES VALEURS PERSONNELLES -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Ce qui me tient à cœur</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D]">Mes valeurs</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[
+          {
+            icon: "ph:leaf-fill",
+            titre: "L'authenticité",
+            texte: "J'aime les relations simples et sincères. Je suis convaincue que l'on se sent mieux lorsque l'on peut être soi-même, sans masque ni jugement."
+          },
+          {
+            icon: "ph:magnifying-glass-fill",
+            titre: "La curiosité",
+            texte: "Comprendre, apprendre et découvrir me passionnent. Cette curiosité m'amène à me former continuellement et à m'intéresser à tout ce qui peut contribuer au bien-être et à l'épanouissement de chacun."
+          },
+          {
+            icon: "ph:sketch-logo-fill",
+            titre: "La liberté",
+            texte: "La liberté est une valeur essentielle pour moi. Celle de choisir ce qui nous convient, d'avancer à son rythme et de construire un quotidien aligné avec ses besoins et ses aspirations."
+          },
+          {
+            icon: "ph:heart-fill",
+            titre: "La famille",
+            texte: "Être maman a profondément enrichi ma vision de la vie. La famille est pour moi un pilier précieux, une source d'amour, de soutien et d'équilibre."
+          },
+          {
+            icon: "ph:lightbulb-filament-fill",
+            titre: "L'humour & la créativité",
+            texte: "J'aime apporter de la légèreté, voir le positif et trouver de nouvelles idées. L'humour et la créativité font partie de mon quotidien et contribuent à créer des moments authentiques et chaleureux."
+          },
+          {
+            icon: "ph:hand-heart-fill",
+            titre: "Le respect",
+            texte: "Le respect guide chacune de mes relations. Respect de la personne, de son histoire, de ses choix, de son rythme et de ce qu'elle est profondément."
+          },
+        ].map(valeur => (
+          <div class="flex gap-5 p-6 bg-[#eaf1ec] rounded-2xl">
+            <Icon name={valeur.icon} size={28} class="text-[#a8cbb7] flex-shrink-0" />
+            <div>
+              <h3 class="font-jakarta font-medium text-xl text-[#5a9480] mb-2">{valeur.titre}</h3>
+              <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">{valeur.texte}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DIPLÔMES & FORMATIONS -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Mon parcours</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D]">Diplômes & Formations</h2>
+      </div>
+      <div class="space-y-4">
+        {diplomes.map(diplome => (
+          <div class="bg-white rounded-2xl px-6 py-5 flex items-start gap-6">
+            <span class="font-jakarta font-medium text-2xl text-[#a8cbb7] flex-shrink-0 w-16">{diplome.annee}</span>
+            <div>
+              <p class="font-medium text-[#3D3D3D]">{diplome.titre}</p>
+              <p class="text-sm text-[#4A4A4A]/50 mt-0.5">{diplome.etablissement}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="text-center text-sm text-[#4A4A4A]/40 mt-6 italic">
+        Formation continue régulière dans les domaines du bien-être et de la naturopathie
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-xl mx-auto">
+      <h2 class="font-jakarta font-medium text-4xl mb-4">Envie de me rencontrer ?</h2>
+      <p class="text-white/70 mb-8">Réservez votre premier soin et vivons ensemble cette expérience unique.</p>
+      <a href="/contact"
+         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+        Prendre rendez-vous →
+      </a>
+    </div>
+  </section>
+
+</Layout>

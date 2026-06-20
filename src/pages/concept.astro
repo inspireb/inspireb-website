@@ -1,0 +1,141 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout
+  title="Le Concept | InspireB — Bien-être & Naturopathie Holistique Sartilly"
+  description="Découvrez le concept unique d'InspireB : une approche holistique qui marie soins bien-être et naturopathie pour prendre soin de vous de l'intérieur comme de l'extérieur."
+>
+
+  <!-- HERO PAGE -->
+  <section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Image de fond du hero -->
+    <div class="absolute inset-0 bg-[url('/images/hero-concept.webp')] bg-cover bg-center">
+      <!-- Couche 1 : voile crème léger et uniforme -->
+      <div class="absolute inset-0 bg-[#eaf1ec]/40"></div>
+      <!-- Couche 2 : radial INVERSÉ — centre opaque, bords transparents -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_35%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto [text-shadow:0_1px_14px_rgba(255,255,255,0.7)]">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Ma vision</p>
+      <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">
+        Une approche qui<br /><em>change tout</em>
+      </h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed">
+        InspireB est né d'une conviction profonde : la beauté et la santé sont indissociables. Prendre soin de sa peau sans prendre soin de son terrain intérieur, ce n'est que traiter la surface.
+      </p>
+    </div>
+  </section>
+
+  <!-- LE CONCEPT -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Le concept</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D] mb-6">
+          Le bien-être rencontre la naturopathie
+        </h2>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          Chaque soin chez InspireB est pensé comme une expérience globale. Je ne me contente pas d'agir sur l'épiderme — je cherche à comprendre ce que votre peau exprime de votre état intérieur.
+        </p>
+        <p class="text-[#4A4A4A]/80 leading-relaxed mb-4">
+          Stress, alimentation, sommeil, émotions... Tout se lit sur la peau. La naturopathie permet d'en décoder les signaux pour proposer un accompagnement véritablement personnalisé.
+        </p>
+        <p class="text-[#4A4A4A]/80 leading-relaxed">
+          Le résultat ? Des soins plus efficaces, plus durables, et une cliente qui repart non seulement belle, mais aussi plus en harmonie avec elle-même.
+        </p>
+      </div>
+      <div class="bg-[#eaf1ec] rounded-3xl overflow-hidden aspect-square">
+        <img src="/images/soin-visage.webp" alt="Soin holistique bien-être naturopathie InspireB" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- NOS VALEURS -->
+  <section class="py-20 px-6 bg-[#eaf1ec]">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Ce qui me guide</p>
+        <h2 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D]">Ma philosophie</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {[
+          {
+            icon: "ph:plant-fill",
+            titre: "Authenticité & absence de jugement",
+            texte: "Ici, vous pouvez venir tel(le) que vous êtes. Chaque personne est accueillie avec respect, écoute et simplicité, dans un espace où l'on se sent libre d'être soi-même."
+          },
+          {
+            icon: "ph:sparkle-fill",
+            titre: "Personnalisation",
+            texte: "Parce que chacun est unique, chaque accompagnement, chaque soin et chaque conseil sont pensés en fonction de vos besoins, de vos objectifs et de votre réalité du moment."
+          },
+          {
+            icon: "ph:heart-fill",
+            titre: "Bienveillance & douceur",
+            texte: "La douceur fait partie de ma façon d'être. J'accorde une grande importance à créer un moment apaisant, rassurant et profondément bienveillant, où vous pouvez prendre soin de vous en toute confiance."
+          },
+          {
+            icon: "ph:graduation-cap-fill",
+            titre: "Compétences et formations",
+            texte: "Formée en esthétique, bien-être et naturopathie, je m'appuie sur des connaissances solides du corps, de la peau et de l'équilibre global. Je continue régulièrement à me former afin de vous proposer un accompagnement de qualité, fondé sur les meilleures pratiques."
+          },
+          {
+            icon: "ph:certificate-fill",
+            titre: "Qualité avant tout",
+            texte: "Je sélectionne avec soin les produits et les partenaires avec lesquels je travaille, en privilégiant la qualité, l'efficacité et le respect du corps."
+          },
+          {
+            icon: "ph:flower-lotus-fill",
+            titre: "Accompagnement & autonomie",
+            texte: "Je suis présente pour vous conseiller et vous accompagner à chaque étape de votre parcours. Mon objectif est également de vous transmettre les clés pour devenir acteur de votre bien-être et avancer en toute autonomie au quotidien."
+          }
+        ].map(valeur => (
+          <div class="bg-white rounded-2xl p-8">
+            <div class="text-[#a8cbb7] mb-4">
+              <Icon name={valeur.icon} size={36} />
+            </div>
+            <h3 class="font-jakarta font-medium text-xl text-[#a8cbb7] mb-3">{valeur.titre}</h3>
+            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">{valeur.texte}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI InspireB -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Notre différence</p>
+      <h2 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D] mb-8">
+        Pourquoi choisir InspireB ?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left mt-10">
+        {[
+          { chiffre: "2 en 1", label: "Bien-être + Naturopathie dans un seul rendez-vous" },
+          { chiffre: "100%", label: "Personnalisé — aucun soin ne ressemble à un autre" },
+          { chiffre: "0", label: "Jugement — un espace pour vous détendre en toute confiance" },
+        ].map(item => (
+          <div class="text-center p-6 bg-[#eaf1ec] rounded-2xl">
+            <div class="font-jakarta font-medium text-5xl text-[#a8cbb7] mb-2">{item.chiffre}</div>
+            <p class="text-sm text-[#4A4A4A]/70">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-xl mx-auto">
+      <h2 class="font-jakarta font-medium text-4xl mb-4">Envie d'en faire l'expérience ?</h2>
+      <p class="text-white/70 mb-8">Réservez votre premier soin et découvrez une nouvelle façon de prendre soin de vous.</p>
+      <a href="/contact"
+         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+        Prendre rendez-vous →
+      </a>
+    </div>
+  </section>
+
+</Layout>
