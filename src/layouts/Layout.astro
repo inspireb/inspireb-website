@@ -101,7 +101,7 @@ const schema = {
     <!-- Fonts : Dancing Script (logo) + Plus Jakarta Sans (textes, proche de Clear Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
   </head>
 
   <body class="bg-[#f6f6e9] text-[#4A4A4A] font-jakarta">
@@ -341,6 +341,21 @@ const schema = {
     <script type="text/plain" data-cookie-script="https://www.googletagmanager.com/gtag/js?id=G-RF44C9KF0Z"></script>
 
     <script>
+      // Google Consent Mode v2 — DOIT être déclaré avant tout, dès le chargement
+      // de la page : indique à Google l'état par défaut (refusé) tant que la
+      // cliente n'a pas répondu au bandeau. Sans ce signal, Google bloque
+      // silencieusement l'envoi des données pour les visiteurs situés dans l'UE.
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+      (window as any).gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+      });
+
       function getConsent(): string | null {
         const m = document.cookie.match(/(?:^|;\s*)inspireb_consent=([^;]+)/);
         return m ? m[1] : null;
@@ -369,12 +384,12 @@ const schema = {
           document.head.appendChild(n);
         });
 
+        // Signale à Google que la cliente a accepté la mesure d'audience
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+
         // Google Analytics 4 — initialisé uniquement après consentement
         if (!(window as any).gtagInitialized) {
           (window as any).gtagInitialized = true;
-          (window as any).dataLayer = (window as any).dataLayer || [];
-          function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
-          (window as any).gtag = gtag;
           gtag('js', new Date());
           gtag('config', 'G-RF44C9KF0Z');
         }
