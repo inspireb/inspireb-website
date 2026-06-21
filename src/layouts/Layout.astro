@@ -42,7 +42,7 @@ const schema = {
     "addressRegion": "Normandie",
     "addressCountry": "FR",
   },
-  "geo": { "@type": "GeoCoordinates", "latitude": "8.754920360832486", "longitude": "-1.4511759853949815" },
+  "geo": { "@type": "GeoCoordinates", "latitude": "48.754920360832486", "longitude": "-1.4511759853949815" },
   "areaServed": [
     { "@type": "City", "name": "Sartilly-Baie-Bocage" },
     { "@type": "City", "name": "Granville" },
@@ -326,7 +326,7 @@ const schema = {
         <div class="flex-1 mb-4 md:mb-0">
           <p class="font-jakarta font-medium text-[#3D3D3D] mb-1">Votre confort de navigation</p>
           <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">
-            Ce site utilise des services externes (carte, vidéo) qui peuvent déposer des cookies.
+            Ce site utilise des services externes (carte, vidéo, mesure d'audience) qui peuvent déposer des cookies.
             <a href="/politique-confidentialite" class="text-[#5a9480] underline underline-offset-2">En savoir plus</a>.
           </p>
         </div>
@@ -336,6 +336,9 @@ const schema = {
         </div>
       </div>
     </div>
+
+    <!-- Google Analytics 4 — chargé uniquement après consentement -->
+    <script type="text/plain" data-cookie-script="https://www.googletagmanager.com/gtag/js?id=G-RF44C9KF0Z"></script>
 
     <script>
       function getConsent(): string | null {
@@ -365,6 +368,16 @@ const schema = {
           n.async = true; n.defer = true;
           document.head.appendChild(n);
         });
+
+        // Google Analytics 4 — initialisé uniquement après consentement
+        if (!(window as any).gtagInitialized) {
+          (window as any).gtagInitialized = true;
+          (window as any).dataLayer = (window as any).dataLayer || [];
+          function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+          (window as any).gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-RF44C9KF0Z');
+        }
       }
 
       const banner = document.getElementById('cookie-banner');
