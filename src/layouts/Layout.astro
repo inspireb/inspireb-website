@@ -346,7 +346,7 @@ const schema = {
       // cliente n'a pas répondu au bandeau. Sans ce signal, Google bloque
       // silencieusement l'envoi des données pour les visiteurs situés dans l'UE.
       (window as any).dataLayer = (window as any).dataLayer || [];
-      function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+      const gtag = function () { (window as any).dataLayer.push(arguments); } as (...args: any[]) => void;
       (window as any).gtag = gtag;
       gtag('consent', 'default', {
         ad_storage: 'denied',
