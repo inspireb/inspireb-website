@@ -20,10 +20,13 @@ try {
 }
 
 const articles = allArticles
-  .map(article => ({
-    ...article.frontmatter,
-    url: article.url,
-  }))
+  .map(article => {
+    const slug = article.file.split('/').pop()?.replace('.md', '') || '';
+    return {
+      ...article.frontmatter,
+      url: `/blog/${slug}`,
+    };
+  })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
