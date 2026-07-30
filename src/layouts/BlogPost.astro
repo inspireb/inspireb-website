@@ -12,7 +12,6 @@ export interface Props {
 
 const { title, description, date, category, coverImage, slug } = Astro.props;
 
-// Format de la date en français
 const dateFormatted = new Date(date).toLocaleDateString('fr-FR', {
   day: 'numeric',
   month: 'long',
@@ -30,7 +29,6 @@ const ogImage = coverImage || "/images/og-image.jpg";
   canonical={articleUrl}
   ogImage={ogImage}
 >
-  <!-- Schema.org Article -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -51,28 +49,33 @@ const ogImage = coverImage || "/images/og-image.jpg";
     "image": siteUrl + ogImage
   })} />
 
-  <!-- HERO ARTICLE -->
-  <section class="py-16 px-6 bg-[#eaf1ec]">
-    <div class="max-w-3xl mx-auto text-center">
-      <a href="/blog" class="inline-flex items-center gap-2 text-[#a8cbb7] text-sm mb-6 hover:text-[#5a9480] transition-colors">
-        ← Retour au blog
-      </a>
-      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">{category}</p>
-      <h1 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D] leading-tight mb-4">{title}</h1>
-      <p class="text-sm text-[#4A4A4A]/50">Par Betty · {dateFormatted}</p>
+<!-- HERO ARTICLE — image visible, fondu crème vers le bas -->
+  <section class="relative flex items-end justify-center min-h-[320px] md:min-h-[400px] pt-16 pb-10 px-6 text-center overflow-hidden">
+
+    {coverImage && (
+      <div class="absolute inset-0">
+        <img src={coverImage} alt={title} class="absolute inset-0 w-full h-full object-cover" />
+        <!-- Voile crème très léger sur toute l'image -->
+        <div class="absolute inset-0 bg-[#eaf1ec]/15"></div>
+        <!-- Fondu crème depuis le bas, pour la lisibilité du texte -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#eaf1ec] via-[#eaf1ec]/85 via-45% to-transparent"></div>
+      </div>
+    )}
+
+    {!coverImage && <div class="absolute inset-0 bg-[#eaf1ec]"></div>}
+
+    <!-- Retour au blog — en haut à gauche -->
+    <a href="/blog" class="group absolute top-5 left-5 md:top-6 md:left-6 z-20 inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur-sm px-4 py-2 text-sm text-[#5a9480] shadow-sm hover:bg-white hover:text-[#3D3D3D] transition-all">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      <span>Retour au blog</span>
+    </a>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#5a9480] text-xs tracking-[0.3em] uppercase mb-3">{category}</p>
+      <h1 class="font-jakarta font-medium text-3xl md:text-4xl text-[#3D3D3D] leading-tight mb-3">{title}</h1>
+      <p class="text-sm text-[#4A4A4A]/60">Par Betty · {dateFormatted}</p>
     </div>
   </section>
-
-  <!-- IMAGE DE COUVERTURE (optionnelle) -->
-  {coverImage && (
-    <div class="max-w-3xl mx-auto px-6 -mt-4 mb-8">
-      <img
-        src={coverImage}
-        alt={title}
-        class="w-full h-64 md:h-80 object-cover rounded-2xl shadow-sm"
-      />
-    </div>
-  )}
 
   <!-- CONTENU DE L'ARTICLE -->
   <article class="max-w-3xl mx-auto px-6 py-10 prose prose-lg prose-stone
@@ -89,19 +92,13 @@ const ogImage = coverImage || "/images/og-image.jpg";
   <!-- BIO AUTEURE -->
   <section class="max-w-3xl mx-auto px-6 pb-16">
     <div class="bg-[#eaf1ec] rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6">
-      <img
-        src="/images/betty-portrait.webp"
-        alt="Betty NOEL WOURMS"
-        class="w-20 h-20 rounded-full object-cover flex-shrink-0"
-      />
+      <img src="/images/betty-portrait.webp" alt="Betty NOEL WOURMS" class="w-20 h-20 rounded-full object-cover flex-shrink-0" />
       <div>
         <p class="font-jakarta font-medium text-xl text-[#5a9480] mb-1">Betty NOEL WOURMS</p>
         <p class="text-sm text-[#4A4A4A]/70 leading-relaxed">
           Praticienne Bien-être & Naturopathe à Sartilly-Baie-Bocage. Je vous accompagne pour prendre soin de vous en profondeur, de l'intérieur comme de l'extérieur.
         </p>
-        <a href="/a-propos" class="inline-block mt-3 text-xs text-[#a8cbb7] hover:text-[#5a9480] underline underline-offset-4">
-          En savoir plus sur Betty →
-        </a>
+        <a href="/a-propos" class="inline-block mt-3 text-xs text-[#a8cbb7] hover:text-[#5a9480] underline underline-offset-4">En savoir plus sur Betty →</a>
       </div>
     </div>
   </section>
@@ -111,18 +108,13 @@ const ogImage = coverImage || "/images/og-image.jpg";
     <div class="max-w-xl mx-auto">
       <h2 class="font-jakarta font-medium text-3xl md:text-4xl mb-4">Envie de vous faire accompagner ?</h2>
       <p class="text-white/70 mb-8">Réservez un soin personnalisé avec Betty à Sartilly-Baie-Bocage.</p>
-      <a href="/contact"
-         class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
-        Prendre rendez-vous →
-      </a>
+      <a href="/contact" class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">Prendre rendez-vous →</a>
     </div>
   </section>
 
 </Layout>
 
-<!-- Styles Tailwind Typography (prose) chargés via le plugin si installé, sinon fallback -->
 <style is:global>
-  /* Fallback styles pour la typographie de l'article */
   article.prose p {
     margin-bottom: 1.25rem;
     line-height: 1.8;

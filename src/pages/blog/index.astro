@@ -2,32 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
 
-// Récupération de tous les articles du blog, triés du plus récent au plus ancien
-type ArticleFrontmatter = {
+type Article = {
   title: string;
   description: string;
   date: string;
   category: string;
   emoji?: string;
   coverImage?: string;
+  url: string;
 };
 
-let allArticles: { frontmatter: ArticleFrontmatter; url: string | undefined }[] = [];
-try {
-  allArticles = await Astro.glob<ArticleFrontmatter>('../../content/blog/*.md');
-} catch {
-  allArticles = [];
-}
+const allArticles = await Astro.glob('../../content/blog/*.md');
 
-const articles = allArticles
-  .map(article => {
+const articles: Article[] = allArticles
+  .map((article: any) => {
     const slug = article.file.split('/').pop()?.replace('.md', '') || '';
-    return {
-      ...article.frontmatter,
-      url: `/blog/${slug}`,
-    };
+    return { ...article.frontmatter, url: `/blog/${slug}` };
   })
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  .sort((a: Article, b: Article) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <Layout
@@ -76,7 +68,7 @@ const articles = allArticles
       ) : (
         <!-- Grille d'articles -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map(article => {
+          {articles.map((article: Article) => {
             const dateFormatted = new Date(article.date).toLocaleDateString('fr-FR', {
               day: 'numeric',
               month: 'long',
