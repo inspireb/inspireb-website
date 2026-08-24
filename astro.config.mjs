@@ -5,5 +5,9 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://www.inspireb.fr',
+  trailingSlash: 'always',
+  build: {
+    format: 'directory',
+  },
   integrations: [tailwind(), icon(), sitemap()],
 });
