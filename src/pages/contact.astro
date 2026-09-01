@@ -311,6 +311,7 @@ const FORMULAIRE_ACTIF = false;
 
   {FORMULAIRE_ACTIF && (
   <script>
+<<<<<<< HEAD
     // Les types sont precises pour que VS Code ne signale plus d'avertissement :
     // getElementById peut renvoyer null, et un HTMLElement generique n'a ni
     // .reset() ni .disabled.
@@ -321,6 +322,14 @@ const FORMULAIRE_ACTIF = false;
 
     function afficher(message: string, ok: boolean) {
       if (!statut) return;
+=======
+    const form = document.getElementById('contact-form');
+    const statut = document.getElementById('cf-status');
+    const bouton = document.getElementById('cf-submit');
+    const REPLI = "Écrivez-moi à inspirebettyn@gmail.com ou appelez le 06 46 71 20 96.";
+
+    function afficher(message, ok) {
+>>>>>>> 5aa9dd8d50a7d387594c8f841db40cf0cd8259be
       statut.textContent = message;
       statut.className = ok
         ? 'text-sm rounded-xl px-4 py-3 leading-relaxed bg-[#eaf1ec] text-[#3D3D3D]'
@@ -330,7 +339,10 @@ const FORMULAIRE_ACTIF = false;
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
+<<<<<<< HEAD
       if (!bouton) return;
+=======
+>>>>>>> 5aa9dd8d50a7d387594c8f841db40cf0cd8259be
       bouton.disabled = true;
       bouton.textContent = 'Envoi en cours…';
 
