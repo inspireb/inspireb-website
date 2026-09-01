@@ -21,21 +21,12 @@ import { soinsPages } from '../data/soinsPages.js';
 // Sous-menu "Soins" : construit tout seul a partir des pages existantes.
 // L'ordre suit celui de services.js, donc celui de la page /soins/ :
 // pour reordonner le menu, il suffit de reordonner services.js.
-<<<<<<< HEAD
 // flatMap plutot que map + filter : on renvoie [] quand il n'y a pas de page,
 // ce qui evite a TypeScript de croire que la liste peut contenir des null.
 const sousMenuSoins = services.flatMap((s) => {
   const page = soinsPages.find((p) => p.serviceId === s.id);
   return page ? [{ href: `/soins/${page.slug}/`, label: s.categorie }] : [];
 });
-=======
-const sousMenuSoins = services
-  .map((s) => {
-    const page = soinsPages.find((p) => p.serviceId === s.id);
-    return page ? { href: `/soins/${page.slug}/`, label: s.categorie } : null;
-  })
-  .filter(Boolean);
->>>>>>> 5aa9dd8d50a7d387594c8f841db40cf0cd8259be
 
 // Bannière ateliers : s'affiche seulement s'il reste un atelier à venir,
 // et disparaît toute seule une fois la dernière date passée.
