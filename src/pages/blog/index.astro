@@ -17,13 +17,16 @@ const allArticles = await Astro.glob('../../content/blog/*.md');
 const articles: Article[] = allArticles
   .map((article: any) => {
     const slug = article.file.split('/').pop()?.replace('.md', '') || '';
-    return { ...article.frontmatter, url: `/blog/${slug}` };
+    return { ...article.frontmatter, url: `/blog/${slug}/` };
   })
   .sort((a: Article, b: Article) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+// Categories presentes, par ordre alphabetique
+const categories: string[] = [...new Set(articles.map((a) => a.category).filter(Boolean))].sort();
 ---
 
 <Layout
-  title="Blog Bien-être & Naturopathie | InspireB — Sartilly-Baie-Bocage"
+  title="Blog bien-être & naturopathie | InspireB"
   description="Conseils bien-être, naturopathie, beauté naturelle et routines saisonnières par InspireB, praticienne bien-être naturopathe à Sartilly-Baie-Bocage."
 >
 
@@ -51,6 +54,40 @@ const articles: Article[] = allArticles
   <section class="py-20 px-6 bg-white">
     <div class="max-w-5xl mx-auto">
 
+      {articles.length > 1 && (
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-10 pb-6 border-b border-[#dde7e0]">
+
+          <!-- Filtres par categorie -->
+          <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrer par catégorie">
+            <button type="button" data-filtre="tous" aria-pressed="true"
+                    class="js-filtre bg-[#a8cbb7] text-white px-4 py-2 rounded-full text-xs font-medium transition-colors">
+              Tous
+            </button>
+            {categories.map((cat) => (
+              <button type="button" data-filtre={cat} aria-pressed="false"
+                      class="js-filtre border border-[#dde7e0] text-[#4A4A4A]/70 px-4 py-2 rounded-full text-xs font-medium hover:border-[#a8cbb7] hover:text-[#5a9480] transition-colors">
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <!-- Tri -->
+          <label class="flex items-center gap-2 text-xs text-[#4A4A4A]/60">
+            <span>Trier :</span>
+            <select id="tri-articles"
+                    class="border border-[#dde7e0] rounded-full px-4 py-2 bg-white text-[#4A4A4A] focus:outline-none focus:border-[#a8cbb7] cursor-pointer">
+              <option value="recent">Plus récents d'abord</option>
+              <option value="ancien">Plus anciens d'abord</option>
+              <option value="titre">Titre (A → Z)</option>
+            </select>
+          </label>
+        </div>
+      )}
+
+      <p id="aucun-resultat" class="hidden text-center text-sm text-[#4A4A4A]/60 py-16">
+        Aucun article dans cette catégorie pour le moment.
+      </p>
+
       {articles.length === 0 ? (
         <!-- État vide : aucun article encore -->
         <div class="text-center py-20">
@@ -67,7 +104,7 @@ const articles: Article[] = allArticles
         </div>
       ) : (
         <!-- Grille d'articles -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="grille-articles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article: Article) => {
             const dateFormatted = new Date(article.date).toLocaleDateString('fr-FR', {
               day: 'numeric',
@@ -75,7 +112,11 @@ const articles: Article[] = allArticles
               year: 'numeric',
             });
             return (
-              <a href={article.url} class="group bg-[#f6f6e9] rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
+              <a href={article.url}
+                 data-categorie={article.category}
+                 data-date={article.date}
+                 data-titre={article.title}
+                 class="js-article group bg-[#f6f6e9] rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
                 {article.coverImage ? (
                   <img
                     src={article.coverImage}
@@ -236,4 +277,56 @@ const articles: Article[] = allArticles
     </div>
   </section>
 
+
+<script>
+  // ---- Filtres par categorie et tri des articles -------------------------
+  const grille = document.getElementById('grille-articles');
+  const boutons = Array.from(document.querySelectorAll('.js-filtre')) as HTMLButtonElement[];
+  const tri = document.getElementById('tri-articles') as HTMLSelectElement | null;
+  const vide = document.getElementById('aucun-resultat');
+
+  if (grille) {
+    const cartes = Array.from(grille.querySelectorAll('.js-article')) as HTMLElement[];
+    let categorieActive = 'tous';
+
+    const actif = ['bg-[#a8cbb7]', 'text-white'];
+    const inactif = ['border', 'border-[#dde7e0]', 'text-[#4A4A4A]/70', 'hover:border-[#a8cbb7]', 'hover:text-[#5a9480]'];
+
+    function appliquer() {
+      // Filtrage
+      let visibles = 0;
+      cartes.forEach((c) => {
+        const ok = categorieActive === 'tous' || c.dataset.categorie === categorieActive;
+        c.classList.toggle('hidden', !ok);
+        if (ok) visibles++;
+      });
+      vide?.classList.toggle('hidden', visibles > 0);
+
+      // Tri
+      const mode = tri?.value || 'recent';
+      const ordonnees = [...cartes].sort((a, b) => {
+        if (mode === 'titre') return (a.dataset.titre || '').localeCompare(b.dataset.titre || '', 'fr');
+        const da = new Date(a.dataset.date || 0).getTime();
+        const db = new Date(b.dataset.date || 0).getTime();
+        return mode === 'ancien' ? da - db : db - da;
+      });
+      ordonnees.forEach((c) => grille.appendChild(c));
+    }
+
+    boutons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        categorieActive = btn.dataset.filtre || 'tous';
+        boutons.forEach((b) => {
+          const on = b === btn;
+          b.setAttribute('aria-pressed', String(on));
+          b.classList.remove(...actif, ...inactif);
+          b.classList.add(...(on ? actif : inactif));
+        });
+        appliquer();
+      });
+    });
+
+    tri?.addEventListener('change', appliquer);
+  }
+</script>
 </Layout>

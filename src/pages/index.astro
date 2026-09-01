@@ -2,15 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
 import { services } from '../data/services.js';
+import { soinsPages } from '../data/soinsPages.js';
 ---
 
 <Layout
-  title="InspireB | Praticienne Bien-être & Naturopathe à Sartilly-Baie-Bocage, entre Avranches et Granville"
-  description="Betty vous accueille à Sartilly pour des soins bien-être et naturopathiques 100% personnalisés. Une approche holistique unique qui prend soin de vous de l'intérieur comme de l'extérieur."
+  title="Naturopathe & soins bien-être près de Granville | InspireB"
+  description="Entre les enfants, le travail et la maison, on finit par s'oublier. Betty accompagne les femmes à renouer avec elles-mêmes, près de Granville."
 >
 
   <!-- HERO -->
-  <section class="relative min-h-[55vh] md:min-h-[90vh] flex items-center overflow-hidden">
+  <section class="js-hide-cta relative min-h-[55vh] md:min-h-[90vh] flex items-center overflow-hidden">
     <!-- Image de fond pleine largeur -->
     <div class="absolute inset-0 bg-[url('/images/hero-betty.webp')] bg-cover bg-no-repeat" style="background-position: 72% 28%;"></div>
 
@@ -22,14 +23,15 @@ import { services } from '../data/services.js';
     <div class="relative z-10 w-full max-w-6xl mx-auto px-8 md:px-16 py-24">
       <div class="max-w-xl">
         <p class="text-[#a8cbb7] text-sm tracking-[0.15em] uppercase mb-5 font-jakarta">
-          Beauté, Bien-être, Réflexologie & Naturopathie <br />  Sartilly-Baie-Bocage • entre Avranches et Granville
+          Praticienne beauté & bien-être · Naturopathe <br /> Sartilly-Baie-Bocage • entre Avranches et Granville
         </p>
         <h1 class="font-jakarta font-medium text-5xl md:text-6xl text-[#3D3D3D] mb-6">
           La beauté qui<br /><em>vient de l'intérieur</em>
         </h1>
         <p class="text-base md:text-lg text-[#4A4A4A]/85 mb-10 leading-relaxed">
-          Ici, on prend soin de vous en profondeur, en douceur, à votre rythme.<br />
-          Corps, peau et équilibre intérieur — ensemble.
+          Entre les enfants, le travail et la maison, on finit par se déconnecter
+          de son propre corps. Chez InspireB, j'accompagne les femmes à renouer
+          avec elles-mêmes — la peau, le corps et l'équilibre intérieur, ensemble.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
           <a href="https://inspireb.setmore.com/#services"
@@ -41,9 +43,10 @@ import { services } from '../data/services.js';
             Découvrir le concept
           </a>
         </div>
-        <p class="text-xs text-[#4A4A4A] mt-3 flex items-center gap-1.5">
-          <Icon name="ph:baby" size={16} />
-          <span>Bébés bienvenus pendant les soins</span>
+        <p class="text-sm text-[#4A4A4A] mt-4 flex items-start gap-2 max-w-sm">
+          <Icon name="ph:baby" size={18} class="flex-shrink-0 mt-0.5 text-[#5a9480]" />
+          <span>Venez avec votre bébé — aucune solution de garde à trouver.
+            Ce n'est pas une tolérance, c'est prévu pour vous.</span>
         </p>
       </div>
     </div>
@@ -55,13 +58,18 @@ import { services } from '../data/services.js';
       <div class="text-center mb-12">
         <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Est-ce pour vous ?</p>
         <h2 class="font-jakarta font-medium text-3xl md:text-4xl text-[#3D3D3D]">Cet espace est pour vous si…</h2>
+        <p class="text-sm text-[#4A4A4A]/60 mt-4 max-w-xl mx-auto leading-relaxed">
+          J'accueille principalement des femmes — souvent des mamans — qui n'ont plus
+          de temps pour elles. Mais la porte est ouverte à toute personne qui se reconnaît
+          dans ces lignes.
+        </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
           "Vous ressentez le besoin de vous reconnecter à votre corps et à vos sensations.",
-          "Vous vous oubliez souvent pour les autres et aimeriez, enfin, prendre soin de vous.",
+          "Vous passez vos journées à penser à tout le monde, et jamais à vous.",
           "Vous cherchez un vrai moment de pause pour souffler et lâcher prise.",
-          "Vous traversez une période de transition et avez besoin de vous retrouver.",
+          "Vous êtes maman et vous n'avez ni le temps, ni la garde, pour prendre un moment.",
           "Vous voulez prendre soin de votre peau et de votre équilibre, en profondeur.",
           "Vous avez envie d'être accueillie sans jugement, à votre rythme.",
         ].map(item => (
@@ -82,7 +90,9 @@ import { services } from '../data/services.js';
         Bien plus qu'un soin classique
       </h2>
       <p class="text-[#4A4A4A]/80 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
-        Praticienne Bien-être et Naturopathe, je vous propose une approche globale — votre peau, votre équilibre intérieur, votre bien-être. Parce que la vraie beauté ne s'arrête pas à l'épiderme.
+        Praticienne beauté et bien-être, je marie les soins esthétiques aux outils de la
+        naturopathie. Votre peau, votre équilibre intérieur, vos sensations : tout est lié.
+        Parce que la vraie beauté ne s'arrête pas à l'épiderme.
       </p>
       <!-- 3 piliers -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -98,7 +108,7 @@ import { services } from '../data/services.js';
             <img src="/images/Naturopathe-icon.svg" alt="" class="w-16 h-16" />
           </div>
           <h3 class="font-jakarta font-medium text-xl text-[#a8cbb7] mb-2 text-center">Une approche<br>globale</h3>
-          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed text-center">Corps, énergie, équilibre intérieur : tout est lié. Je prends soin de vous dans votre ensemble.</p>
+          <p class="text-sm text-[#4A4A4A]/70 leading-relaxed text-center">Des moyens naturels qui aident le corps à retrouver son équilibre. Peau, énergie, sommeil : tout est lié.</p>
         </div>
         <div class="p-6 bg-[#f6f6e9] rounded-2xl h-full">
           <div class="mb-4 flex justify-center">
@@ -123,7 +133,7 @@ import { services } from '../data/services.js';
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map(soin => (
-          <a href={`/soins#${soin.id}`}
+          <a href={soinsPages.find(p => p.serviceId === soin.id) ? `/soins/${soinsPages.find(p => p.serviceId === soin.id).slug}/` : `/soins/#${soin.id}`}
             class="bg-white rounded-2xl p-6 hover:shadow-md transition-shadow group flex flex-col justify-between h-full">
             <div>
               <h3 class="font-jakarta font-medium text-xl text-[#3D3D3D] mb-1 group-hover:text-[#a8cbb7] transition-colors">{soin.categorie}</h3>

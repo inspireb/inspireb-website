@@ -1,0 +1,28 @@
+{
+  // ==========================================================================
+  //  Configuration TypeScript du projet Astro
+  // --------------------------------------------------------------------------
+  //  Sans ce fichier, VS Code applique les règles les plus strictes possibles
+  //  et signale des dizaines de "problèmes" qui n'en sont pas : le site se
+  //  construit et fonctionne très bien sans.
+  //
+  //  "astro/tsconfigs/base" est la configuration recommandée par Astro pour un
+  //  projet écrit en JavaScript (tes fichiers de données sont en .js, sans
+  //  annotations de types). Elle vérifie les vraies erreurs sans exiger que
+  //  chaque variable soit typée à la main.
+  //
+  //  💡 Si un jour tu veux des contrôles plus poussés, remplace "base" par
+  //     "strict" — mais il faudra alors typer explicitement tes fichiers.
+  // ==========================================================================
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    // Explicite : sans ça, certains outils réappliquent le mode strict par
+    // défaut et signalent des dizaines de faux problèmes sur du JavaScript.
+    "strict": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "checkJs": false
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "node_modules"]
+}

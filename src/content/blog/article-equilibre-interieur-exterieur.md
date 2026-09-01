@@ -1,5 +1,6 @@
 ---
 title: "Pourquoi prendre soin de sa peau ne suffit pas : l'approche de l'équilibre intérieur et extérieur"
+seoTitle: "Pourquoi votre routine peau ne suffit pas | InspireB"
 description: "Crèmes, sérums, rituels du soir... et pourtant la peau reste terne ? Découvrez pourquoi le soin extérieur ne suffit pas sans un vrai travail sur l'équilibre intérieur."
 date: "2026-07-30"
 category: "Bien-être"

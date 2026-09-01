@@ -1,5 +1,6 @@
 ---
 title: "Bienvenue dans mon univers : le chemin qui m'a conduite jusqu'ici"
+seoTitle: "Mon parcours de praticienne bien-être | InspireB"
 description: "Je m'appelle Betty, praticienne bien-être et naturopathe à Sartilly-Baie-Bocage. Voici mon parcours, de l'épuisement à la reconstruction, et ce qui m'anime aujourd'hui."
 date: "2026-06-26"
 category: "Mon histoire"

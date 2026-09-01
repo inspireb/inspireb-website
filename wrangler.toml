@@ -1,0 +1,32 @@
+#==============================================================================
+#  InspireB — configuration Cloudflare Pages
+#------------------------------------------------------------------------------
+#  ⚠️ Ce fichier n'a AUCUN effet tant que le site est hébergé sur GitHub Pages.
+#     Il sera lu automatiquement le jour de la migration vers Cloudflare Pages.
+#
+#  Il sert à déclarer la liaison "EMAIL", qui permet à
+#  functions/api/contact.js de t'envoyer les messages du formulaire.
+#
+#  ⚠️ IMPORTANT : dès qu'un wrangler.toml existe à la racine, Cloudflare
+#     l'utilise À LA PLACE des réglages du tableau de bord. Si tu configures
+#     des variables depuis l'interface Cloudflare, ajoute-les aussi ici.
+#==============================================================================
+
+name = "inspireb"
+compatibility_date = "2026-01-01"
+
+# Dossier généré par `npm run build` (Astro)
+pages_build_output_dir = "dist"
+
+#------------------------------------------------------------------------------
+#  Envoi d'e-mail — Cloudflare Email Service
+#------------------------------------------------------------------------------
+#  destination_address doit être VÉRIFIÉE au préalable dans :
+#  Cloudflare → Email Routing → Destination Addresses
+#
+#  Sans cette vérification, l'envoi est refusé et le formulaire affichera
+#  un message d'erreur à la visiteuse.
+#------------------------------------------------------------------------------
+[[send_email]]
+name = "EMAIL"
+destination_address = "inspirebettyn@gmail.com"

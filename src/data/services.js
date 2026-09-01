@@ -31,9 +31,9 @@ export const services = [
     apercu: "À partir de 45 €",
     schemaPrice: 45,
     items: [
-      { nom: `"Souffle de détente" — 30 min`, duree: "≈ 45 min sur place", prix: 45 },
-      { nom: `"Évasion Bien-être" — 45 min`, duree: "≈ 1h sur place", prix: 60 },
-      { nom: `"Moment cocooning" — 1h`, duree: "≈ 1h15 sur place", prix: 75 },
+      { nom: `"Souffle de détente" — 30 min`, duree: "≈ 45 min sur place", prix: 45, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=c202a9d1-7f9f-40fb-9445-750c26a4956a&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `"Évasion Bien-être" — 45 min`, duree: "≈ 1h sur place", prix: 60, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=9ee447e0-a6de-4826-b1bb-b5050d517fea&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `"Moment cocooning" — 1h`, duree: "≈ 1h15 sur place", prix: 75, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=3e307236-dfe3-42ca-87d0-7778862dad68&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
     ],
   },
   {
@@ -46,10 +46,10 @@ export const services = [
     apercu: "À partir de 55 €",
     schemaPrice: 55,
     items: [
-      { nom: `"Parenthèse éclat" — 30 min`, duree: "≈ 45 min sur place", prix: 55 },
-      { nom: `"Lumière" — 1h`, duree: "≈ 1h15 sur place", prix: 85 },
-      { nom: `"Reflets d'âge" — anti-âge, 1h15`, duree: "≈ 1h30 sur place", prix: 96 },
-      { nom: `Le Soin InspireB — visage + réflexologie, 1h15`, duree: "≈ 1h30-1h45 sur place", prix: 98 },
+      { nom: `"Parenthèse éclat" — 30 min`, duree: "≈ 45 min sur place", prix: 55, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=96b39c07-4888-4c45-bf84-77b69dd6b040&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `"Lumière" — 1h`, duree: "≈ 1h15 sur place", prix: 85, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=a71727ed-86e0-40bf-a94d-4310b045aac1&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `"Reflets d'âge" — anti-âge, 1h15`, duree: "≈ 1h30 sur place", prix: 96, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=995ab706-0d0a-4ca5-b730-84ad90fe37a9&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `Le Soin InspireB — visage + réflexologie, 1h15`, duree: "≈ 1h30-1h45 sur place", prix: 98, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=f96268b8-d326-4405-bdc2-a320590b122f%7Cb3d91728-bc33-44b4-9cf3-99124442e43d&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
     ],
   },
   {
@@ -62,9 +62,9 @@ export const services = [
     apercu: "À partir de 65 €",
     schemaPrice: 65,
     items: [
-      { nom: `Réflexologie plantaire — 45 min`, duree: "≈ 45 min-1h sur place", prix: 65 },
-      { nom: `"Souffle de légèreté" — jambes + réflexologie, 1h`, duree: "≈ 1h-1h15 sur place", prix: 80 },
-      { nom: `Le Soin InspireB — visage + réflexologie, 1h15`, duree: "≈ 1h30-1h45 sur place", prix: 98 },
+      { nom: `Réflexologie plantaire — 45 min`, duree: "≈ 45 min-1h sur place", prix: 65, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=1d4fcfc5-11a0-43bf-af72-612a305efd26&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `"Souffle de légèreté" — jambes + réflexologie, 1h`, duree: "≈ 1h-1h15 sur place", prix: 80, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=a06453f8-015b-485e-93e4-b0a35896f5dc&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
+      { nom: `Le Soin InspireB — visage + réflexologie, 1h15`, duree: "≈ 1h30-1h45 sur place", prix: 98, lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=f96268b8-d326-4405-bdc2-a320590b122f%7C5cf7d58a-f1d0-451a-b853-7420801f8bf3&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
     ],
   },
   {
@@ -72,12 +72,12 @@ export const services = [
     categorie: "Naturopathie",
     icon: "ph:plant-fill",
     image: "/images/soins/naturopathie.webp",
-    intro: `La naturopathie accompagne votre corps vers son équilibre par l'hygiène de vie, l'alimentation et des conseils personnalisés. Le bilan inclut une mesure de votre taux d'antioxydants (Prism IO), pour orienter mes recommandations avec une donnée concrète. Proposé à prix libre, pour que l'argent ne soit jamais un frein.`,
-    descCourt: `Hygiène de vie, alimentation et conseils personnalisés, avec une mesure de votre taux d'antioxydants. Proposé à prix libre.`,
+    intro: `La naturopathie réunit plusieurs moyens naturels — alimentation, sommeil, activité, gestion du stress — qui aident le corps à fonctionner de manière équilibrée. Le bilan inclut une mesure de votre taux d'antioxydants (Prism IO), pour orienter mes recommandations avec une donnée concrète. Proposé à prix libre, pour que l'argent ne soit jamais un frein.`,
+    descCourt: `Plusieurs moyens naturels qui aident le corps à fonctionner de manière équilibrée, avec une mesure de votre taux d'antioxydants. À prix libre.`,
     apercu: "Prix libre",
     schemaPrice: 0, // 0 = "Prix libre" pour Google
     items: [
-      { nom: `Conseils en Naturopathie — 1h`, duree: "À régler sur place", prix: "Prix libre" },
+      { nom: `Conseils en Naturopathie — 1h`, duree: "À régler sur place", prix: "Prix libre", lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=d203b7df-4a1e-460a-83fe-e240e145d0af&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
     ],
   },
   {
@@ -90,7 +90,7 @@ export const services = [
     apercu: "Prix libre",
     // pas de schemaPrice → cette catégorie n'apparaît pas dans le schema.org
     items: [
-      { nom: `Mon moment beauté sur mesure — 45 min`, duree: "À régler sur place", prix: "Prix libre" },
+      { nom: `Mon moment beauté sur mesure — 45 min`, duree: "À régler sur place", prix: "Prix libre", lienSetmore: "https://inspireb.setmore.com/book?step=additional-products&products=c3befc1f-462a-4e62-81fd-44b149d16247&type=service&staff=e8b06f3f-112d-4a8d-9a69-10cd03710ece&staffSelected=false" },
     ],
   },
   {
@@ -118,17 +118,20 @@ export const services = [
       { nom: `Séréni'Baie — soin duo (2 personnes)`, duree: "Sur réservation", prix: "À partir de 110 €" },
       { nom: `Séréni'Baie — soin à 4 mains`, duree: "Sur réservation", prix: 150 },
     ],
+    // "note" s'affiche sous le tableau des tarifs, sur /soins/ comme sur la
+    // page dédiée. Utile quand une prestation ne se réserve pas en ligne.
+    note: `Séréni'Baie se réserve directement auprès de moi : nous sommes deux praticiennes, il faut accorder nos agendas. Écrivez-moi ou appelez le 06 46 71 20 96, je vous propose une date rapidement.`,
   },
   {
-    id: "ateliers",
-    categorie: "Ateliers",
-    icon: "ph:lightbulb-fill",
+    id: "instant-cocon",
+    categorie: "Instant Cocon",
+    icon: "ph:heart-fill",
     image: "/images/soins/ateliers.webp",
-    intro: `Des ateliers bien-être verront bientôt le jour. Si l'idée vous tente déjà, n'hésitez pas à me contacter : je serai ravie d'en discuter avec vous !`,
-    descCourt: `Des ateliers bien-être arrivent bientôt. L'idée vous tente déjà ? Contactez-moi, j'en serais ravie !`,
-    apercu: "Sur devis",
+    intro: `Le cabinet rien que pour vous et vos proches, le temps d'un moment à plusieurs. Une formule que je suis en train d'imaginer — si l'idée vous tente, dites-le moi, vos envies m'aideront à la construire.`,
+    descCourt: `Un moment à plusieurs, au cabinet. Formule en cours de préparation.`,
+    apercu: "Bientôt disponible",
     items: [
-      { nom: `Ateliers bien-être (groupe ou individuel)`, duree: "À définir ensemble", prix: "Sur devis" },
+      { nom: `Instant Cocon — moment à plusieurs`, duree: "En préparation", prix: "Bientôt disponible" },
     ],
   },
   {
