@@ -2,11 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
 import { services as soins } from '../data/services.js';
+import { soinsPages } from '../data/soinsPages.js';
 ---
 
 <Layout
-  title="Soins & Tarifs | InspireB — Praticienne Bien-être Naturopathe Sartilly-Baie-Bocage"
-  description="Découvrez tous les soins d'InspireB : massages bien-être, soin visage, réflexologie plantaire, naturopathie, conseil beauté, accompagnements, soins duo, ateliers et cartes cadeaux à Sartilly-Baie-Bocage."
+  title="Soins bien-être & tarifs — Avranches, Granville | InspireB"
+  description="Massages, soin visage, réflexologie, naturopathie et soins duo. Tarifs clairs et réservation en ligne, entre Avranches et Granville."
 >
 
   <!-- HERO PAGE -->
@@ -38,7 +39,9 @@ import { services as soins } from '../data/services.js';
   <!-- LISTE DES SOINS — alternance image / contenu -->
   <section class="py-16 px-6 bg-white">
     <div class="max-w-5xl mx-auto space-y-20">
-      {soins.map((categorie, i) => (
+      {soins.map((categorie, i) => {
+        const pageDetail = soinsPages.find(p => p.serviceId === categorie.id);
+        return (
         <div id={categorie.id} class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
           <!-- Image -->
@@ -56,7 +59,24 @@ import { services as soins } from '../data/services.js';
               <Icon name={categorie.icon} size={32} class="text-[#a8cbb7] flex-shrink-0" />
               <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D]">{categorie.categorie}</h2>
             </div>
-            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-6">{categorie.intro}</p>
+            <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-6">{pageDetail ? categorie.descCourt : categorie.intro}</p>
+
+            {pageDetail ? (
+              <!-- Cette prestation a sa page dediee : on affiche un resume,
+                   pas la liste complete (evite le contenu duplique). -->
+              <div class="border border-[#dde7e0] rounded-2xl px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <p class="font-jakarta font-medium text-2xl text-[#a8cbb7]">{categorie.apercu}</p>
+                  <p class="text-xs text-[#4A4A4A]/50 mt-0.5">
+                    {categorie.items.length} formule{categorie.items.length > 1 ? 's' : ''} au choix
+                  </p>
+                </div>
+                <a href={`/soins/${pageDetail.slug}/`}
+                   class="bg-[#a8cbb7] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#5a9480] transition-colors whitespace-nowrap">
+                  Détails & tarifs →
+                </a>
+              </div>
+            ) : (
             <div class="border border-[#dde7e0] rounded-2xl overflow-hidden">
               {categorie.items.map((item, j) => (
                 <div class={`flex items-center justify-between gap-4 px-6 py-4 ${j < categorie.items.length - 1 ? 'border-b border-[#dde7e0]' : ''} hover:bg-[#eaf1ec] transition-colors`}>
@@ -79,10 +99,17 @@ import { services as soins } from '../data/services.js';
                 </div>
               ))}
             </div>
+            )}
+
+            {categorie.note && (
+              <p class="text-sm text-[#4A4A4A]/70 leading-relaxed bg-[#eaf1ec] rounded-xl px-5 py-4 mt-4">
+                {categorie.note}
+              </p>
+            )}
           </div>
 
         </div>
-      ))}
+      )})}
     </div>
   </section>
 

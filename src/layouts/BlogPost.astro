@@ -3,6 +3,8 @@ import Layout from './Layout.astro';
 
 export interface Props {
   title: string;
+  /** Titre court pour l'onglet et Google (< 60 car.). Si absent, on utilise "title". */
+  seoTitle?: string;
   description: string;
   date: string;
   category: string;
@@ -10,7 +12,7 @@ export interface Props {
   slug: string;
 }
 
-const { title, description, date, category, coverImage, slug } = Astro.props;
+const { title, seoTitle, description, date, category, coverImage, slug } = Astro.props;
 
 const dateFormatted = new Date(date).toLocaleDateString('fr-FR', {
   day: 'numeric',
@@ -19,12 +21,12 @@ const dateFormatted = new Date(date).toLocaleDateString('fr-FR', {
 });
 
 const siteUrl = "https://www.inspireb.fr";
-const articleUrl = `${siteUrl}/blog/${slug}`;
+const articleUrl = `${siteUrl}/blog/${slug}/`;
 const ogImage = coverImage || "/images/og-image.jpg";
 ---
 
 <Layout
-  title={`${title} | Blog InspireB`}
+  title={seoTitle || `${title} | Blog InspireB`}
   description={description}
   canonical={articleUrl}
   ogImage={ogImage}
@@ -38,7 +40,7 @@ const ogImage = coverImage || "/images/og-image.jpg";
     "author": {
       "@type": "Person",
       "name": "Betty NOEL WOURMS",
-      "url": siteUrl + "/a-propos"
+      "url": siteUrl + "/a-propos/"
     },
     "publisher": {
       "@type": "Organization",

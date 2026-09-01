@@ -6,13 +6,32 @@ export interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
+  /** Données structurées supplémentaires propres à la page (Service, FAQPage…) */
+  schemaExtra?: any[];
 }
 
-const { title, description, canonical, ogImage } = Astro.props;
+const { title, description, canonical, ogImage, schemaExtra = [] } = Astro.props;
 const siteUrl = "https://www.inspireb.fr";
 const currentUrl = canonical || siteUrl + Astro.url.pathname;
 const ogImageUrl = ogImage ? siteUrl + ogImage : siteUrl + "/images/og-image.jpg";
 import { services } from '../data/services.js';
+import { ateliersAVenir } from '../data/ateliers.js';
+import { soinsPages } from '../data/soinsPages.js';
+
+// Sous-menu "Soins" : construit tout seul a partir des pages existantes.
+// L'ordre suit celui de services.js, donc celui de la page /soins/ :
+// pour reordonner le menu, il suffit de reordonner services.js.
+const sousMenuSoins = services
+  .map((s) => {
+    const page = soinsPages.find((p) => p.serviceId === s.id);
+    return page ? { href: `/soins/${page.slug}/`, label: s.categorie } : null;
+  })
+  .filter(Boolean);
+
+// Bannière ateliers : s'affiche seulement s'il reste un atelier à venir,
+// et disparaît toute seule une fois la dernière date passée.
+const prochainAtelier = ateliersAVenir()[0];
+const surPageAteliers = Astro.url.pathname.startsWith('/ateliers');
 
 const offers = services
   .filter(s => typeof s.schemaPrice === 'number')
@@ -52,10 +71,10 @@ const schema = {
     { "@type": "City", "name": "La Haye-Pesnel" },
   ],
   "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "09:30", "closes": "15:45" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:30", "closes": "15:45" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:30", "closes": "17:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:30", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "09:00", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:00", "closes": "15:45" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:30", "closes": "16:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "15:45" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "15:45" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "13:00" },
   ],
@@ -95,8 +114,12 @@ const schema = {
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:image" content={ogImageUrl} />
 
-    <!-- Schema.org LocalBusiness -->
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <!-- Schema.org LocalBusiness (+ schémas propres à la page) -->
+    <script type="application/ld+json" set:html={JSON.stringify(
+      schemaExtra.length
+        ? { "@context": "https://schema.org", "@graph": [schema, ...schemaExtra] }
+        : schema
+    )} />
 
     <title>{title}</title>
 
@@ -108,8 +131,23 @@ const schema = {
 
   <body class="bg-[#f6f6e9] text-[#4A4A4A] font-jakarta">
 
+    <!-- BANNIÈRE ATELIERS (auto-masquée quand il n'y a plus de date à venir) -->
+    {prochainAtelier && !surPageAteliers && (
+      <div id="banner-ateliers" class="hidden fixed top-0 left-0 right-0 z-[60] bg-[#5a9480] text-white">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-center gap-3 text-center">
+          <a href="/ateliers/" class="flex-1 text-sm leading-snug hover:underline underline-offset-2">
+            <span class="font-medium">Nouveau — 3 ateliers bien-être en septembre</span>
+            <span class="hidden sm:inline text-white/75"> · stress, sommeil et pause parents · places limitées</span>
+            <span class="whitespace-nowrap"> →</span>
+          </a>
+          <button id="banner-close" aria-label="Fermer l'annonce"
+                  class="text-white/60 hover:text-white text-xl leading-none px-2 flex-shrink-0 transition-colors">×</button>
+        </div>
+      </div>
+    )}
+
     <!-- NAVIGATION -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#f6f6e9]/95 backdrop-blur-sm border-b border-[#dde7e0]">
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-[#f6f6e9]/95 backdrop-blur-sm border-b border-[#dde7e0]">
       <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <!-- Logo -->
         <a href="/" class="flex items-center gap-3">
@@ -124,7 +162,26 @@ const schema = {
         <ul class="hidden md:flex items-center gap-8 text-sm tracking-wide">
           <li><a href="/" class="hover:text-[#a8cbb7] transition-colors">Accueil</a></li>
           <li><a href="/concept/" class="hover:text-[#a8cbb7] transition-colors">Le concept</a></li>
-          <li><a href="/soins/" class="hover:text-[#a8cbb7] transition-colors">Soins & Tarifs</a></li>
+          <li class="relative group">
+            <a href="/soins/" class="hover:text-[#a8cbb7] transition-colors inline-flex items-center gap-1">
+              Soins & Tarifs
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                   class="opacity-50 group-hover:rotate-180 transition-transform"><path d="M6 9l6 6 6-6"/></svg>
+            </a>
+            <div class="absolute left-0 top-full pt-3 hidden group-hover:block group-focus-within:block">
+              <ul class="bg-[#f6f6e9] border border-[#dde7e0] rounded-2xl shadow-lg py-2 min-w-[15rem]">
+                {sousMenuSoins.map((item) => (
+                  <li>
+                    <a href={item.href} class="block px-5 py-2.5 hover:bg-[#eaf1ec] hover:text-[#5a9480] transition-colors">{item.label}</a>
+                  </li>
+                ))}
+                <li class="border-t border-[#dde7e0] mt-2 pt-2">
+                  <a href="/soins/" class="block px-5 py-2.5 text-[#5a9480] font-medium hover:bg-[#eaf1ec] transition-colors">Toutes les prestations →</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="/ateliers/" class="hover:text-[#a8cbb7] transition-colors">Ateliers</a></li>
           <li><a href="/a-propos/" class="hover:text-[#a8cbb7] transition-colors">À propos</a></li>
           <li><a href="/blog/" class="hover:text-[#a8cbb7] transition-colors">Blog</a></li>
           <li><a href="/contact/" class="hover:text-[#a8cbb7] transition-colors">Contact</a></li>
@@ -143,7 +200,15 @@ const schema = {
         <ul class="flex flex-col gap-4 text-sm">
           <li><a href="/" class="block hover:text-[#a8cbb7]">Accueil</a></li>
           <li><a href="/concept/" class="block hover:text-[#a8cbb7]">Le concept</a></li>
-          <li><a href="/soins/" class="block hover:text-[#a8cbb7]">Soins & Tarifs</a></li>
+          <li>
+            <a href="/soins/" class="block hover:text-[#a8cbb7]">Soins & Tarifs</a>
+            <ul class="mt-2 ml-4 pl-3 border-l border-[#dde7e0] flex flex-col gap-2.5 text-[0.8rem] text-[#4A4A4A]/70">
+              {sousMenuSoins.map((item) => (
+                <li><a href={item.href} class="block hover:text-[#5a9480]">{item.label}</a></li>
+              ))}
+            </ul>
+          </li>
+          <li><a href="/ateliers/" class="block hover:text-[#a8cbb7]">Ateliers</a></li>
           <li><a href="/a-propos/" class="block hover:text-[#a8cbb7]">À propos</a></li>
           <li><a href="/blog/" class="block hover:text-[#a8cbb7]">Blog</a></li>
           <li><a href="/contact/" class="block hover:text-[#a8cbb7]">Contact</a></li>
@@ -193,6 +258,7 @@ const schema = {
           <ul class="flex flex-col gap-2 text-sm text-white/70">
             <li><a href="/concept/" class="hover:text-white transition-colors">Le concept</a></li>
             <li><a href="/soins/" class="hover:text-white transition-colors">Soins & Tarifs</a></li>
+            <li><a href="/ateliers/" class="hover:text-white transition-colors">Ateliers</a></li>
             <li><a href="/a-propos/" class="hover:text-white transition-colors">À propos</a></li>
             <li><a href="/blog/" class="hover:text-white transition-colors">Blog</a></li>
             <li><a href="/contact/" class="hover:text-white transition-colors">Contact & Réservation</a></li>
@@ -313,6 +379,39 @@ const schema = {
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSetmore(); });
     </script>
 
+    <!-- Script bannière ateliers -->
+    <script>
+      // La bannière est masquée par défaut (classe "hidden") pour éviter tout
+      // saut visuel : on ne l'affiche que si la visiteuse ne l'a pas déjà fermée.
+      const bannerAteliers = document.getElementById('banner-ateliers');
+      const siteHeader = document.getElementById('site-header');
+      const mainEl = document.querySelector('main');
+
+      function decalerPourBanniere() {
+        if (!bannerAteliers) return;
+        const h = bannerAteliers.offsetHeight;
+        if (siteHeader) siteHeader.style.top = h + 'px';
+        if (mainEl) mainEl.style.paddingTop = h + 'px';
+      }
+      function fermerBanniere() {
+        bannerAteliers?.classList.add('hidden');
+        if (siteHeader) siteHeader.style.top = '0px';
+        if (mainEl) mainEl.style.paddingTop = '';
+        try { sessionStorage.setItem('inspireb_banner_ateliers', 'ferme'); } catch (e) {}
+      }
+
+      if (bannerAteliers) {
+        let dejaFerme = false;
+        try { dejaFerme = sessionStorage.getItem('inspireb_banner_ateliers') === 'ferme'; } catch (e) {}
+        if (!dejaFerme) {
+          bannerAteliers.classList.remove('hidden');
+          decalerPourBanniere();
+          window.addEventListener('resize', decalerPourBanniere);
+        }
+        document.getElementById('banner-close')?.addEventListener('click', fermerBanniere);
+      }
+    </script>
+
     <!-- Script menu mobile -->
     <script>
       const toggle = document.getElementById('menu-toggle');
@@ -416,8 +515,10 @@ const schema = {
 
     <script>
       const floatingCta = document.getElementById('floating-cta');
-      // Cible automatiquement toutes les sections CTA au fond vert foncé (#5a9480)
-      const ctaSections = document.querySelectorAll('section[class*="5a9480"]');
+      // Masque le bouton flottant quand un autre bouton de réservation est visible :
+      //   • les sections CTA au fond vert foncé (#5a9480)
+      //   • les heros portant la classe "js-hide-cta" (ils ont deja leur propre bouton)
+      const ctaSections = document.querySelectorAll('section[class*="5a9480"], .js-hide-cta');
 
       if (floatingCta && ctaSections.length) {
         const visibles = new Set<Element>();

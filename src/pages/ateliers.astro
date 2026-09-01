@@ -1,0 +1,230 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { ateliersAVenir, ateliersPasses, ateliersParMois, formatDate, formatHeure } from '../data/ateliers.js';
+
+const aVenir = ateliersAVenir();
+const moisAVenir = ateliersParMois(aVenir);
+const passes = ateliersPasses();
+const siteUrl = 'https://www.inspireb.fr';
+
+// Schema.org Event — c'est ce qui permet à Google et aux IA d'afficher tes dates
+const schemaEvents = aVenir.map((a) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: `${a.serie} — ${a.titre}`,
+  description: a.accroche,
+  startDate: a.debut,
+  endDate: a.fin,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: a.lieu,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: a.adresse,
+      addressLocality: a.ville,
+      postalCode: a.codePostal,
+      addressRegion: 'Normandie',
+      addressCountry: 'FR',
+    },
+  },
+  organizer: { '@type': 'Organization', name: 'InspireB', url: siteUrl },
+  performer: { '@type': 'Person', name: 'Betty NOEL WOURMS' },
+  offers: {
+    '@type': 'Offer',
+    price: String(a.prix),
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStock',
+    url: a.lienReservation,
+    validFrom: '2026-08-25T00:00',
+  },
+  image: siteUrl + '/images/og-image.jpg',
+}));
+---
+
+<Layout
+  title="Ateliers bien-être près de Granville | InspireB"
+  description="Ateliers bien-être en petit groupe près de Granville et d'Avranches : gestion du stress, sommeil, reconnexion à soi. Places limitées, prochaines dates en ligne."
+>
+
+  {schemaEvents.map((e) => (
+    <script type="application/ld+json" set:html={JSON.stringify(e)} />
+  ))}
+
+  <!-- HERO -->
+  <section class="relative py-16 md:py-24 px-6 text-center overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/images/soins/ateliers.webp')] bg-cover bg-center">
+      <div class="absolute inset-0 bg-[#eaf1ec]/50"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_38%,_transparent_100%)]"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Les ateliers InspireB</p>
+      <h1 class="font-jakarta font-medium text-4xl md:text-5xl text-[#3D3D3D] mb-6 leading-tight">
+        Apprendre ensemble,<br />repartir avec des outils
+      </h1>
+      <p class="text-lg text-[#4A4A4A]/70 leading-relaxed max-w-xl mx-auto">
+        On pense souvent à tout le monde avant de penser à soi. Mes ateliers sont
+        des rendez-vous en petit groupe pour souffler, comprendre et expérimenter —
+        et repartir avec des gestes simples, applicables dès le lendemain.
+      </p>
+      <p class="text-sm text-[#4A4A4A]/60 leading-relaxed max-w-xl mx-auto mt-4">
+        Ambiance chaleureuse, places volontairement limitées, aucune connaissance préalable
+        nécessaire. Les thèmes changent au fil des saisons : stress, sommeil, reconnexion à soi.
+      </p>
+      {aVenir.length > 0 && (
+        <a href="#prochaines-dates"
+           class="inline-block mt-8 bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium">
+          Voir les prochaines dates →
+        </a>
+      )}
+    </div>
+  </section>
+
+  {aVenir.length > 0 ? (
+    <section id="prochaines-dates" class="py-16 px-6 bg-white scroll-mt-24">
+      <div class="max-w-4xl mx-auto space-y-14">
+        {moisAVenir.map((mois) => (
+        <div>
+          <div class="flex items-center gap-4 mb-6">
+            <h2 class="font-jakarta font-medium text-2xl md:text-3xl text-[#5a9480] whitespace-nowrap">{mois.titre}</h2>
+            <span class="h-px flex-1 bg-[#dde7e0]"></span>
+            <span class="text-xs text-[#4A4A4A]/50 whitespace-nowrap">
+              {mois.ateliers.length} atelier{mois.ateliers.length > 1 ? 's' : ''}
+            </span>
+          </div>
+          <div class="space-y-8">
+        {mois.ateliers.map((a) => (
+          <article id={a.id} class="border border-[#dde7e0] rounded-3xl overflow-hidden">
+
+            <!-- Bandeau date -->
+            <div class="bg-[#eaf1ec] px-6 md:px-8 py-4 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2 text-[#5a9480]">
+                <Icon name="ph:calendar-check-fill" size={20} class="flex-shrink-0" />
+                <span class="font-jakarta font-medium capitalize">{formatDate(a.debut)}</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm text-[#4A4A4A]/70">
+                <Icon name="ph:clock-fill" size={16} class="flex-shrink-0" />
+                <span>{formatHeure(a.debut)} – {formatHeure(a.fin)}</span>
+              </div>
+            </div>
+
+            <div class={`px-6 md:px-8 py-8 ${a.flyer ? 'grid grid-cols-1 md:grid-cols-[minmax(0,18rem)_1fr] gap-8 items-start' : ''}`}>
+
+              {a.flyer && (
+                <a href={a.flyer} target="_blank" rel="noopener" class="block group">
+                  <img src={a.flyer} alt={a.flyerAlt} loading="lazy"
+                       class="w-full rounded-2xl border border-[#dde7e0] bg-[#f6f6e9] group-hover:opacity-90 transition-opacity" />
+                  <span class="block text-center text-xs text-[#4A4A4A]/40 mt-2">Cliquez pour agrandir</span>
+                </a>
+              )}
+
+              <div>
+              <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-2">{a.serie}</p>
+              <h2 class="font-jakarta font-medium text-2xl md:text-3xl text-[#3D3D3D] mb-2">{a.titre}</h2>
+              <p class="text-sm text-[#4A4A4A]/50 italic mb-6">{a.avec}</p>
+
+              <p class="text-[#5a9480] font-medium leading-relaxed mb-4">{a.accroche}</p>
+              {a.description.map((p) => (
+                <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-3">{p}</p>
+              ))}
+
+              {a.note && (
+                <p class="text-sm text-[#4A4A4A]/70 leading-relaxed bg-[#f6f6e9] rounded-xl px-5 py-4 mt-5 flex gap-3">
+                  <Icon name="ph:baby-fill" size={20} class="text-[#a8cbb7] flex-shrink-0 mt-0.5" />
+                  <span>{a.note}</span>
+                </p>
+              )}
+
+              <!-- Lieu -->
+              <div class="flex items-start gap-2 text-sm text-[#4A4A4A]/70 mt-6">
+                <Icon name="ph:map-pin-fill" size={18} class="text-[#a8cbb7] flex-shrink-0 mt-0.5" />
+                <span>
+                  <strong class="text-[#3D3D3D] font-medium">{a.lieu}</strong><br />
+                  {a.adresse}, {a.codePostal} {a.ville}
+                </span>
+              </div>
+
+              <!-- Prix + CTA -->
+              <div class="flex flex-wrap items-center justify-between gap-4 mt-8 pt-6 border-t border-[#dde7e0]">
+                <div>
+                  <p class="font-jakarta font-medium text-xl text-[#a8cbb7]">{a.prixTexte}</p>
+                  <p class="text-xs text-[#4A4A4A]/50 mt-0.5">
+                    Les places sont volontairement limitées pour garder une ambiance intime.
+                  </p>
+                </div>
+                <div class="sm:text-right">
+                  <a href={a.lienReservation} target="_blank" rel="noopener"
+                     class="inline-block bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium whitespace-nowrap">
+                    Réserver ma place
+                  </a>
+                  {a.noteReservation && (
+                    <p class="text-xs text-[#4A4A4A]/50 mt-2 max-w-[16rem] sm:ml-auto leading-snug">{a.noteReservation}</p>
+                  )}
+                </div>
+              </div>
+              </div>
+            </div>
+          </article>
+        ))}
+          </div>
+        </div>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <section class="py-16 px-6 bg-white">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D] mb-4">Prochains ateliers à venir</h2>
+        <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-8">
+          Aucun atelier n'est programmé pour le moment, mais de nouvelles dates arrivent régulièrement.
+          Écrivez-moi pour être prévenue en premier — ou dites-moi le thème qui vous ferait envie.
+        </p>
+        <a href="/contact/"
+           class="bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium">
+          Me prévenir des prochaines dates
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- ATELIERS PASSÉS (preuve d'activité) -->
+  {passes.length > 0 && (
+    <section class="py-14 px-6 bg-[#f6f6e9]">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-6 text-center">Ateliers déjà organisés</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {passes.map((a) => (
+            <div class="bg-white/70 rounded-2xl px-5 py-4">
+              <p class="text-xs text-[#4A4A4A]/50 capitalize mb-1">{formatDate(a.debut)}</p>
+              <p class="font-jakarta font-medium text-[#5a9480]">{a.titre}</p>
+              <p class="text-xs text-[#4A4A4A]/50 mt-0.5">{a.lieu} — {a.ville}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="py-16 px-6 bg-[#5a9480] text-white text-center">
+    <div class="max-w-xl mx-auto">
+      <h2 class="font-jakarta font-medium text-4xl mb-4">Une question sur un atelier ?</h2>
+      <p class="text-white/70 mb-8">
+        Écrivez-moi ou appelez-moi, je serai ravie d'en discuter avec vous.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="/contact/"
+           class="bg-white text-[#5a9480] px-8 py-3.5 rounded-full hover:bg-[#eaf1ec] transition-colors text-sm tracking-wide font-medium">
+          Me contacter
+        </a>
+        <a href="tel:+33646712096"
+           class="border-2 border-white/60 text-white px-8 py-3 rounded-full hover:bg-white/10 transition-colors text-sm tracking-wide font-medium">
+          06 46 71 20 96
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

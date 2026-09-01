@@ -1,10 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
+
+// ⚙️ FORMULAIRE DE CONTACT — désactivé tant que le site est sur GitHub Pages.
+//    Passe à true UNIQUEMENT après la migration vers Cloudflare Pages :
+//    le formulaire s'appuie sur functions/api/contact.js, qui n'existe
+//    que côté Cloudflare. Voir le mode d'emploi dans ce fichier.
+const FORMULAIRE_ACTIF = false;
 ---
 
 <Layout
-  title="Contact & Réservation | InspireB — Sartilly-Baie-Bocage"
+  title="Contact & réservation en ligne | InspireB"
   description="Réservez votre soin en ligne chez InspireB à Sartilly-Baie-Bocage. Praticienne Bien-être & Naturopathe Betty NOEL WOURMS. Prise de rendez-vous 24h/24."
 >
 
@@ -103,22 +109,21 @@ import { Icon } from 'astro-icon/components';
         <div>
           <h3 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">Horaires</h3>
           <div class="space-y-2 text-sm text-[#4A4A4A]/80">
-            <!-- À adapter avec les vrais horaires -->
             <div class="flex justify-between">
               <span>Lundi</span>
-              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+              <span class="text-[#a8cbb7]">09h00 – 15h45</span>
             </div>
             <div class="flex justify-between">
               <span>Mardi</span>
-              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+              <span class="text-[#a8cbb7]">09h00 – 15h45</span>
             </div>
             <div class="flex justify-between">
               <span>Mercredi</span>
-              <span class="text-[#a8cbb7]">09h30 – 17h00</span>
+              <span class="text-[#a8cbb7]">09h30 – 16h00</span>
             </div>
             <div class="flex justify-between">
               <span>Jeudi</span>
-              <span class="text-[#a8cbb7]">09h30 – 15h45</span>
+              <span class="text-[#a8cbb7]">09h00 – 15h45</span>
             </div>
             <div class="flex justify-between">
               <span>Vendredi</span>
@@ -202,6 +207,153 @@ import { Icon } from 'astro-icon/components';
   </section>
 
   <!-- FAQ RAPIDE -->
+
+  <!-- ======================================================================
+       FORMULAIRE DE CONTACT — version Cloudflare
+       ----------------------------------------------------------------------
+       Il n'apparaît sur le site que si FORMULAIRE_ACTIF = true (tout en haut
+       de ce fichier). Il est volontairement à false pour l'instant : sur
+       GitHub Pages, l'adresse /api/contact n'existe pas.
+
+       ▶ À FAIRE LE JOUR DE LA MIGRATION CLOUDFLARE :
+         1. Cloudflare → Email Routing → vérifie ton adresse de destination
+            (inspirebettyn@gmail.com). Sans ça, l'envoi est refusé.
+         2. Vérifie que wrangler.toml est bien à la racine du dépôt
+            (il déclare la liaison "EMAIL" utilisée par la fonction).
+         3. Repasse FORMULAIRE_ACTIF à true ci-dessus, puis déploie.
+         4. Teste en t'envoyant un message depuis le site.
+
+       L'envoi vers une adresse de destination vérifiée est gratuit et
+       illimité : aucun quota, aucun prestataire tiers.
+       ====================================================================== -->
+  {FORMULAIRE_ACTIF && (
+  <section class="py-16 px-6 bg-white">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-[#a8cbb7] text-xs tracking-[0.3em] uppercase mb-3">Écrivez-moi</p>
+        <h2 class="font-jakarta font-medium text-4xl text-[#3D3D3D] mb-4">Une question ? Un projet ?</h2>
+        <p class="text-sm text-[#4A4A4A]/70 max-w-lg mx-auto leading-relaxed">
+          Pour réserver un soin, la réservation en ligne est le plus rapide. Pour tout le reste —
+          un Instant Cocon, une carte cadeau, une question avant de venir — écrivez-moi ici,
+          je réponds sous 48 h.
+        </p>
+      </div>
+
+      <form id="contact-form" class="space-y-5">
+        <!-- Piège à robots : invisible pour une visiteuse, rempli par les spams -->
+        <input type="text" name="site" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="cf-nom" class="block text-sm font-medium text-[#3D3D3D] mb-1.5">
+              Votre prénom <span class="text-[#a8cbb7]">*</span>
+            </label>
+            <input type="text" id="cf-nom" name="nom" required maxlength="80" autocomplete="given-name"
+                   class="w-full border border-[#dde7e0] rounded-xl px-4 py-3 text-sm bg-[#f6f6e9]/40 focus:outline-none focus:border-[#a8cbb7] focus:bg-white transition-colors" />
+          </div>
+          <div>
+            <label for="cf-tel" class="block text-sm font-medium text-[#3D3D3D] mb-1.5">
+              Téléphone <span class="text-[#4A4A4A]/40 font-normal">(facultatif)</span>
+            </label>
+            <input type="tel" id="cf-tel" name="telephone" maxlength="30" autocomplete="tel"
+                   class="w-full border border-[#dde7e0] rounded-xl px-4 py-3 text-sm bg-[#f6f6e9]/40 focus:outline-none focus:border-[#a8cbb7] focus:bg-white transition-colors" />
+          </div>
+        </div>
+
+        <div>
+          <label for="cf-email" class="block text-sm font-medium text-[#3D3D3D] mb-1.5">
+            Votre e-mail <span class="text-[#a8cbb7]">*</span>
+          </label>
+          <input type="email" id="cf-email" name="email" required maxlength="120" autocomplete="email"
+                 class="w-full border border-[#dde7e0] rounded-xl px-4 py-3 text-sm bg-[#f6f6e9]/40 focus:outline-none focus:border-[#a8cbb7] focus:bg-white transition-colors" />
+        </div>
+
+        <div>
+          <label for="cf-sujet" class="block text-sm font-medium text-[#3D3D3D] mb-1.5">Votre demande concerne</label>
+          <select id="cf-sujet" name="demande"
+                  class="w-full border border-[#dde7e0] rounded-xl px-4 py-3 text-sm bg-[#f6f6e9]/40 focus:outline-none focus:border-[#a8cbb7] focus:bg-white transition-colors cursor-pointer">
+            <option>Une question avant de réserver</option>
+            <option>Un Instant Cocon (EVJF, anniversaire, entre amies)</option>
+            <option>Une carte cadeau</option>
+            <option>Un atelier</option>
+            <option>Autre chose</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="cf-message" class="block text-sm font-medium text-[#3D3D3D] mb-1.5">
+            Votre message <span class="text-[#a8cbb7]">*</span>
+          </label>
+          <textarea id="cf-message" name="message" rows="5" required maxlength="4000"
+                    class="w-full border border-[#dde7e0] rounded-xl px-4 py-3 text-sm bg-[#f6f6e9]/40 focus:outline-none focus:border-[#a8cbb7] focus:bg-white transition-colors resize-y"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-xs text-[#4A4A4A]/70 leading-relaxed cursor-pointer">
+          <input type="checkbox" name="consentement" required
+                 class="mt-0.5 w-4 h-4 flex-shrink-0 accent-[#a8cbb7] cursor-pointer" />
+          <span>
+            J'accepte que mes informations soient utilisées pour me recontacter. Elles ne sont
+            ni revendues, ni utilisées à d'autres fins.
+            <a href="/politique-confidentialite/" class="text-[#5a9480] underline underline-offset-2">En savoir plus</a>
+          </span>
+        </label>
+
+        <button type="submit" id="cf-submit"
+                class="w-full sm:w-auto bg-[#a8cbb7] text-white px-10 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+          Envoyer mon message
+        </button>
+
+        <p id="cf-status" class="hidden text-sm rounded-xl px-4 py-3 leading-relaxed" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+  )}
+
+  {FORMULAIRE_ACTIF && (
+  <script>
+    const form = document.getElementById('contact-form');
+    const statut = document.getElementById('cf-status');
+    const bouton = document.getElementById('cf-submit');
+    const REPLI = "Écrivez-moi à inspirebettyn@gmail.com ou appelez le 06 46 71 20 96.";
+
+    function afficher(message, ok) {
+      statut.textContent = message;
+      statut.className = ok
+        ? 'text-sm rounded-xl px-4 py-3 leading-relaxed bg-[#eaf1ec] text-[#3D3D3D]'
+        : 'text-sm rounded-xl px-4 py-3 leading-relaxed bg-[#f6e9e9] text-[#8a4a4a]';
+      statut.classList.remove('hidden');
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      bouton.disabled = true;
+      bouton.textContent = 'Envoi en cours…';
+
+      try {
+        const reponse = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await reponse.json().catch(() => ({}));
+
+        if (reponse.ok && data.success) {
+          form.reset();
+          afficher('Merci, votre message est bien parti. Je vous réponds sous 48 h.', true);
+        } else {
+          afficher("L'envoi n'a pas fonctionné. " + REPLI, false);
+        }
+      } catch {
+        afficher("L'envoi n'a pas fonctionné. " + REPLI, false);
+      } finally {
+        bouton.disabled = false;
+        bouton.textContent = 'Envoyer mon message';
+      }
+    });
+  </script>
+  )}
+
+
   <section class="py-16 px-6 bg-[#eaf1ec]">
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-10">
