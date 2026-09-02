@@ -15,6 +15,8 @@
 name = "inspireb"
 main = "src/worker.js"
 compatibility_date = "2026-01-01"
+workers_dev = false
+preview_urls = false
 
 #------------------------------------------------------------------------------
 #  Fichiers statiques : tout le site généré par Astro
