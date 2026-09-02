@@ -1,32 +1,49 @@
 #==============================================================================
-#  InspireB — configuration Cloudflare Pages
+#  InspireB — configuration Cloudflare Workers
 #------------------------------------------------------------------------------
-#  ⚠️ Ce fichier n'a AUCUN effet tant que le site est hébergé sur GitHub Pages.
-#     Il sera lu automatiquement le jour de la migration vers Cloudflare Pages.
+#  Cloudflare a fusionné Pages dans Workers : le site est désormais déployé
+#  comme un Worker qui sert les fichiers statiques générés par Astro.
 #
-#  Il sert à déclarer la liaison "EMAIL", qui permet à
-#  functions/api/contact.js de t'envoyer les messages du formulaire.
+#  Commande de build       : npm run build      (génère le dossier dist)
+#  Commande de déploiement : npx wrangler deploy
 #
-#  ⚠️ IMPORTANT : dès qu'un wrangler.toml existe à la racine, Cloudflare
-#     l'utilise À LA PLACE des réglages du tableau de bord. Si tu configures
-#     des variables depuis l'interface Cloudflare, ajoute-les aussi ici.
+#  ⚠️ Dès qu'un wrangler.toml existe, Cloudflare l'utilise À LA PLACE des
+#     réglages du tableau de bord. Si tu ajoutes une variable depuis
+#     l'interface Cloudflare, pense à l'inscrire aussi ici.
 #==============================================================================
 
 name = "inspireb"
+main = "src/worker.js"
 compatibility_date = "2026-01-01"
 
-# Dossier généré par `npm run build` (Astro)
-pages_build_output_dir = "dist"
+#------------------------------------------------------------------------------
+#  Fichiers statiques : tout le site généré par Astro
+#------------------------------------------------------------------------------
+#  Cloudflare sert d'abord les fichiers de "dist". Seules les URL qui ne
+#  correspondent à aucun fichier (comme /api/contact) atteignent le Worker.
+#------------------------------------------------------------------------------
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
 
 #------------------------------------------------------------------------------
-#  Envoi d'e-mail — Cloudflare Email Service
+#  Envoi d'e-mail — formulaire de contact
 #------------------------------------------------------------------------------
-#  destination_address doit être VÉRIFIÉE au préalable dans :
-#  Cloudflare → Email Routing → Destination Addresses
+#  ⚠️ CETTE SECTION EST DÉSACTIVÉE POUR L'INSTANT.
 #
-#  Sans cette vérification, l'envoi est refusé et le formulaire affichera
-#  un message d'erreur à la visiteuse.
+#  Le site se déploie très bien sans elle : le formulaire est de toute façon
+#  masqué (FORMULAIRE_ACTIF = false dans src/pages/contact.astro).
+#
+#  Pour l'activer plus tard :
+#   1. Cloudflare → Email → Email Routing → vérifier inspirebettyn@gmail.com
+#   2. retirer les # des trois lignes ci-dessous
+#   3. passer FORMULAIRE_ACTIF à true dans src/pages/contact.astro
+#   4. git push
+#
+#  Si le déploiement échoue après avoir retiré les #, c'est que l'envoi
+#  d'e-mail n'est pas disponible sur ce compte : remets les # et dis-le moi.
 #------------------------------------------------------------------------------
-[[send_email]]
-name = "EMAIL"
-destination_address = "inspirebettyn@gmail.com"
+# [[send_email]]
+# name = "EMAIL"
+# destination_address = "inspirebettyn@gmail.com"

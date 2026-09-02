@@ -1,22 +1,21 @@
 /**
  * =============================================================================
- *  InspireB — Réception du formulaire de contact
+ *  InspireB — Worker Cloudflare
  * -----------------------------------------------------------------------------
- *  Ce fichier ne fonctionne QUE sur Cloudflare Pages. Sur GitHub Pages, il est
- *  simplement ignoré (c'est pour ça que FORMULAIRE_ACTIF est à false dans
- *  src/pages/contact.astro tant que la migration n'est pas faite).
+ *  Ce fichier est le point d'entrée du site sur Cloudflare.
  *
- *  COMMENT ÇA MARCHE
- *  Le formulaire envoie les données ici, en POST sur /api/contact.
- *  Cette fonction les vérifie, puis te les envoie par e-mail via la liaison
- *  "EMAIL" déclarée dans wrangler.toml (Cloudflare Email Service).
+ *  Il fait deux choses :
+ *   1. il répond aux envois du formulaire de contact (POST sur /api/contact)
+ *   2. il laisse Cloudflare servir toutes les autres URL depuis le dossier
+ *      "dist" généré par `npm run build`
  *
- *  L'envoi vers une adresse de destination vérifiée dans Email Routing est
- *  gratuit et ne compte dans aucun quota.
+ *  ⚠️ Tu n'as normalement jamais à modifier ce fichier, SAUF les trois
+ *     constantes ci-dessous si ton adresse e-mail change.
  *
- *  ⚠️ AVANT LA MISE EN SERVICE
- *   • DESTINATAIRE doit être vérifiée dans Cloudflare → Email Routing
+ *  ⚠️ AVANT QUE LE FORMULAIRE FONCTIONNE
+ *   • DESTINATAIRE doit être vérifiée dans Cloudflare → Email → Email Routing
  *   • EXPEDITEUR doit être une adresse de ton domaine inspireb.fr
+ *   • la liaison "EMAIL" doit exister (déclarée dans wrangler.toml)
  * =============================================================================
  */
 
@@ -38,9 +37,8 @@ function reponseJson(objet, code = 200) {
   });
 }
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
-
+/** Traite un envoi du formulaire de contact. */
+async function traiterContact(request, env) {
   let donnees;
   try {
     donnees = await request.json();
@@ -48,13 +46,10 @@ export async function onRequestPost(context) {
     return reponseJson({ success: false, erreur: "Requête invalide." }, 400);
   }
 
-  // --- Piège à robots : ce champ est invisible, seuls les spams le remplissent
-  if (donnees.site) {
-    // On répond "succès" pour ne pas renseigner le robot sur le filtrage.
-    return reponseJson({ success: true });
-  }
+  // Piège à robots : ce champ est invisible, seuls les spams le remplissent.
+  // On répond "succès" pour ne pas renseigner le robot sur le filtrage.
+  if (donnees.site) return reponseJson({ success: true });
 
-  // --- Vérifications minimales
   const nom = propre(donnees.nom, 80).trim();
   const email = propre(donnees.email, 120).trim();
   const message = propre(donnees.message, 4000).trim();
@@ -72,17 +67,15 @@ export async function onRequestPost(context) {
   const telephone = propre(donnees.telephone, 30).trim() || "non renseigné";
   const demande = propre(donnees.demande, 120).trim() || "non précisé";
 
-  const sujet = `[inspireb.fr] ${demande} — ${nom}`;
-
   const texte = [
-    `Nouveau message depuis inspireb.fr`,
-    ``,
+    "Nouveau message depuis inspireb.fr",
+    "",
     `Prénom      : ${nom}`,
     `E-mail      : ${email}`,
     `Téléphone   : ${telephone}`,
     `Concerne    : ${demande}`,
-    ``,
-    `Message :`,
+    "",
+    "Message :",
     message,
   ].join("\n");
 
@@ -98,13 +91,17 @@ export async function onRequestPost(context) {
       <div style="margin-top:20px;padding:16px;background:#f6f6e9;border-radius:8px;font-size:14px;white-space:pre-wrap">${message}</div>
     </div>`;
 
+  if (!env.EMAIL) {
+    console.error("Liaison EMAIL absente : vérifier wrangler.toml et Email Routing.");
+    return reponseJson({ success: false, erreur: "Service d'envoi indisponible." }, 500);
+  }
+
   try {
     await env.EMAIL.send({
       to: DESTINATAIRE,
-      from: EXPEDITEUR,
-      name: NOM_EXPEDITEUR,
+      from: { email: EXPEDITEUR, name: NOM_EXPEDITEUR },
       replyTo: email, // tu réponds directement à la personne depuis ta boîte
-      subject: sujet,
+      subject: `[inspireb.fr] ${demande} — ${nom}`,
       text: texte,
       html,
     });
@@ -115,10 +112,18 @@ export async function onRequestPost(context) {
   }
 }
 
-/** Toute autre méthode que POST est refusée. */
-export async function onRequest(context) {
-  if (context.request.method !== "POST") {
-    return new Response("Méthode non autorisée", { status: 405 });
-  }
-  return onRequestPost(context);
-}
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/contact") {
+      if (request.method !== "POST") {
+        return new Response("Méthode non autorisée", { status: 405 });
+      }
+      return traiterContact(request, env);
+    }
+
+    // Toutes les autres URL : pages du site, images, CSS…
+    return env.ASSETS.fetch(request);
+  },
+};
