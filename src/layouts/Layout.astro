@@ -388,10 +388,13 @@ const schema = {
       const mainEl = document.querySelector('main');
 
       function decalerPourBanniere() {
-        if (!bannerAteliers) return;
-        const h = bannerAteliers.offsetHeight;
-        if (siteHeader) siteHeader.style.top = h + 'px';
-        if (mainEl) mainEl.style.paddingTop = h + 'px';
+        if (!bannerAteliers || bannerAteliers.classList.contains('hidden')) return;
+        const hBanniere = bannerAteliers.offsetHeight;
+        // ⚠️ Le <main> doit compenser la bannière ET l'en-tête, pas seulement
+        // la bannière : sinon le haut du contenu passe sous le menu.
+        const hEntete = siteHeader ? siteHeader.offsetHeight : 80;
+        if (siteHeader) siteHeader.style.top = hBanniere + 'px';
+        if (mainEl) mainEl.style.paddingTop = (hBanniere + hEntete) + 'px';
       }
       function fermerBanniere() {
         bannerAteliers?.classList.add('hidden');
@@ -407,6 +410,17 @@ const schema = {
           bannerAteliers.classList.remove('hidden');
           decalerPourBanniere();
           window.addEventListener('resize', decalerPourBanniere);
+
+          // Les polices web changent la hauteur de la bannière une fois
+          // chargées : on recalcule pour éviter un décalage figé trop court.
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(decalerPourBanniere);
+          }
+          // Filet de sécurité si la bannière change de hauteur (rotation de
+          // l'écran, zoom, texte plus long sur une autre page).
+          if (window.ResizeObserver) {
+            new ResizeObserver(decalerPourBanniere).observe(bannerAteliers);
+          }
         }
         document.getElementById('banner-close')?.addEventListener('click', fermerBanniere);
       }
