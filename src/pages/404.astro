@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { services } from '../data/services.js';
+import { soinsPages } from '../data/soinsPages.js';
+import { ateliersAVenir } from '../data/ateliers.js';
+
+// Les raccourcis les plus utiles, construits depuis tes données :
+// pas de liens en dur qui deviendraient faux au prochain changement.
+const raccourcis = services
+  .map((s) => {
+    const page = soinsPages.find((p) => p.serviceId === s.id);
+    return page ? { href: `/soins/${page.slug}/`, label: s.categorie } : null;
+  })
+  .filter(Boolean)
+  .slice(0, 4);
+
+const atelierAVenir = ateliersAVenir()[0];
+---
+
+<Layout
+  title="Page introuvable | InspireB"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez les soins, les ateliers et les informations pratiques d'InspireB."
+>
+
+  <section class="py-16 sm:py-20 md:py-28 px-6 text-center bg-[#eaf1ec]">
+    <div class="max-w-xl mx-auto">
+      <p class="text-[#a8cbb7] text-[0.65rem] sm:text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-3">
+        Erreur 404
+      </p>
+      <h1 class="font-jakarta font-medium text-3xl sm:text-4xl md:text-5xl text-[#3D3D3D] mb-5 leading-tight">
+        Cette page s'est<br /><em class="text-[#5a9480]">envolée</em>
+      </h1>
+      <p class="text-sm sm:text-base text-[#4A4A4A]/70 leading-relaxed">
+        Elle n'existe pas, ou elle a changé d'adresse. Rien de grave —
+        voici de quoi retrouver votre chemin.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+        <a href="/"
+           class="bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium">
+          Retour à l'accueil
+        </a>
+        <a href="/contact/"
+           class="border-2 border-[#a8cbb7] text-[#5a9480] px-8 py-3 rounded-full hover:bg-white transition-colors text-sm tracking-wide font-medium">
+          Me contacter
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Raccourcis vers les pages les plus consultées -->
+  <section class="py-14 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] text-center mb-8">
+        Vous cherchiez peut-être…
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {raccourcis.map((item) => (
+          <a href={item.href}
+             class="bg-[#f6f6e9] rounded-2xl px-5 py-4 flex items-center justify-between gap-3 hover:shadow-md transition-shadow group">
+            <span class="font-jakarta font-medium text-[#3D3D3D] group-hover:text-[#5a9480] transition-colors">
+              {item.label}
+            </span>
+            <Icon name="ph:arrow-right" size={18} class="text-[#a8cbb7] flex-shrink-0" />
+          </a>
+        ))}
+
+        <a href="/soins/"
+           class="bg-[#f6f6e9] rounded-2xl px-5 py-4 flex items-center justify-between gap-3 hover:shadow-md transition-shadow group">
+          <span class="font-jakarta font-medium text-[#3D3D3D] group-hover:text-[#5a9480] transition-colors">
+            Tous les soins &amp; tarifs
+          </span>
+          <Icon name="ph:arrow-right" size={18} class="text-[#a8cbb7] flex-shrink-0" />
+        </a>
+
+        {atelierAVenir ? (
+          <a href="/ateliers/"
+             class="bg-[#eaf1ec] rounded-2xl px-5 py-4 flex items-center justify-between gap-3 hover:shadow-md transition-shadow group">
+            <span class="font-jakarta font-medium text-[#5a9480]">
+              Les prochains ateliers
+            </span>
+            <Icon name="ph:arrow-right" size={18} class="text-[#a8cbb7] flex-shrink-0" />
+          </a>
+        ) : (
+          <a href="/blog/"
+             class="bg-[#f6f6e9] rounded-2xl px-5 py-4 flex items-center justify-between gap-3 hover:shadow-md transition-shadow group">
+            <span class="font-jakarta font-medium text-[#3D3D3D] group-hover:text-[#5a9480] transition-colors">
+              Le blog
+            </span>
+            <Icon name="ph:arrow-right" size={18} class="text-[#a8cbb7] flex-shrink-0" />
+          </a>
+        )}
+      </div>
+
+      <p class="text-xs text-[#4A4A4A]/50 text-center mt-8 leading-relaxed">
+        Vous êtes arrivée ici depuis un lien d'un autre site ?
+        <a href="/contact/" class="text-[#5a9480] underline underline-offset-4">Dites-le moi</a>,
+        je corrigerai.
+      </p>
+    </div>
+  </section>
+
+</Layout>

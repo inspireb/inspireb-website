@@ -8,9 +8,16 @@ export interface Props {
   ogImage?: string;
   /** Données structurées supplémentaires propres à la page (Service, FAQPage…) */
   schemaExtra?: any[];
+  /**
+   * Image de bandeau à charger en priorité.
+   * Les images de fond CSS sont découvertes tard par le navigateur, ce qui
+   * retarde l'affichage du premier écran. La signaler ici la fait charger
+   * tout de suite.
+   */
+  preloadImage?: string;
 }
 
-const { title, description, canonical, ogImage, schemaExtra = [] } = Astro.props;
+const { title, description, canonical, ogImage, schemaExtra = [], preloadImage } = Astro.props;
 const siteUrl = "https://www.inspireb.fr";
 const currentUrl = canonical || siteUrl + Astro.url.pathname;
 const ogImageUrl = ogImage ? siteUrl + ogImage : siteUrl + "/images/og-image.jpg";
@@ -123,10 +130,12 @@ const schema = {
 
     <title>{title}</title>
 
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+
     <!-- Fonts : Dancing Script (logo) + Plus Jakarta Sans (textes, proche de Clear Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   </head>
 
   <body class="bg-[#f6f6e9] text-[#4A4A4A] font-jakarta">

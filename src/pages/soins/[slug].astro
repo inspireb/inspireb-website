@@ -76,6 +76,7 @@ const autresPages = soinsPages.filter((p) => p.slug !== page.slug);
   title={page.seoTitle}
   description={page.seoDescription}
   ogImage={page.image}
+  preloadImage={page.heroImage || page.image}
   schemaExtra={[schemaService, schemaFaq, schemaBreadcrumb]}
 >
 
