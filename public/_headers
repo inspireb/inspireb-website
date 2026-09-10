@@ -16,6 +16,9 @@
 #    • assets.mailerlite.com                     → formulaire newsletter
 #    • www.google.com                            → carte Google Maps
 #    • www.youtube-nocookie.com                  → vidéo intégrée
+#    • inspireb.setmore.com / *.setmore.com      → réservation en ligne
+#    • tidycal.com                               → réservation ateliers Sophro-Naturo
+#    • www.helloasso.com                         → inscription atelier parents
 # =============================================================================
 
 /*
@@ -24,4 +27,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.google.com https://www.youtube-nocookie.com https://assets.mailerlite.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://assets.mailerlite.com; form-action 'self' https://assets.mailerlite.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.google.com https://www.youtube-nocookie.com https://assets.mailerlite.com https://inspireb.setmore.com https://*.setmore.com https://tidycal.com https://www.helloasso.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://assets.mailerlite.com; form-action 'self' https://assets.mailerlite.com https://inspireb.setmore.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
