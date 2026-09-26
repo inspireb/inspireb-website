@@ -1,13 +1,117 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Icon } from 'astro-icon/components';
 
 const derniereMaj = "Septembre 2026";
+
+// -----------------------------------------------------------------------------
+//  Les traitements de données, un par carte.
+//  👉 Si un outil ou une durée change, c'est ici qu'on le modifie.
+// -----------------------------------------------------------------------------
+const traitements = [
+  {
+    titre: "Prise de rendez-vous",
+    donnees: "Nom, prénom, email, téléphone, date et nature du rendez-vous.",
+    pourquoi: "Gérer, confirmer et vous rappeler vos rendez-vous.",
+    base: "Mesures préalables au contrat (votre demande de rendez-vous).",
+    outil: "Setmore",
+    duree: "3 ans après notre dernier contact.",
+  },
+  {
+    titre: "Questionnaire d'accueil",
+    donnees: "Identité, habitudes de vie, antécédents, contre-indications, traitements en cours.",
+    pourquoi: "Adapter le soin et repérer d'éventuelles contre-indications.",
+    base: "Votre consentement explicite (il s'agit de données de santé, voir section 3).",
+    outil: "Tally, puis mon logiciel de suivi client",
+    duree: "Supprimé de Tally une fois reporté dans votre dossier. Dans votre dossier : 3 ans après notre dernier contact.",
+  },
+  {
+    titre: "Dossier et suivi de séance",
+    donnees: "Historique des soins, notes de séance, ressentis, produits utilisés, fiches conseil.",
+    pourquoi: "Assurer un suivi cohérent d'une séance à l'autre.",
+    base: "L'exécution de la prestation, et votre consentement explicite pour les informations de santé.",
+    outil: "Mon logiciel de suivi client",
+    duree: "3 ans après notre dernier contact.",
+  },
+  {
+    titre: "Photos avant / après",
+    donnees: "Photos du visage ou du corps, uniquement si vous l'acceptez.",
+    pourquoi: "Suivre l'évolution de votre peau. Elles ne sont jamais publiées sans votre accord écrit distinct.",
+    base: "Votre consentement spécifique, facultatif et révocable à tout moment.",
+    outil: "Mon logiciel de suivi client",
+    duree: "Jusqu'au retrait de votre accord, et au plus 3 ans après notre dernier contact.",
+  },
+  {
+    titre: "Facturation",
+    donnees: "Identité, prestations, montants.",
+    pourquoi: "Établir les factures et tenir ma comptabilité.",
+    base: "Obligation légale.",
+    outil: "Indy",
+    duree: "10 ans (obligation comptable).",
+  },
+  {
+    titre: "Newsletter",
+    donnees: "Prénom, email.",
+    pourquoi: "Vous envoyer mes conseils et actualités.",
+    base: "Votre consentement.",
+    outil: "MailerLite",
+    duree: "Jusqu'à votre désinscription, possible à chaque envoi.",
+  },
+  {
+    titre: "Carte de fidélité",
+    donnees: "Aucune donnée en plus : le décompte utilise l'historique de vos prestations déjà enregistré.",
+    pourquoi: "Calculer votre remise fidélité.",
+    base: "L'exécution du contrat (avantage client).",
+    outil: "Mon logiciel de suivi client",
+    duree: "Comme votre dossier client.",
+  },
+  {
+    titre: "Cartes cadeaux et ateliers",
+    donnees: "Nom de l'acheteuse et de la bénéficiaire, liste des participantes, retours d'atelier.",
+    pourquoi: "Suivre la validité des cartes cadeaux, organiser les ateliers et les améliorer. Les retours ne sont jamais publiés sans accord.",
+    base: "L'exécution du contrat.",
+    outil: "Mon logiciel de suivi client",
+    duree: "3 ans après la fin de validité de la carte ou la date de l'atelier.",
+  },
+  {
+    titre: "Prise de contact directe",
+    donnees: "Les informations que vous me transmettez par téléphone, email ou WhatsApp.",
+    pourquoi: "Répondre à votre demande.",
+    base: "Mesures préalables au contrat.",
+    outil: "Téléphone, Gmail, WhatsApp",
+    duree: "Le temps de répondre, puis comme votre dossier client si vous devenez cliente.",
+  },
+];
+
+const prestataires = [
+  { nom: "Cloudflare, Inc.", role: "Hébergement du site, de mon logiciel de suivi client et des photos",
+    lieu: "Société américaine. Les données du logiciel de suivi client sont placées en Europe.",
+    garantie: "Certification EU-U.S. Data Privacy Framework, et clauses contractuelles types de la Commission européenne." },
+  { nom: "Setmore", role: "Prise de rendez-vous en ligne",
+    lieu: "Société américaine.",
+    garantie: "Accord de traitement des données (DPA) intégré à ses conditions d'utilisation." },
+  { nom: "Tally BV", role: "Questionnaire d'accueil",
+    lieu: "Société belge, données stockées en Europe.",
+    garantie: "Union européenne : pas de transfert hors UE." },
+  { nom: "MailerLite (UAB MailerLite)", role: "Envoi de la newsletter",
+    lieu: "Société lituanienne.",
+    garantie: "Union européenne." },
+  { nom: "Indy", role: "Facturation et comptabilité",
+    lieu: "Société française.",
+    garantie: "Union européenne." },
+  { nom: "Google", role: "Messagerie Gmail (envoi des fiches conseil et devis), Maps, YouTube et Analytics",
+    lieu: "Groupe américain.",
+    garantie: "Certification EU-U.S. Data Privacy Framework. Maps, YouTube et Analytics ne s'activent qu'avec votre accord (bandeau cookies)." },
+  { nom: "Infomaniak Network SA", role: "Enregistrement du nom de domaine",
+    lieu: "Société suisse.",
+    garantie: "La Suisse bénéficie d'une décision d'adéquation de la Commission européenne." },
+];
+
+const lien = "text-[#5a9480] underline underline-offset-4 hover:text-[#a8cbb7] transition-colors";
 ---
 
 <Layout
   title="Politique de confidentialité | InspireB"
-  description="Politique de confidentialité et gestion des données personnelles (RGPD) du site InspireB, praticienne bien-être et naturopathe à Sartilly-Baie-Bocage."
+  description="Politique de confidentialité (RGPD) d'InspireB, praticienne bien-être et naturopathe à Sartilly-Baie-Bocage : données collectées, stockage, sécurité et vos droits."
 >
 
   <!-- HERO PAGE -->
@@ -25,124 +129,178 @@ const derniereMaj = "Septembre 2026";
 
       <div>
         <p>
-          La présente politique décrit comment InspireB (Betty NOEL WOURMS) collecte, utilise et protège vos données
-          personnelles lorsque vous naviguez sur ce site ou faites appel à mes services. Je m'engage à traiter vos
-          données avec respect et transparence, conformément au Règlement général sur la protection des données (RGPD)
-          et à la loi « Informatique et Libertés ».
+          Cette page explique quelles données je collecte, pourquoi, où elles sont conservées et comment je les
+          protège, que vous naviguiez sur ce site ou que vous veniez en séance. Je traite vos données conformément
+          au Règlement général sur la protection des données (RGPD) et à la loi « Informatique et Libertés ».
         </p>
       </div>
 
       <div>
         <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">1. Responsable du traitement</h2>
         <p>
-          Le responsable du traitement des données est Betty NOEL WOURMS (InspireB), 2 Rue des Iris,
-          50530 Sartilly-Baie-Bocage. Coordonnées en section 7.
+          InspireB est une micro-entreprise. La responsable du traitement est Betty NOEL WOURMS (InspireB),
+          praticienne bien-être et naturopathe, 2 Rue des Iris, 50530 Sartilly-Baie-Bocage.
+          Pour me joindre, voir la section 8.
         </p>
       </div>
 
       <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">2. Données collectées &amp; finalités</h2>
-        <p class="mb-4">Je ne collecte que les données strictement nécessaires, dans les cas suivants :</p>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">2. Ce que je collecte et pourquoi</h2>
+        <p class="mb-6">Je ne collecte que ce qui est utile à votre accompagnement. Voici chaque cas, en détail.</p>
 
         <div class="space-y-4">
-          <div class="bg-[#eaf1ec] rounded-2xl p-5">
-            <p class="font-medium text-[#3D3D3D] mb-1">Réservation d'un soin</p>
-            <p class="text-sm">Nom, prénom, email, téléphone et informations communiquées lors de la prise de rendez-vous,
-            via l'outil <strong>Setmore</strong>. Finalité : gérer et confirmer vos rendez-vous.</p>
-          </div>
-          <div class="bg-[#eaf1ec] rounded-2xl p-5">
-            <p class="font-medium text-[#3D3D3D] mb-1">Inscription à la newsletter</p>
-            <p class="text-sm">Adresse email, via l'outil <strong>MailerLite</strong>. Finalité : vous envoyer mes conseils
-            et actualités. Désinscription possible à tout moment via le lien présent dans chaque email.</p>
-          </div>
-          <div class="bg-[#eaf1ec] rounded-2xl p-5">
-            <p class="font-medium text-[#3D3D3D] mb-1">Prise de contact directe</p>
-            <p class="text-sm">Lorsque vous m'appelez, m'écrivez par email ou via WhatsApp. Finalité : répondre à votre demande.</p>
-          </div>
-          <div class="bg-[#eaf1ec] rounded-2xl p-5">
+          {traitements.map((t) => (
+            <div class="bg-[#eaf1ec] rounded-2xl p-5">
+              <p class="font-medium text-[#3D3D3D] mb-3">{t.titre}</p>
+              <dl class="text-sm grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-x-4 gap-y-1.5">
+                <dt class="text-[#4A4A4A]/55">Données</dt>        <dd>{t.donnees}</dd>
+                <dt class="text-[#4A4A4A]/55">Pourquoi</dt>       <dd>{t.pourquoi}</dd>
+                <dt class="text-[#4A4A4A]/55">Base légale</dt>    <dd>{t.base}</dd>
+                <dt class="text-[#4A4A4A]/55">Outil</dt>          <dd>{t.outil}</dd>
+                <dt class="text-[#4A4A4A]/55">Conservation</dt>   <dd>{t.duree}</dd>
+              </dl>
+            </div>
+          ))}
+
+          <div class="bg-[#f6f6e9] rounded-2xl p-5">
             <p class="font-medium text-[#3D3D3D] mb-1">Navigation sur le site</p>
-            <p class="text-sm">Certains services tiers intégrés (carte Google Maps, vidéo YouTube, mesure d'audience
-            Google Analytics) peuvent déposer des cookies. Voir la section 6.</p>
+            <p class="text-sm">
+              Mon hébergeur <strong>Cloudflare</strong> traite automatiquement certaines données techniques
+              (adresse IP, type de navigateur, pages consultées) pour afficher le site et le protéger contre les
+              attaques. Ces données ne me sont pas transmises individuellement et ne servent à aucun profilage.
+              Certains services intégrés (carte Google Maps, vidéo YouTube, mesure d'audience Google Analytics)
+              peuvent déposer des cookies, uniquement avec votre accord : voir la section 7.
+            </p>
           </div>
-          <div class="bg-[#eaf1ec] rounded-2xl p-5">
-            <p class="font-medium text-[#3D3D3D] mb-1">Données techniques d'hébergement</p>
-            <p class="text-sm">Mon hébergeur <strong>Cloudflare</strong> traite automatiquement certaines données
-            techniques (adresse IP, type de navigateur, pages consultées) afin d'assurer la diffusion du site
-            et de le protéger contre les attaques. Ces données ne me sont pas transmises de manière
-            individuelle et ne servent à aucun profilage.</p>
-          </div>
+        </div>
+
+        <p class="text-sm mt-6">
+          Je fais le tri dans les dossiers au moins une fois par an pour supprimer ceux dont la durée de conservation
+          est dépassée.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">3. Vos informations de santé</h2>
+        <p class="mb-3">
+          Le questionnaire d'accueil et les notes de séance peuvent contenir des informations de santé. Le RGPD les
+          protège davantage : je ne les utilise qu'avec votre <strong>consentement explicite</strong>, donné par une
+          case à cocher dédiée à la fin du questionnaire, et uniquement pour adapter vos soins.
+        </p>
+        <p>
+          Vous pouvez retirer ce consentement à tout moment, sur simple demande. Cela ne remet pas en cause ce qui a
+          été fait avant, mais je ne pourrai plus m'appuyer sur ces informations pour vos prochains soins.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">4. Où sont conservées vos données et comment je les protège</h2>
+        <p class="mb-4">
+          Pour le suivi de mes clientes, j'utilise un logiciel conçu sur mesure pour InspireB. Voici ce qu'il faut
+          savoir.
+        </p>
+        <ul class="space-y-3">
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Hébergement en Europe.</strong>
+            La base de données est hébergée chez Cloudflare en Europe de l'Ouest. Les photos sont stockées dans la
+            zone réservée à l'Union européenne.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Chiffrement des données sensibles.</strong>
+            Les notes de séance, questionnaires, ressentis, fiches conseil et photos sont chiffrés sur mon appareil
+            avant d'être envoyés (chiffrement AES-256), avec une clé que je suis seule à détenir. Cloudflare ne peut
+            pas les lire.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Ce qui n'est pas chiffré.</strong>
+            Votre identité, vos coordonnées, les dates et les montants restent lisibles par le logiciel, pour
+            permettre les recherches et les calculs (factures, carte de fidélité).
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Accès protégé.</strong>
+            L'accès passe par une double authentification, puis une phrase secrète personnelle pour déchiffrer les
+            données. Le logiciel se verrouille automatiquement après un temps d'inactivité.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Confidentialité.</strong>
+            Je suis la seule à consulter vos données dans le cadre de votre suivi.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Photos.</strong>
+            Elles sont réduites et débarrassées de leurs informations cachées (dont la position GPS) avant l'envoi.
+            Elles servent uniquement au suivi.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Fiches conseil.</strong>
+            Je vous les envoie par email, depuis ma messagerie professionnelle, après les avoir relues.
+          </li>
+          <li>
+            <strong class="text-[#3D3D3D] font-medium">Aucun usage commercial.</strong>
+            Pas de publicité, pas de revente, aucune décision prise automatiquement par un logiciel.
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">5. Qui traite vos données avec moi</h2>
+        <p class="mb-4">
+          Vos données ne sont jamais vendues. Ces prestataires techniques les traitent pour mon compte, uniquement pour
+          les usages décrits ci-dessus :
+        </p>
+        <div class="space-y-3">
+          {prestataires.map((p) => (
+            <div class="border border-[#dde7e0] rounded-2xl px-5 py-4 text-sm">
+              <p><strong class="text-[#3D3D3D] font-medium">{p.nom}</strong> — {p.role}</p>
+              <p class="text-[#4A4A4A]/65 mt-1">{p.lieu} {p.garantie}</p>
+            </div>
+          ))}
         </div>
       </div>
 
       <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">3. Base légale</h2>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">6. Et si je n'ai plus besoin de vos données ?</h2>
         <p>
-          Le traitement de vos données repose sur : votre <strong>consentement</strong> (newsletter, cookies non essentiels),
-          l'<strong>exécution de la prestation</strong> ou de mesures précontractuelles (réservation, demande de contact),
-          et mon <strong>intérêt légitime</strong> à assurer le bon fonctionnement et la sécurité du site
-          (notamment les journaux techniques et la protection anti-attaques assurés par mon hébergeur).
+          À la fin des durées indiquées en section 2, vos données sont supprimées. Seules les factures sont conservées
+          10 ans, parce que la loi l'impose.
         </p>
       </div>
 
       <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">4. Durée de conservation</h2>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">7. Cookies</h2>
         <p>
-          Vos données ne sont conservées que le temps nécessaire aux finalités ci-dessus : les données de réservation
-          le temps de la relation puis pendant la durée légale applicable ; les données de newsletter jusqu'à votre
-          désinscription ; les demandes de contact le temps d'y répondre.
-        </p>
-      </div>
-
-      <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">5. Destinataires &amp; sous-traitants</h2>
-        <p class="mb-3">
-          Vos données ne sont jamais vendues. Elles peuvent être traitées par les prestataires techniques suivants,
-          uniquement pour les finalités décrites :
-        </p>
-        <ul class="space-y-1.5">
-          <li>• <strong>Setmore</strong> (réservation en ligne)</li>
-          <li>• <strong>MailerLite</strong> (envoi de la newsletter)</li>
-          <li>• <strong>Google</strong> (Maps, YouTube, Analytics)</li>
-          <li>• <strong>Cloudflare, Inc.</strong> (hébergement du site et diffusion des pages)</li>
-          <li>• <strong>Infomaniak Network SA</strong> (enregistrement du nom de domaine)</li>
-        </ul>
-        <p class="mt-3">
-          Certains de ces prestataires pouvant être situés hors de l'Union européenne, les transferts éventuels sont
-          encadrés par les garanties prévues par le RGPD (clauses contractuelles types notamment).
-        </p>
-      </div>
-
-      <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">6. Cookies</h2>
-        <p>
-          Ce site n'utilise pas de cookies publicitaires. Seuls des cookies techniques, de service, ou de mesure
+          Ce site n'utilise pas de cookies publicitaires. Seuls des cookies techniques, de service ou de mesure
           d'audience peuvent être déposés par les modules tiers (Google Maps, YouTube, Google Analytics), et
-          uniquement après votre consentement. Vous pouvez à tout moment configurer votre navigateur pour refuser
-          les cookies ou les supprimer, ou modifier votre choix via le lien « Gérer les cookies » en bas de page.
+          uniquement après votre accord. Vous pouvez modifier votre choix à tout moment via le lien « Gérer les
+          cookies » en bas de page, ou configurer votre navigateur pour refuser ou supprimer les cookies.
         </p>
       </div>
 
       <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">7. Vos droits</h2>
-        <p class="mb-3">
-          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation,
-          d'opposition et de portabilité de vos données. Pour les exercer, contactez-moi :
-        </p>
-        <ul class="space-y-1.5">
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">8. Vos droits</h2>
+        <p class="mb-4">Vous pouvez à tout moment :</p>
+        <ul class="space-y-2 mb-4">
+          <li>• <strong class="text-[#3D3D3D] font-medium">Consulter et récupérer vos données</strong> : je vous envoie un fichier lisible avec tout ce que je conserve sur vous.</li>
+          <li>• <strong class="text-[#3D3D3D] font-medium">Les corriger</strong> si elles sont inexactes ou incomplètes.</li>
+          <li>• <strong class="text-[#3D3D3D] font-medium">Les faire supprimer</strong> : votre dossier et tout son historique, sauf les factures, que je dois garder 10 ans.</li>
+          <li>• <strong class="text-[#3D3D3D] font-medium">Retirer votre consentement</strong> pour vos informations de santé, les photos ou la newsletter.</li>
+          <li>• <strong class="text-[#3D3D3D] font-medium">Vous opposer</strong> à un traitement ou demander à le limiter.</li>
+        </ul>
+        <p class="mb-3">Pour cela, écrivez-moi. Je vous réponds sous un mois.</p>
+        <ul class="space-y-1.5 mb-4">
           <li>• Par email : inspirebettyn@gmail.com</li>
           <li>• Par courrier : InspireB, 2 Rue des Iris, 50530 Sartilly-Baie-Bocage</li>
         </ul>
-        <p class="mt-3">
-          Vous pouvez également introduire une réclamation auprès de la CNIL :
-          <a href="https://www.cnil.fr" target="_blank" rel="noopener" class="text-[#5a9480] underline underline-offset-4 hover:text-[#a8cbb7] transition-colors">www.cnil.fr</a>.
+        <p>
+          Si ma réponse ne vous convient pas, vous pouvez adresser une réclamation à la CNIL :
+          <a href="https://www.cnil.fr" target="_blank" rel="noopener" class={lien}>www.cnil.fr</a>.
         </p>
       </div>
 
       <div>
-        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">8. Modifications</h2>
+        <h2 class="font-jakarta font-medium text-2xl text-[#3D3D3D] mb-4">9. Modifications</h2>
         <p>
-          Cette politique peut être mise à jour pour refléter des évolutions légales ou techniques. La date de dernière
-          mise à jour figure en haut de page.
+          Cette politique peut évoluer avec mes outils ou la loi. La date de dernière mise à jour figure en haut
+          de page.
         </p>
       </div>
 
