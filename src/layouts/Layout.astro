@@ -38,6 +38,10 @@ const sousMenuSoins = services.flatMap((s) => {
 // Bannière ateliers : s'affiche seulement s'il reste un atelier à venir,
 // et disparaît toute seule une fois la dernière date passée.
 const prochainAtelier = ateliersAVenir()[0];
+// Date courte du prochain atelier pour la bannière ("samedi 3 octobre")
+const prochainAtelierDate = prochainAtelier
+  ? new Date(prochainAtelier.debut).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+  : '';
 const surPageAteliers = Astro.url.pathname.startsWith('/ateliers');
 
 const offers = services
@@ -145,8 +149,8 @@ const schema = {
       <div id="banner-ateliers" class="hidden fixed top-0 left-0 right-0 z-[60] bg-[#5a9480] text-white">
         <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-center gap-3 text-center">
           <a href="/ateliers/" class="flex-1 text-sm leading-snug hover:underline underline-offset-2">
-            <span class="font-medium">Nouveau — 3 ateliers bien-être en septembre</span>
-            <span class="hidden sm:inline text-white/75"> · stress, sommeil et pause parents · places limitées</span>
+            <span class="font-medium">Découvrir les ateliers à venir</span>
+            <span class="hidden sm:inline text-white/75"> · prochain rendez-vous le {prochainAtelierDate}</span>
             <span class="whitespace-nowrap"> →</span>
           </a>
           <button id="banner-close" aria-label="Fermer l'annonce"

@@ -32,14 +32,17 @@ const schemaEvents = aVenir.map((a) => ({
   },
   organizer: { '@type': 'Organization', name: 'InspireB', url: siteUrl },
   performer: { '@type': 'Person', name: 'Betty NOEL WOURMS' },
-  offers: {
-    '@type': 'Offer',
-    price: String(a.prix),
-    priceCurrency: 'EUR',
-    availability: 'https://schema.org/InStock',
-    url: a.lienReservation,
-    validFrom: '2026-08-25T00:00',
-  },
+  // Pas d'offre si le prix n'est pas connu (ex. festival organisé par un tiers)
+  ...(typeof a.prix === 'number' ? {
+    offers: {
+      '@type': 'Offer',
+      price: String(a.prix),
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      url: a.lienReservation,
+      validFrom: '2026-08-25T00:00',
+    },
+  } : {}),
   image: siteUrl + '/images/og-image.jpg',
 }));
 ---
@@ -56,7 +59,7 @@ const schemaEvents = aVenir.map((a) => ({
   ))}
 
   <!-- HERO -->
-  <section class="relative py-16 md:py-12 sm:py-16 md:py-24 px-6 text-center overflow-hidden">
+  <section class="relative py-16 md:py-24 px-6 text-center overflow-hidden">
     <div class="absolute inset-0 bg-[url('/images/soins/ateliers.webp')] bg-cover bg-center">
       <div class="absolute inset-0 bg-[#eaf1ec]/50"></div>
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_center,_#eaf1ec_0%,_#eaf1ec_38%,_transparent_100%)]"></div>
@@ -108,7 +111,7 @@ const schemaEvents = aVenir.map((a) => ({
               </div>
               <div class="flex items-center gap-2 text-sm text-[#4A4A4A]/70">
                 <Icon name="ph:clock-fill" size={16} class="flex-shrink-0" />
-                <span>{formatHeure(a.debut)} – {formatHeure(a.fin)}</span>
+                <span>{a.horaires ?? `${formatHeure(a.debut)} – ${formatHeure(a.fin)}`}</span>
               </div>
             </div>
 
@@ -152,14 +155,16 @@ const schemaEvents = aVenir.map((a) => ({
               <div class="flex flex-wrap items-center justify-between gap-4 mt-8 pt-6 border-t border-[#dde7e0]">
                 <div>
                   <p class="font-jakarta font-medium text-xl text-[#a8cbb7]">{a.prixTexte}</p>
-                  <p class="text-xs text-[#4A4A4A]/50 mt-0.5">
-                    Les places sont volontairement limitées pour garder une ambiance intime.
-                  </p>
+                  {typeof a.prix === 'number' && (
+                    <p class="text-xs text-[#4A4A4A]/50 mt-0.5">
+                      Les places sont volontairement limitées pour garder une ambiance intime.
+                    </p>
+                  )}
                 </div>
                 <div class="sm:text-right">
                   <a href={a.lienReservation} target="_blank" rel="noopener"
                      class="inline-block bg-[#a8cbb7] text-white px-8 py-3.5 rounded-full hover:bg-[#5a9480] transition-colors text-sm tracking-wide font-medium whitespace-nowrap">
-                    Réserver ma place
+                    {a.libelleBouton ?? 'Réserver ma place'}
                   </a>
                   {a.noteReservation && (
                     <p class="text-xs text-[#4A4A4A]/50 mt-2 max-w-[16rem] sm:ml-auto leading-snug">{a.noteReservation}</p>

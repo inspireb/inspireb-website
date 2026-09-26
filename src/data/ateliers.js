@@ -105,6 +105,37 @@ export const ateliers = [
       `Des outils à mettre en pratique dès le soir même.`,
     ],
   },
+  {
+    id: "festival-tete-dans-les-etoiles",
+    flyer: "/images/ateliers/festival-tete-dans-les-etoiles.webp",
+    flyerAlt: "Affiche du festival La Tête dans les étoiles, les 3 et 4 octobre 2026 à Sartilly",
+    titre: "Retrouvez-moi dimanche au festival",
+    serie: "Festival La Tête dans les étoiles",
+    avec: "Un festival de l'association Amstramgram",
+
+    debut: "2026-10-04T10:00",
+    fin: "2026-10-04T20:00",
+    // Horaires affichés à la place des heures ci-dessus (facultatif).
+    horaires: "Horaires sur le site du festival",
+
+    lieu: "Salle culturelle L'Étoile",
+    adresse: "Rue des Hirondelles",
+    ville: "Sartilly-Baie-Bocage",
+    codePostal: "50530",
+
+    // prix: null → pas de tarif affiché dans le schema.org
+    prix: null,
+    prixTexte: "Programme et tarifs sur le site du festival",
+    lienReservation: "http://www.festivallatetedanslesetoiles.org/",
+    // Texte du bouton (facultatif, sinon « Réserver ma place »)
+    libelleBouton: "Voir le programme",
+
+    accroche: `Le dimanche 4 octobre, j'anime un atelier au festival La Tête dans les étoiles, à deux pas du cabinet.`,
+    description: [
+      `Un week-end pour les familles à la salle L'Étoile de Sartilly : spectacles, ateliers, concerts et un espace dédié aux parents.`,
+      `Venez avec vos enfants, prenez un moment pour vous, et passez me dire bonjour.`,
+    ],
+  },
 ];
 
 // -----------------------------------------------------------------------------
