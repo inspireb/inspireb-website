@@ -121,17 +121,18 @@ import { soinsPages } from '../data/soinsPages.js';
       <div>
         <h2 class="font-jakarta font-medium text-3xl text-[#3D3D3D] mb-3">Votre fidélité compte</h2>
         <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-3">
-          Votre 5<sup>e</sup> prestation bénéficie de <strong class="text-[#5a9480] font-medium">10 % de remise</strong>,
-          puis le compte repart à zéro. Vous n'avez rien à présenter : je tiens le compte pour vous.
+          Après 5 prestations réglées, votre 6<sup>e</sup> séance bénéficie de
+          <strong class="text-[#5a9480] font-medium">10 % de remise</strong>. Vous n'avez rien à présenter :
+          je tiens le compte pour vous.
         </p>
         <p class="text-xs text-[#4A4A4A]/50">
           Détails dans les <a href="/cgv/#fidelite" class="underline underline-offset-2 hover:text-[#5a9480]">conditions générales de vente</a>.
         </p>
       </div>
 
-      <!-- 4 séances, la 5e avec la remise -->
+      <!-- 5 séances, puis la 6e avec la remise -->
       <div class="flex items-center justify-center gap-2" aria-hidden="true">
-        {[1, 2, 3, 4].map(() => (
+        {[1, 2, 3, 4, 5].map(() => (
           <span class="w-4 h-4 rounded-full bg-[#a8cbb7]"></span>
         ))}
         <span class="ml-1 bg-[#5a9480] text-white rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap">−10 %</span>
