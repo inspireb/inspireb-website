@@ -136,6 +136,35 @@ export const ateliers = [
       `Venez avec vos enfants, prenez un moment pour vous, et passez me dire bonjour.`,
     ],
   },
+
+  {
+    id: "atelier-parents-naturopathie",
+    flyer: "/images/ateliers/atelier-parents-naturopathie.webp",
+    flyerAlt: "Affiche de l'atelier parents : une pause pour soi, immunité et entrée dans l'automne avec la naturopathie, le 16 octobre à Sartilly",
+    titre: "Immunité et entrée dans l'automne",
+    serie: "Atelier parents",
+    avec: "En partenariat avec l'association Amstramgram",
+
+    debut: "2026-10-16T10:00",
+    fin: "2026-10-16T12:00",
+
+    lieu: "Espace des Parents d'Amstramgram",
+    adresse: "7 allée du Parc",
+    ville: "Sartilly-Baie-Bocage",
+    codePostal: "50530",
+
+    prix: 0,
+    prixTexte: "Gratuit — places limitées",
+    lienReservation: "https://www.helloasso.com/associations/amstramgram/evenements/atelier-parents-une-pause-pour-soi-naturopathie-16-octobre",
+
+    noteReservation: `Inscription gratuite sur HelloAsso, auprès de l'association Amstramgram.`,
+    accroche: `Et si vous preniez soin de vous avant que l'automne s'installe ?`,
+    description: [
+      `Une matinée autour de la naturopathie pour comprendre comment soutenir votre immunité et aborder les premiers froids plus sereinement, avec des conseils simples à appliquer au quotidien.`,
+      `Un moment à vous, pensé pour les parents : une vraie pause pour soi.`,
+    ],
+    note: `Une prise en charge de vos enfants est possible pendant l'atelier. Pensez à le préciser lors de votre inscription.`,
+  },
 ];
 
 // -----------------------------------------------------------------------------
