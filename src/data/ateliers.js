@@ -165,6 +165,62 @@ export const ateliers = [
     ],
     note: `Une prise en charge de vos enfants est possible pendant l'atelier. Pensez à le préciser lors de votre inscription.`,
   },
+
+  {
+    id: "sophro-naturo-serein-novembre",
+    flyer: "/images/ateliers/sophro-naturo-novembre.webp",
+    flyerAlt: "Affiche des ateliers Sophro-Naturo à Jullouville : samedi 14 novembre et samedi 5 décembre, de 10h à 12h15",
+    titre: "Des clés pour être plus serein au quotidien",
+    serie: "Atelier Sophro-Naturo",
+    avec: "Avec Stéphanie, sophrologue (Bulle de Phénix), et Betty, naturopathe (InspireB)",
+
+    debut: "2026-11-14T10:00",
+    fin: "2026-11-14T12:15",
+
+    lieu: "Base nautique de Jullouville — Espace Symbiose",
+    adresse: "5 avenue de la Tanguière",
+    ville: "Jullouville",
+    codePostal: "50610",
+
+    prix: 40,
+    prixTexte: "40 € l'atelier",
+    lienReservation: "https://tidycal.com/stephaniedolpierre/atelier-sophro-naturo-base-nautique-8-milles-nautic-jullouville",
+
+    noteReservation: `Réservation sur l'agenda de Stéphanie — pensez à sélectionner la date du 14 novembre.`,
+    accroche: `Une matinée face à la mer pour retrouver du calme, en douceur.`,
+    description: [
+      `Deux regards complémentaires, la sophrologie et la naturopathie, pour découvrir des outils simples à intégrer dans votre quotidien : respiration, détente, hygiène de vie.`,
+      `Ce qui se vit de l'intérieur se ressent aussi à l'extérieur. Les places sont limitées pour garder une ambiance chaleureuse et conviviale.`,
+    ],
+  },
+
+  {
+    id: "sophro-naturo-sommeil-decembre",
+    flyer: "/images/ateliers/sophro-naturo-novembre.webp",
+    flyerAlt: "Affiche des ateliers Sophro-Naturo à Jullouville : samedi 14 novembre et samedi 5 décembre, de 10h à 12h15",
+    titre: "Des clés pour un sommeil plus apaisé",
+    serie: "Atelier Sophro-Naturo",
+    avec: "Avec Stéphanie, sophrologue (Bulle de Phénix), et Betty, naturopathe (InspireB)",
+
+    debut: "2026-12-05T10:00",
+    fin: "2026-12-05T12:15",
+
+    lieu: "Base nautique de Jullouville — Espace Symbiose",
+    adresse: "5 avenue de la Tanguière",
+    ville: "Jullouville",
+    codePostal: "50610",
+
+    prix: 40,
+    prixTexte: "40 € l'atelier",
+    lienReservation: "https://tidycal.com/stephaniedolpierre/atelier-sophro-naturo-base-nautique-8-milles-nautic-jullouville",
+
+    noteReservation: `Réservation sur l'agenda de Stéphanie — pensez à sélectionner la date du 5 décembre.`,
+    accroche: `Et si vos nuits devenaient enfin un vrai moment de repos ?`,
+    description: [
+      `Une matinée pour comprendre ce qui pèse sur votre sommeil et repartir avec des outils simples de sophrologie et de naturopathie : respiration, détente, hygiène de vie.`,
+      `Les places sont limitées pour garder une ambiance chaleureuse et conviviale.`,
+    ],
+  },
 ];
 
 // -----------------------------------------------------------------------------
