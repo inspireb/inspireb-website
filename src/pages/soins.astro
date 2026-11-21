@@ -46,7 +46,7 @@ import { soinsPages } from '../data/soinsPages.js';
         return (
         <div id={categorie.id} class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
-          <!-- Image -->
+          {/* Image */}
           <div class={i % 2 === 0 ? "md:order-1" : "md:order-2"}>
             <img
               src={categorie.image}
@@ -55,7 +55,7 @@ import { soinsPages } from '../data/soinsPages.js';
             />
           </div>
 
-          <!-- Contenu -->
+          {/* Contenu */}
           <div class={i % 2 === 0 ? "md:order-2" : "md:order-1"}>
             <div class="flex items-center gap-3 mb-4">
               <Icon name={categorie.icon} size={32} class="text-[#a8cbb7] flex-shrink-0" />
@@ -63,9 +63,9 @@ import { soinsPages } from '../data/soinsPages.js';
             </div>
             <p class="text-sm text-[#4A4A4A]/70 leading-relaxed mb-6">{pageDetail ? categorie.descCourt : categorie.intro}</p>
 
+            {/* Cette prestation a sa page dédiée : on affiche un résumé,
+               pas la liste complète (évite le contenu dupliqué). */}
             {pageDetail ? (
-              <!-- Cette prestation a sa page dediee : on affiche un resume,
-                   pas la liste complete (evite le contenu duplique). -->
               <div class="border border-[#dde7e0] rounded-2xl px-6 py-5 flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p class="font-jakarta font-medium text-2xl text-[#a8cbb7]">{categorie.apercu}</p>

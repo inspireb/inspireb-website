@@ -43,6 +43,35 @@ const prochainAtelierDate = prochainAtelier
   ? new Date(prochainAtelier.debut).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
   : '';
 const surPageAteliers = Astro.url.pathname.startsWith('/ateliers');
+const afficherAteliers = Boolean(prochainAtelier) && !surPageAteliers;
+
+// ─── PROMO DU MOMENT ────────────────────────────────────────────────
+// Tant que la promo est en cours, elle prend la place de la bannière
+// ateliers (une seule bannière à la fois). Le lendemain de la date de fin,
+// la bannière ateliers revient toute seule, sans rien toucher.
+// Pour une prochaine promo : changer les textes, l'image et les dates ici.
+const promo = {
+  fin: '2026-11-28T00:00:00+01:00',  // la promo disparaît à cette date
+  jour: '2026-11-27',                 // le jour J (le texte de la bannière change)
+  texte: "Black Friday : le 27 novembre, jusqu'à 20 € offerts sur vos cartes cadeaux",
+  texteJourJ: "Black Friday : c'est aujourd'hui ! Jusqu'à 20 € offerts sur vos cartes cadeaux",
+  image: '/images/promo/carte-cadeau-black-friday.webp',
+  imageAlt: "Carte cadeau InspireB, le 27 novembre : 50 € achetés, 10 € offerts, soit 60 € de bien-être à offrir. 100 € achetés, 20 € offerts, soit 120 € de bien-être à offrir.",
+  lien: '/soins/carte-cadeau/',
+  libelleBouton: 'Découvrir la carte cadeau',
+  couleur: '#ab4210',        // couleur de la bannière promo (terracotta InspireB)
+  // Encadré affiché en haut de la page "lien" pendant la promo
+  encartTitre: 'Black Friday : le 27 novembre, jusqu\'à 20 € offerts',
+  encartOffres: [
+    { achat: '50 € achetés', bonus: '+ 10 € offerts', total: 'soit 60 € de bien-être à offrir' },
+    { achat: '100 € achetés', bonus: '+ 20 € offerts', total: 'soit 120 € de bien-être à offrir' },
+  ],
+  encartComment: 'Pour en profiter, contactez-moi le 27 novembre par téléphone ou passez au cabinet.',
+};
+const surPagePromo = Astro.url.pathname === promo.lien;
+// Vérifié au moment de la publication : si le site est republié après la fin
+// de la promo, son code n'est même plus inclus dans les pages.
+const promoPossible = new Date() < new Date(promo.fin);
 
 const offers = services
   .filter(s => typeof s.schemaPrice === 'number')
@@ -144,19 +173,55 @@ const schema = {
 
   <body class="bg-[#f6f6e9] text-[#4A4A4A] font-jakarta">
 
-    <!-- BANNIÈRE ATELIERS (auto-masquée quand il n'y a plus de date à venir) -->
-    {prochainAtelier && !surPageAteliers && (
-      <div id="banner-ateliers" class="hidden fixed top-0 left-0 right-0 z-[60] bg-[#5a9480] text-white">
+    <!-- BANNIÈRE DU HAUT : la promo en cours si elle existe, sinon les ateliers
+         (une seule bannière à la fois, choisie par le script plus bas) -->
+    {(afficherAteliers || promoPossible) && (
+      <div id="banner-ateliers" class="hidden fixed top-0 left-0 right-0 z-[60] bg-[#5a9480] text-white"
+           data-promo-fin={promoPossible ? promo.fin : undefined}
+           data-promo-jour={promoPossible ? promo.jour : undefined}
+           data-promo-couleur={promoPossible ? promo.couleur : undefined}
+           style={promoPossible ? `background-color:${promo.couleur};` : undefined}>
         <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-center gap-3 text-center">
-          <a href="/ateliers/" class="flex-1 text-sm leading-snug hover:underline underline-offset-2">
-            <span class="font-medium">Découvrir les ateliers à venir</span>
-            <span class="hidden sm:inline text-white/75"> · prochain rendez-vous le {prochainAtelierDate}</span>
-            <span class="whitespace-nowrap"> →</span>
-          </a>
+
+          {promoPossible && (
+            <button type="button" id="banner-promo" class="hidden flex-1 text-sm leading-snug hover:underline underline-offset-2 cursor-pointer">
+              <span>🎁 </span>
+              <span id="banner-promo-texte" class="font-medium" data-jour-j={promo.texteJourJ}>{promo.texte}</span>
+              <span class="whitespace-nowrap underline underline-offset-2 ml-1">Voir l'offre →</span>
+            </button>
+          )}
+
+          {afficherAteliers && (
+            <a href="/ateliers/" id="banner-ateliers-lien" class="hidden flex-1 text-sm leading-snug hover:underline underline-offset-2">
+              <span class="font-medium">Découvrir les ateliers à venir</span>
+              <span class="hidden sm:inline text-white/75"> · prochain rendez-vous le {prochainAtelierDate}</span>
+              <span class="whitespace-nowrap"> →</span>
+            </a>
+          )}
+
           <button id="banner-close" aria-label="Fermer l'annonce"
                   class="text-white/60 hover:text-white text-xl leading-none px-2 flex-shrink-0 transition-colors">×</button>
         </div>
       </div>
+    )}
+
+    <!-- FENÊTRE DE LA PROMO (s'ouvre au clic sur la bannière) -->
+    {promoPossible && (
+      <dialog id="promo-dialog" aria-label="Offre du moment"
+              class="m-auto p-0 border-0 rounded-2xl w-[min(92vw,calc((100vh-9rem)*1.414),48rem)] max-h-[96vh] overflow-auto bg-[#f6f6e9] shadow-2xl backdrop:bg-[#24392e]/60 backdrop:backdrop-blur-sm">
+        <div class="relative">
+          <button type="button" id="promo-dialog-close" aria-label="Fermer"
+                  class="absolute right-2.5 top-2.5 w-10 h-10 rounded-full bg-white/85 text-2xl leading-none text-[#3D3D3D] hover:bg-white transition-colors">×</button>
+          <img src={promo.image} alt={promo.imageAlt} width="1400" height="990" loading="lazy"
+               class="block w-full h-auto rounded-t-2xl" />
+          <div class="px-5 pt-3 pb-4 text-center">
+            <a href={promo.lien} style={`background-color:${promo.couleur};`}
+               class="inline-block text-white px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity text-sm tracking-wide font-medium">
+              {promo.libelleBouton}
+            </a>
+          </div>
+        </div>
+      </dialog>
     )}
 
     <!-- NAVIGATION -->
@@ -231,6 +296,35 @@ const schema = {
 
     <!-- CONTENU PRINCIPAL -->
     <main class="pt-20">
+      <!-- ENCADRÉ PROMO (uniquement sur la page de la promo, et seulement pendant la promo) -->
+      {promoPossible && surPagePromo && (
+        <section id="encart-promo" class="hidden px-6 py-10 md:py-12 bg-white" data-promo-fin={promo.fin}>
+          <div class="max-w-4xl mx-auto bg-[#eaf1ec] border border-[#a8cbb7] rounded-3xl px-6 md:px-10 py-7 text-center">
+            <p class="text-[#5a9480] text-[0.65rem] sm:text-xs tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-2">🎁 Offre du moment</p>
+            <h2 class="font-jakarta font-medium text-2xl md:text-3xl text-[#3D3D3D] mb-5">{promo.encartTitre}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto mb-5">
+              {promo.encartOffres.map((o) => (
+                <div class="bg-white/80 rounded-2xl px-5 py-4">
+                  <p class="text-sm text-[#4A4A4A]/70">{o.achat}</p>
+                  <p class="font-jakarta font-semibold text-xl text-[#5a9480]">{o.bonus}</p>
+                  <p class="text-xs text-[#4A4A4A]/60 mt-0.5">{o.total}</p>
+                </div>
+              ))}
+            </div>
+            <p class="text-sm text-[#4A4A4A]/70 mb-5">{promo.encartComment}</p>
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <a href="tel:+33646712096"
+                 class="bg-[#5a9480] text-white px-7 py-3 rounded-full hover:bg-[#4a7f6c] transition-colors text-sm tracking-wide font-medium">
+                Appeler le 06 46 71 20 96
+              </a>
+              <a href="/contact/"
+                 class="border-2 border-[#a8cbb7] text-[#5a9480] px-7 py-2.5 rounded-full hover:bg-white transition-colors text-sm tracking-wide font-medium">
+                Me contacter
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
       <slot />
     </main>
 
@@ -392,13 +486,63 @@ const schema = {
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSetmore(); });
     </script>
 
-    <!-- Script bannière ateliers -->
+    <!-- Script bannière du haut (promo ou ateliers) -->
     <script>
       // La bannière est masquée par défaut (classe "hidden") pour éviter tout
       // saut visuel : on ne l'affiche que si la visiteuse ne l'a pas déjà fermée.
       const bannerAteliers = document.getElementById('banner-ateliers');
       const siteHeader = document.getElementById('site-header');
       const mainEl = document.querySelector('main');
+
+      // Quelle bannière afficher ? La promo si elle est en cours, sinon les ateliers.
+      // Chaque bannière a sa propre mémoire « fermée » : fermer la promo ne
+      // masque pas les ateliers, et inversement.
+      const promoBtn = document.getElementById('banner-promo');
+      const ateliersLien = document.getElementById('banner-ateliers-lien');
+      const promoFin = bannerAteliers?.dataset.promoFin;
+      const promoEnCours = Boolean(promoBtn && promoFin && new Date() < new Date(promoFin));
+
+      let cleMemoire = 'inspireb_banner_ateliers';
+      let contenuChoisi: HTMLElement | null = null;
+      if (promoEnCours && promoBtn) {
+        cleMemoire = 'inspireb_banner_promo';
+        contenuChoisi = promoBtn;
+        // Couleur propre à la promo (la bannière ateliers garde son vert)
+        const couleurPromo = bannerAteliers?.dataset.promoCouleur;
+        if (bannerAteliers && couleurPromo) bannerAteliers.style.backgroundColor = couleurPromo;
+        // Le jour J, le texte change
+        const aujourdhui = new Date().toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
+        const texte = document.getElementById('banner-promo-texte');
+        if (texte && aujourdhui === bannerAteliers?.dataset.promoJour && texte.dataset.jourJ) {
+          texte.textContent = texte.dataset.jourJ;
+        }
+      } else if (ateliersLien) {
+        contenuChoisi = ateliersLien;
+        // Promo terminée : la bannière ateliers reprend son vert
+        if (bannerAteliers) bannerAteliers.style.backgroundColor = '';
+      }
+      contenuChoisi?.classList.remove('hidden');
+
+      // Fenêtre de la promo
+      const promoDialog = document.getElementById('promo-dialog') as HTMLDialogElement | null;
+      promoBtn?.addEventListener('click', () => promoDialog?.showModal());
+      document.getElementById('promo-dialog-close')?.addEventListener('click', () => promoDialog?.close());
+      promoDialog?.addEventListener('click', (e) => { if (e.target === promoDialog) promoDialog.close(); });
+
+      // Encadré promo sur la page carte cadeau : visible seulement pendant la promo
+      const encartPromo = document.getElementById('encart-promo');
+      const encartFin = encartPromo?.dataset.promoFin;
+      if (encartPromo && encartFin && new Date() < new Date(encartFin)) {
+        // On le place juste sous le hero de la page (la première section
+        // après l'encadré), pour garder le bandeau photo en haut.
+        // (on saute les éventuels blocs invisibles, comme les données Schema.org)
+        let hero = encartPromo.nextElementSibling;
+        while (hero && ['SCRIPT', 'STYLE', 'LINK', 'META'].includes(hero.tagName)) {
+          hero = hero.nextElementSibling;
+        }
+        if (hero) hero.after(encartPromo);
+        encartPromo.classList.remove('hidden');
+      }
 
       function decalerPourBanniere() {
         if (!bannerAteliers || bannerAteliers.classList.contains('hidden')) return;
@@ -413,12 +557,12 @@ const schema = {
         bannerAteliers?.classList.add('hidden');
         if (siteHeader) siteHeader.style.top = '0px';
         if (mainEl) mainEl.style.paddingTop = '';
-        try { sessionStorage.setItem('inspireb_banner_ateliers', 'ferme'); } catch (e) {}
+        try { sessionStorage.setItem(cleMemoire, 'ferme'); } catch (e) {}
       }
 
-      if (bannerAteliers) {
+      if (bannerAteliers && contenuChoisi) {
         let dejaFerme = false;
-        try { dejaFerme = sessionStorage.getItem('inspireb_banner_ateliers') === 'ferme'; } catch (e) {}
+        try { dejaFerme = sessionStorage.getItem(cleMemoire) === 'ferme'; } catch (e) {}
         if (!dejaFerme) {
           bannerAteliers.classList.remove('hidden');
           decalerPourBanniere();
